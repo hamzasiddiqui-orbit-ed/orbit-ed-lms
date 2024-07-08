@@ -1,17 +1,23 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import store from './store.js';
-import { Provider } from 'react-redux';
-import App from './App.jsx'
-import './index.css'
-import {NextUIProvider} from "@nextui-org/react";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { UserProvider } from "./contexts/user.context.jsx";
+import App from "./App.jsx";
+import "./index.css";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <Provider store={store}>
+// TO BE REMOVED
+import { NextUIProvider } from "@nextui-org/react";
+
+const queryClient = new QueryClient();
+
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <NextUIProvider>
-      <App />
-    </NextUIProvider>
+    <QueryClientProvider client={queryClient}>
+      <UserProvider>
+        <NextUIProvider>
+          <App />
+        </NextUIProvider>
+      </UserProvider>
+    </QueryClientProvider>
   </React.StrictMode>
-  </Provider>,
-)
+);

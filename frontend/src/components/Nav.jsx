@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { useLogoutMutation } from "../slices/userApiSlice";
-import { logout } from "../slices/authSlice";
 import {
   Navbar,
   NavbarBrand,
@@ -27,11 +24,6 @@ import OrbitLogo from "../assets/orbitLogoSecondary.png";
 export default function Nav() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const { userInfo } = useSelector((state) => state.auth);
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const [logoutApiCall] = useLogoutMutation();
 
   const DropdownContent = ({ variant, color }) => (
     <Dropdown>
@@ -74,9 +66,7 @@ export default function Nav() {
 
   const handleLogOut = async () => {
     try {
-      await logoutApiCall().unwrap();
-      dispatch(logout());
-      navigate("/");
+
     } catch (err) {
       console.error(err);
     }
