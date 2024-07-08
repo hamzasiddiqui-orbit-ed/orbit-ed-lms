@@ -22,6 +22,7 @@ export default {
   darkMode: "class",
   plugins: [
     nextui(),
-    require("daisyui")
+    require("daisyui"),
+    require('tailwindcss-rtl')
   ],
 };

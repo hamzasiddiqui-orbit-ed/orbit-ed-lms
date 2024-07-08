@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { useAuth } from '../hooks/useAuth';
+import React, { useState, useContext } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { LanguageContext } from "../contexts/language.context";
+import LanguageToggle from "../components/LanguageToggle";
 import classNames from "classnames";
 import { BiHide, BiShow } from "react-icons/bi";
 import OrbitEdLogoColored from "../assets/Orbit-Ed-logo-coloured.svg";
@@ -9,6 +11,8 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+
+  const { state } = useContext(LanguageContext);
 
   const { loginMutation } = useAuth();
 
@@ -25,8 +29,11 @@ function LoginPage() {
       { username, password },
       {
         onError: (error) => {
-          setError(error.response?.data?.message || "An unexpected error occured. Please try again later.");
-        }
+          setError(
+            error.response?.data?.message ||
+              "An unexpected error occured. Please try again later."
+          );
+        },
       }
     );
 
@@ -35,7 +42,11 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex w-screen h-screen">
+    <div className="flex w-screen h-screen" dir={state.layout}>
+      <div className="absolute bottom-4 end-4">
+        <LanguageToggle />
+      </div>
+
       <div className="sm:hidden absolute top-0 flex flex-col items-center justify-center">
         <img src={OrbitEdLogoColored} alt="Orbit-Ed" className="size-32" />
         <p className="text-brand text-xl w-3/4 mt-3">
@@ -50,7 +61,13 @@ function LoginPage() {
         </p>
       </div>
       <div className="flex flex-initial w-full sm:w-5/12 bg-core items-center justify-center">
-        <div className="bg-[#8497DB] bg-opacity-20 w-full h-full sm:rounded-l-3xl text-brand flex flex-col items-start justify-center pt-44 ps-5 sm:p-28 ">
+        <div
+          className={classNames(
+            "bg-[#8497DB] bg-opacity-20 w-full h-full text-brand flex flex-col items-start justify-center pt-44 ps-5 sm:p-28",
+            { "sm:rounded-l-3xl": state.layout == "ltr" },
+            { "sm:rounded-r-3xl": state.layout == "rtl" }
+          )}
+        >
           <p className="text-2xl font-semibold">Join Our Portal</p>
           <p className="text-base mt-3">Log in to preview your progress.</p>
 
@@ -95,7 +112,7 @@ function LoginPage() {
                   }
                 )}
               />
-              <span className="absolute inset-y-0 top-9 right-3 flex items-center">
+              <span className="absolute inset-y-0 top-9 end-3 flex items-center">
                 <label
                   onClick={() => setShowPassword(!showPassword)}
                   htmlFor="toggle"
