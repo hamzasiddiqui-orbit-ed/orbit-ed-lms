@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { LanguageContext } from "../contexts/language.context";
 import { GrLanguage } from "react-icons/gr";
+import i18n from "../utils/i18n";
 
 export default function LanguageToggle() {
   const { state, dispatch } = useContext(LanguageContext);
@@ -9,8 +10,10 @@ export default function LanguageToggle() {
     console.log(state);
     if (state.lang == "en") {
       dispatch({ type: "ARABIC" });
+      i18n.changeLanguage('ar');
     } else {
       dispatch({ type: "ENGLISH" });
+      i18n.changeLanguage('en');
     }
   };
 

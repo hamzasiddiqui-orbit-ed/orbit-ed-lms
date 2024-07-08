@@ -5,6 +5,7 @@ import LanguageToggle from "../components/LanguageToggle";
 import classNames from "classnames";
 import { BiHide, BiShow } from "react-icons/bi";
 import OrbitEdLogoColored from "../assets/Orbit-Ed-logo-coloured.svg";
+import { useTranslation } from "react-i18next";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
@@ -15,6 +16,8 @@ function LoginPage() {
   const { state } = useContext(LanguageContext);
 
   const { loginMutation } = useAuth();
+
+  const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,9 +59,7 @@ function LoginPage() {
 
       <div className="flex flex-col flex-initial w-0 sm:w-7/12 bg-core items-center justify-center invisible sm:visible">
         <img src={OrbitEdLogoColored} alt="Orbit-Ed" className="size-80" />
-        <p className="text-brand text-4xl w-3/4 mt-3">
-          Immersive Training Platform for Enterprises
-        </p>
+        <p className="text-brand text-4xl w-3/4 mt-3">{t("loginHeading")}</p>
       </div>
       <div className="flex flex-initial w-full sm:w-5/12 bg-core items-center justify-center">
         <div
@@ -68,14 +69,14 @@ function LoginPage() {
             { "sm:rounded-r-3xl": state.layout == "rtl" }
           )}
         >
-          <p className="text-2xl font-semibold">Join Our Portal</p>
-          <p className="text-base mt-3">Log in to preview your progress.</p>
+          <p className="text-2xl font-semibold">{t("joinPortalHeading")} </p>
+          <p className="text-base mt-3">{t("loginSubHeading")}</p>
 
           <form className="w-full" onSubmit={handleSubmit}>
             <label className="form-control w-full max-w-xs mt-5">
               <div className="label">
                 <span className="label-text ms-2 text-brand font-medium">
-                  Username
+                  {t("usernameLabel")}
                 </span>
               </div>
               <input
@@ -96,7 +97,7 @@ function LoginPage() {
             <label className="form-control w-full max-w-xs mt-5 relative">
               <div className="label">
                 <span className="label-text ms-2 text-brand font-medium">
-                  Password{" "}
+                  {t("passwordLabel")}{" "}
                 </span>
               </div>
               <input
@@ -140,10 +141,10 @@ function LoginPage() {
                 {loginMutation.isPending ? (
                   <>
                     <span className="loading loading-spinner"></span>
-                    Logging In
+                    {t("loggingInLabel")}
                   </>
                 ) : (
-                  <p>Log In</p>
+                  <p>{t("loginLabel")} </p>
                 )}
               </button>
             </div>
