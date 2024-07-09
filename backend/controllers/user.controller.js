@@ -14,7 +14,7 @@ const authUser = async (req, res) => {
 
   const user = await User.findOne({ username });
   if (!user) {
-    return res.status(401).json({ message: "Please enter a valid email address" });
+    return res.status(401).json({ message: "Please enter a valid username" });
   }
 
   if (user && (await user.matchPassword(password))) {

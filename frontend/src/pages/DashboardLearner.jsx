@@ -1,10 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { LanguageContext } from "../contexts/language.context";
+import { UserContext } from "../contexts/user.context";
 import SideNav from "../components/SideNav";
 import { BiMenu } from "react-icons/bi";
 import { MdClose } from "react-icons/md";
 
 function DashboardLearner() {
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const { state } = useContext(LanguageContext);
+  const { state: userState } = useContext(UserContext);
+
+  const getUserState = () => {
+    console.log(userState.user);
+  }
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
@@ -16,7 +25,7 @@ function DashboardLearner() {
   }
 
   return (
-    <div className="flex bg-core text-brand w-screen h-screen overflow-auto">
+    <div className="flex bg-core text-brand w-screen h-screen overflow-auto" dir={state.layout}>
       <div className="drawer lg:drawer-open relative min-h-full">
         <input
           id="my-drawer-2"
@@ -41,6 +50,10 @@ function DashboardLearner() {
 
           <div className="w-full flex flex-col">
             Welcome to the learner's dashboard.
+
+            <button className="btn" onClick={getUserState}>
+              get user state
+            </button>
           </div>
         </div>
         <SideNav />

@@ -7,6 +7,7 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
+      console.log(`LOGIN action called:\n${action.type}, \ndata:\n${JSON.stringify(action.payload)}`)
       return {
         ...state,
         user: action.payload,

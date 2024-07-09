@@ -10,10 +10,10 @@ export default function LanguageToggle() {
     console.log(state);
     if (state.lang == "en") {
       dispatch({ type: "ARABIC" });
-      i18n.changeLanguage('ar');
+      i18n.changeLanguage("ar");
     } else {
       dispatch({ type: "ENGLISH" });
-      i18n.changeLanguage('en');
+      i18n.changeLanguage("en");
     }
   };
 
@@ -32,8 +32,8 @@ export default function LanguageToggle() {
           className="btn btn-sm rounded-full bg-highlight"
           onClick={handleRTL}
         >
-          English
           <GrLanguage />
+          English
         </button>
       )}
     </>

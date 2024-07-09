@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { LanguageContext } from "../contexts/language.context";
 import LanguageToggle from "../components/LanguageToggle";
