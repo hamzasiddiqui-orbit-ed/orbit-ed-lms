@@ -11,6 +11,7 @@ const sessionReportSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    session_count: Number,
     device_name: String,
     total_word_count: Number,
     total_time: Number,

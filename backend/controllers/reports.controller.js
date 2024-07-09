@@ -59,6 +59,36 @@ const getUserReport = async (req, res) => {
   }
 };
 
+const getMostRecentUserReport = async (req, res) => {
+  const user_id = req.body.user_id;
+
+  if (!user_id) {
+    res.status(400).json("User authentication failed.");
+  }
+
+  var query = {
+    user_id: mongoose.Types.ObjectId.createFromHexString(user_id)
+  }
+
+  var options = {
+    sort: { createdAt: -1 },
+    limit: 1,
+  };
+
+  try {
+    var result = await SessionReport.find(query).sort(options.sort).limit(options.limit);
+    console.log(result);
+
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.status(404).json("No report found");
+    }
+  } catch (err) {
+    res.status(400).json(err.message);
+  }
+};
+
 const getUserReportsDetailed = async (req, res) => {
   const user_id = req.body._id;
 
@@ -84,4 +114,4 @@ const getUserReportsDetailed = async (req, res) => {
   }
 };
 
-module.exports = { getUserReports, getUserReport, getUserReportsDetailed };
+module.exports = { getUserReports, getUserReport, getMostRecentUserReport, getUserReportsDetailed };
