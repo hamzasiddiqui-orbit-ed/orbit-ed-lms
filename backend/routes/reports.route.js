@@ -10,46 +10,47 @@ const {
   getModuleSessionsFromReport,
   getUserReportsDetailed,
 } = require("../controllers/reports.controller");
+const { protect } = require("../middlewares/auth");
 
 const router = express.Router();
 
-router.get("/getUserReports", getUserReports);
+router.post("/getUserReports", protect, getUserReports);
 
-router.get("/getUserReport", (req, res, next) => {
+router.post("/getUserReport", protect, (req, res, next) => {
   console.log("getUserReport route hit");
   next();
 }, getUserReport);
 
-router.post("/getMostRecentUserReport", (req, res, next) => {
+router.post("/getMostRecentUserReport", protect, (req, res, next) => {
   console.log("\nROUTE HIT (reports.route): getMostRecentUserReport\n");
   next();
 }, getMostRecentUserReport);
 
-router.post("/getModuleReport", (req, res, next) => {
+router.post("/getModuleReport", protect, (req, res, next) => {
   console.log("\nROUTE HIT (reports.route): getModuleReport\n");
   next();
 }, getModuleReport);
 
-router.post("/getModuleSessionReport", (req, res, next) => {
+router.post("/getModuleSessionReport", protect, (req, res, next) => {
   console.log("\nROUTE HIT (reports.route): getModuleSessionReport\n");
   next();
 }, getModuleSessionReport);
 
-router.post("/getSessionReport", (req, res, next) => {
+router.post("/getSessionReport", protect, (req, res, next) => {
   console.log("\nROUTE HIT (reports.route): getSessionReport\n");
   next();
 }, getSessionReport);
 
-router.post("/getUniqueModulesFromReports", (req, res, next) => {
+router.post("/getUniqueModulesFromReports", protect, (req, res, next) => {
   console.log("\nROUTE HIT (reports.route): getUniqueModulesFromReports\n");
   next();
 }, getUniqueModulesFromReports);
 
-router.post("/getModuleSessionsFromReport", (req, res, next) => {
+router.post("/getModuleSessionsFromReport", protect, (req, res, next) => {
   console.log("\nROUTE HIT (reports.route): getModuleSessionsFromReport\n");
   next();
 }, getModuleSessionsFromReport);
 
-router.get("/getUserReportsDetailed", getUserReportsDetailed);
+router.post("/getUserReportsDetailed", protect, getUserReportsDetailed);
 
 module.exports = router;
