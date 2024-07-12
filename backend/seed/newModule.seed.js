@@ -10,8 +10,8 @@ connectDB();
 const importData = async () => {
   try {
     const module = new Module({
-      name: "Communication-101 Test",
-      description: "Orbit-Ed's test course for development",
+      name: "Negotiation and finding common ground",
+      description: "Orbit-Ed's second test course for development",
       organizationId: "668281bdb6dd30385357e088",
       category_id: "6682868b6b1d62e769880a95",
       created_by: null,
