@@ -20,6 +20,7 @@ const moduleSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    image_url: String,
     coach: {
       monologue: String,
       audio_url: String,
