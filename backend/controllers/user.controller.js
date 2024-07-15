@@ -75,8 +75,6 @@ const unrealAuthUser = async (req, res) => {
           return null;
         }
 
-        // const category = await CourseCategory.findById(module.category_id);
-
         const category = module.category_id
           ? await CourseCategory.findById(module.category_id)
           : null;
@@ -87,19 +85,52 @@ const unrealAuthUser = async (req, res) => {
           description: module.description,
           image_url: module.image_url,
           category_id: category ? category._id : null,
-          category_name: category ?  category.name : null,
+          category_name: category ? category.name : null,
           category_description: category ? category.description : null,
           category_tags: category ? category.tags : null,
         };
       })
     );
 
+    const categorizedModules = assignedModules.reduce((acc, module) => {
+      if (!module) return acc;
+
+      const categoryKey = module.category_id || "uncategorized";
+
+      if (!acc[categoryKey]) {
+        acc[categoryKey] = {
+          category_id: module.category_id,
+          category_name: module.category_name,
+          category_description: module.category_description,
+          category_tags: module.category_tags,
+          modules: [],
+        };
+      }
+
+      acc[categoryKey].modules.push({
+        module_id: module.module_id,
+        name: module.name,
+        description: module.description,
+        image_url: module.image_url,
+      });
+
+      return acc;
+    }, {});
+
+    const categorizedModulesArray = Object.keys(categorizedModules).map(key => ({
+      category_id: categorizedModules[key].category_id,
+      category_name: categorizedModules[key].category_name,
+      category_description: categorizedModules[key].category_description,
+      category_tags: categorizedModules[key].category_tags,
+      modules: categorizedModules[key].modules,
+    }));
+
     res.json({
       user_id: user._id,
       username: user.username,
       user_full_name: user.name,
       user_email: user.email,
-      assigned_modules: assignedModules,
+      assigned_modules: categorizedModulesArray,
     });
   } else {
     return res.status(401).json({ message: "Password is incorrect" });

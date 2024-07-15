@@ -10,9 +10,9 @@ connectDB();
 const importData = async () => {
   try {
     const courseCategory = new CourseCategory({
-      name: "Communication Skills",
-      description: "Enhance your communication skills.",
-      tags: ["communication", "verbal communication", "non-verbal communication"],
+      name: "Emotional Intelligence",
+      description: "Enhance your emotaional intelligence.",
+      tags: ["communication", "emotional", "intelligence"],
     });
 
     console.log('about to save.');

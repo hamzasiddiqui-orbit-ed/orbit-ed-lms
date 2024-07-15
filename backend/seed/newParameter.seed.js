@@ -35,7 +35,7 @@ const importData = async () => {
         base_parameters: ["wpm", "filler_sounds", "pauses", "clarity"],
       },
       {
-        name: "persuasion",
+        name: "preparation",
         base_parameters: ["eye_contact", "pitch", "clarity", "loudness"]
       },
     ];

@@ -18,12 +18,15 @@ const sessionReportSchema = new mongoose.Schema(
     total_score: Number,
     audio_url: String,
     transcription: String,
-    quiz_score: [
-      {
-        question_id: mongoose.Schema.Types.ObjectId,
-        score: Number,
-      },
-    ],
+    quiz: {
+      score: Number,
+      details: [
+        {
+          question_id: mongoose.Schema.Types.ObjectId,
+          selected_option: String,
+        },
+      ],
+    },
     parameters: Object,
   },
   {

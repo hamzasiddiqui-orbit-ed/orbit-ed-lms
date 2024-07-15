@@ -10,10 +10,10 @@ connectDB();
 const importData = async () => {
   try {
     const module = new Module({
-      name: "Negotiation and finding common ground",
-      description: "Orbit-Ed's second test course for development",
+      name: "Conflict Resolution",
+      description: "Orbit-Ed's third test course for development",
       organizationId: "668281bdb6dd30385357e088",
-      category_id: "6682868b6b1d62e769880a95",
+      category_id: "6694fa1c4d6de95c29c8f2f0",
       created_by: null,
       coach: {
         monologue: "Hello, how are you? I am the coach.",
@@ -30,71 +30,89 @@ const importData = async () => {
         "668288b9f70f2bf97ff7e044",
         "668288b9f70f2bf97ff7e046",
         "668288b9f70f2bf97ff7e047",
+        "668288b9f70f2bf97ff7e048",
       ],
       question_pool: [
         {
+          question_type: "MCQ",
+          question_text: "What is emotional intelligence?",
+          options: [
+            "The ability to understand and manage emotions",
+            "The ability to solve complex mathematical problems",
+            "The ability to memorize large amounts of information",
+            "The ability to speak multiple languages",
+          ],
+          correct_option: "The ability to understand and manage emotions",
+          difficulty: "easy",
+        },
+        {
           question_type: "T/F",
           question_text:
-            "To give a killer pitch first capture, capture info about your audience first.",
+            "Self-awareness is a key component of emotional intelligence.",
           options: ["True", "False"],
           correct_option: "True",
           difficulty: "medium",
         },
         {
           question_type: "MCQ",
-          question_text: "What is communication?",
+          question_text:
+            "Which of the following is NOT one of the five components of emotional intelligence according to Daniel Goleman?",
           options: [
-            "A process of sharing information",
-            "A way to confuse people",
-            "An art form",
-            "A science",
+            "Self-regulation",
+            "Motivation",
+            "Empathy",
+            "Critical thinking",
           ],
-          correct_option: "A process of sharing information",
-          difficulty: "easy",
-        },
-        {
-          question_type: "MCQ",
-          question_text: "Which is a key component of effective communication?",
-          options: ["Clarity", "Ambiguity", "Noise", "Guesswork"],
-          correct_option: "Clarity",
+          correct_option: "Critical thinking",
           difficulty: "hard",
         },
         {
           question_type: "MCQ",
-          question_text: "What is verbal communication?",
+          question_text:
+            "What does 'empathy' refer to in emotional intelligence?",
           options: [
-            "Communication using words",
-            "Communication using body language",
-            "Communication using signs",
-            "Communication using silence",
+            "The ability to understand and share the feelings of others",
+            "The ability to control one's own emotions",
+            "The ability to motivate oneself",
+            "The ability to recognize one's own emotions",
           ],
-          correct_option: "Communication using words",
-          difficulty: "easy",
+          correct_option:
+            "The ability to understand and share the feelings of others",
+          difficulty: "medium",
         },
         {
           question_type: "T/F",
-          question_text: "Speaking is an example of verbal communication?",
+          question_text:
+            "Emotional intelligence can be improved over time with practice and effort.",
           options: ["True", "False"],
           correct_option: "True",
           difficulty: "easy",
         },
         {
           question_type: "MCQ",
-          question_text: "What is non-verbal communication?",
+          question_text:
+            "Which of these is an example of practicing emotional intelligence in the workplace?",
           options: [
-            "Communication without words",
-            "Communication using only text",
-            "Communication through phone calls",
-            "Communication through emails",
+            "Actively listening to a colleague's concerns",
+            "Ignoring conflicts to avoid confrontation",
+            "Making decisions based solely on logic",
+            "Expressing anger when things don't go as planned",
           ],
-          correct_option: "Communication without words",
+          correct_option: "Actively listening to a colleague's concerns",
           difficulty: "medium",
         },
         {
           question_type: "MCQ",
-          question_text: "Which is a form of non-verbal communication?",
-          options: ["Gestures", "Talking", "Listening", "Reading"],
-          correct_option: "Gestures",
+          question_text:
+            "What is 'social awareness' in the context of emotional intelligence?",
+          options: [
+            "The ability to recognize and understand others' emotions",
+            "The ability to influence others' emotions",
+            "The ability to control one's own emotions",
+            "The ability to avoid social situations",
+          ],
+          correct_option:
+            "The ability to recognize and understand others' emotions",
           difficulty: "hard",
         },
       ],
