@@ -7,7 +7,10 @@ import {
 } from "../hooks/useReports";
 import SkeletonUserReport from "./SkeletonUserReport";
 import DropdownUserReport from "../components/DropdownUserReport";
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import RadialProgressUserReport from "./RadialProgressUserReport";
+import TranscriptionCollapsable from "./TranscriptionCollapsable";
+
+import { IoIosArrowForward } from "react-icons/io";
 
 export default function UserReport() {
   const [queryModuleName, setQueryModuleName] = useState(null);
@@ -70,86 +73,133 @@ export default function UserReport() {
   if (!reportData) return <div>No report data available</div>;
 
   return (
-    <div className="w-full h-full">
-      <div className="absolute top-0 pt-10 text-left sm:w-1/2">
-        <p className="text-3xl font-medium text-brand ps-5">
-          Module Performance
-        </p>
-
-        <div className="pt-4 ps-2">
-          <DropdownUserReport
-            title={reportData.moduleName}
-            dropDownData={moduleData?.data || []}
-            handleDropDownExpand={handleModuleClick}
-            handleDropDownSelect={handleModuleSelect}
-            sessions={false}
-          />
-        </div>
-
-        <div className="flex flex-row ps-2">
-          <summary className="btn btn-sm bg-core border-0 shadow-core text-utility text-base font-normal">
-            {reportData.createdAt}
-          </summary>
-          <div className="ps-8">
+    <div className="w-full h-full pe-5 mt-28">
+      {/* Top section */}
+      <div className="flex items-start mb-12 ps-5">
+        <div className="w-full">
+          <h1 className="text-3xl font-medium text-brand mb-4 ps-2 text-start">
+            Module Performance
+          </h1>
+          <div className="mb-4 text-start">
             <DropdownUserReport
-              title={`Session Count: ${reportData.sessionCount}`}
-              dropDownData={sessionData?.data || []}
-              handleDropDownExpand={handleSessionClick}
-              handleDropDownSelect={handleSessionSelect}
-              sessions={true}
+              title={reportData.moduleName}
+              dropDownData={moduleData?.data || []}
+              handleDropDownExpand={handleModuleClick}
+              handleDropDownSelect={handleModuleSelect}
+              sessions={false}
             />
+          </div>
+          <div className="flex items-center">
+            <div className="btn btn-sm bg-core border-0 shadow-core text-utility text-base font-normal">
+              {reportData.createdAt}
+            </div>
+            <div className="ml-8">
+              <DropdownUserReport
+                title={`Session count: ${reportData.sessionCount}`}
+                dropDownData={sessionData?.data || []}
+                handleDropDownExpand={handleSessionClick}
+                handleDropDownSelect={handleSessionSelect}
+                sessions={true}
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-rows sm:grid-cols-4">
-        <div className="flex justify-center">
-          <div className="relative w-48 h-48">
-            {/* Outer background circle */}
-            <div className="absolute inset-5 rounded-full bg-[#8497DB] opacity-30"></div>
+      {/* Main content - 3 columns */}
+      <div className="flex justify-between">
+        {/* Left column */}
+        <div className="w-1/5 ps-5">
+          <RadialProgressUserReport totalScore={reportData.totalScore} />
+        </div>
 
-            {/* Inner background circle */}
-            <div
-              className="absolute inset-8 rounded-full"
-              style={{ background: "radial-gradient(#123DDA, #8497DB)" }}
-            ></div>
+        {/* Middle column (widest) */}
+        <div className="w-3/5 px-8">
+          <div className="bg-highlight mb-8">
+            <div role="tablist" className="tabs tabs-boxed">
+              {Object.keys(reportData.parameters.derived).map((key, index) => (
+                <a
+                  role="tab"
+                  className={`tab ${index === 0 ? "tab-active" : ""}`}
+                  key={key}
+                >
+                  {key.charAt(0).toUpperCase() + key.slice(1)}
+                </a>
+              ))}
+            </div>
+          </div>
 
-            {/* Radial progress */}
-            <div
-              className="radial-progress absolute inset-0 bg-gradient-to-r text-[#3D60DD]"
-              style={{
-                "--value": reportData.totalScore,
-                "--size": "12rem",
-                "--thickness": "8px",
-                // background: 'linear-gradient(to right, #123DDA , #8497DB)'s
-                // color: "red"
-              }}
-            >
-              <div className=" flex flex-col items-center justify-center">
-                <span className="text-3xl font-base text-core">
-                  {reportData.totalScore}%
-                </span>
-                <span className="text-xs text-core">Session Score</span>
-              </div>
+          {/* Add your graph or chart component here */}
+          <div className="bg-base-200 h-64 mb-8">
+            {/* Placeholder for graph/chart */}
+            <p className="text-center py-24">Graph/Chart Placeholder</p>
+          </div>
+
+          {/* Parameters section */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-base-200 p-4 rounded">
+              <h3 className="font-semibold mb-2">Words per minute</h3>
+              {/* Add progress bar or other visualization */}
+            </div>
+            <div className="bg-base-200 p-4 rounded">
+              <h3 className="font-semibold mb-2">Filler sounds</h3>
+              {/* Add progress bar or other visualization */}
+            </div>
+            <div className="bg-base-200 p-4 rounded">
+              <h3 className="font-semibold mb-2">Pauses</h3>
+              {/* Add progress bar or other visualization */}
+            </div>
+            <div className="bg-base-200 p-4 rounded">
+              <h3 className="font-semibold mb-2">Repetitive words</h3>
+              {/* Add progress bar or other visualization */}
+            </div>
+            <div className="bg-base-200 p-4 rounded">
+              <h3 className="font-semibold mb-2">Speech rate</h3>
+              {/* Add progress bar or other visualization */}
             </div>
           </div>
         </div>
 
-        <div className="sm:col-span-2">
-          <div role="tablist" className="tabs tabs-boxed">
-            <a role="tab" class="tab">
-              Tab 1
-            </a>
-            <a role="tab" class="tab tab-active">
-              Tab 2
-            </a>
-            <a role="tab" class="tab">
-              Tab 3
+        {/* Right column */}
+        <div className="w-1/4 text-start">
+          <div className="mb-8">
+            <h2 className="text-brand font-semibold text-2xl mb-2">
+              Quiz Performance
+            </h2>
+            <p className="text-utility text-sm">
+              You scored {reportData.quiz.score}% on the quiz.
+            </p>
+            <a className="link link-hover text-xs text-utility flex items-center mt-1">
+              View Details
+              <IoIosArrowForward className="ml-1" />
             </a>
           </div>
-        </div>
 
-        <div className="bg-utility">hello</div>
+          <div className="mb-8">
+            <h2 className="text-brand font-semibold text-2xl mb-2">
+              Audio Preview
+            </h2>
+            <div className="bg-base-200 p-4 rounded-lg mb-2">
+              {/* Replace this with your actual audio player component */}
+              <div className="text-center">Audio Play Soon!</div>
+            </div>
+            <TranscriptionCollapsable
+              transcription={reportData.transcription}
+            />
+          </div>
+
+          <div>
+            <h2 className="text-brand font-semibold text-2xl mb-2">
+              Useful Tips
+            </h2>
+            <div className="card bg-[#C6CFEE] shadow-xl border-r-2 border-b-2">
+              <div className="card-body">
+                <h3 className="card-title">Insight No. 1</h3>
+                <p>If a dog chews shoes whose shoes does he choose?</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

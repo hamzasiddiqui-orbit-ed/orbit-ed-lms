@@ -31,7 +31,8 @@ export const useFormatReport = (userId, moduleName, sessionCount) => {
       totalTime: rawData.total_time,
       totalScore: rawData.total_score,
       audioUrl: rawData.audio_url,
-      quizScore: rawData.quiz_score,
+      transcription: rawData.transcription,
+      quiz: rawData.quiz,
       parameters: rawData.parameters,
       createdAt: formateDate(rawData.createdAt),
     };
