@@ -4,17 +4,17 @@ const RadialProgressUserReport = ({ totalScore }) => {
   return (
     <div className="relative w-48 h-48">
       {/* Outer background circle */}
-      <div className="absolute inset-5 rounded-full bg-[#8497DB] opacity-30"></div>
+      <div className="absolute inset-5 rounded-full bg-[#C6CFEE]"></div>
 
       {/* Inner background circle */}
       <div
         className="absolute inset-8 rounded-full"
-        style={{ background: "radial-gradient(#123DDA, #8497DB)" }}
+        style={{ background: "#93A4E0" }}
       ></div>
 
       {/* Radial progress */}
       <div
-        className="radial-progress absolute inset-0 bg-gradient-to-r text-[#3D60DD]"
+        className="radial-progress absolute inset-0 bg-gradient-to-r text-[#93A4E0]"
         style={{
           "--value": totalScore,
           "--size": "12rem",

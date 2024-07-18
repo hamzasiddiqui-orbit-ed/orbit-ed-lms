@@ -9,7 +9,7 @@ import SkeletonUserReport from "./SkeletonUserReport";
 import DropdownUserReport from "../components/DropdownUserReport";
 import RadialProgressUserReport from "./RadialProgressUserReport";
 import TranscriptionCollapsable from "./TranscriptionCollapsable";
-
+import ScrollableTabs from "./ScrollableTabs";
 import { IoIosArrowForward } from "react-icons/io";
 
 export default function UserReport() {
@@ -109,25 +109,13 @@ export default function UserReport() {
       {/* Main content - 3 columns */}
       <div className="flex justify-between">
         {/* Left column */}
-        <div className="w-1/5 ps-5">
+        <div className="w-2/12 flex flex-col items-center">
           <RadialProgressUserReport totalScore={reportData.totalScore} />
         </div>
 
         {/* Middle column (widest) */}
-        <div className="w-3/5 px-8">
-          <div className="bg-highlight mb-8">
-            <div role="tablist" className="tabs tabs-boxed">
-              {Object.keys(reportData.parameters.derived).map((key, index) => (
-                <a
-                  role="tab"
-                  className={`tab ${index === 0 ? "tab-active" : ""}`}
-                  key={key}
-                >
-                  {key.charAt(0).toUpperCase() + key.slice(1)}
-                </a>
-              ))}
-            </div>
-          </div>
+        <div className="w-6/12">
+        <ScrollableTabs reportData={reportData} />
 
           {/* Add your graph or chart component here */}
           <div className="bg-base-200 h-64 mb-8">
@@ -161,7 +149,7 @@ export default function UserReport() {
         </div>
 
         {/* Right column */}
-        <div className="w-1/4 text-start">
+        <div className="w-3/12 text-start">
           <div className="mb-8">
             <h2 className="text-brand font-semibold text-2xl mb-2">
               Quiz Performance
@@ -181,7 +169,7 @@ export default function UserReport() {
             </h2>
             <div className="bg-base-200 p-4 rounded-lg mb-2">
               {/* Replace this with your actual audio player component */}
-              <div className="text-center">Audio Play Soon!</div>
+              <div className="text-center">Audio Play Coming Soon!</div>
             </div>
             <TranscriptionCollapsable
               transcription={reportData.transcription}
