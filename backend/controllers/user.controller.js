@@ -16,7 +16,7 @@ const authUser = async (req, res) => {
   console.log("authUser called: ", username, password);
 
   if (!username || !password) {
-    return res.status(401).json({ message: "Required data missing!"});
+    return res.status(400).json({ message: "Required data missing!"});
   }
 
   const user = await User.findOne({ username });
@@ -58,7 +58,7 @@ const unrealAuthUser = async (req, res) => {
   console.log(`\nunrealAuthUser called: ${(username, password)}\n`);
 
   if (!username || !password) {
-    return res.status(401).json({ message: "Required data missing!"});
+    return res.status(400).json({ message: "Required data missing!"});
   }
 
   const user = await User.findOne({ username });
