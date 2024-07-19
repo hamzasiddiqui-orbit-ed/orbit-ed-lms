@@ -39,6 +39,12 @@ export default function UserReport() {
     }
   }, [userReportState.moduleName, userReportState.sessionCount, refetchReport]);
 
+  useEffect(() => {
+    if (reportData && !userReportState.moduleName) {
+      userReportDispatch({ type: "SET_MODULE_NAME", payload: reportData.moduleName });
+    }
+  }, [reportData, userReportState.moduleName, userReportDispatch]);
+
   const {
     data: moduleData,
     refetch: refetchModules,
