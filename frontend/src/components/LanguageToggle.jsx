@@ -21,7 +21,7 @@ export default function LanguageToggle() {
     <>
       {state.lang == "en" ? (
         <button
-          className="btn btn-sm rounded-full bg-highlight text-brand border-transparent"
+          className="btn btn-sm rounded-full bg-highlight text-brand border-transparent hover:bg-utility hover:border-0"
           onClick={handleRTL}
         >
           <GrLanguage />
@@ -29,7 +29,7 @@ export default function LanguageToggle() {
         </button>
       ) : (
         <button
-          className="btn btn-sm rounded-full bg-highlight text-brand border-transparent"
+          className="btn btn-sm rounded-full bg-highlight text-brand border-transparent hover:bg-utility hover:border-0"
           onClick={handleRTL}
         >
           <GrLanguage />

@@ -91,6 +91,7 @@ function LoginPage() {
                     "border-error placeholder-error": error,
                   }
                 )}
+                style={{ fontSize: '0.75rem' }}
               />
             </label>
 
@@ -112,6 +113,7 @@ function LoginPage() {
                     "border-error placeholder-error": error,
                   }
                 )}
+                style={{ fontSize: '0.75rem' }}
               />
               <span className="absolute inset-y-0 top-9 end-3 flex items-center">
                 <label
