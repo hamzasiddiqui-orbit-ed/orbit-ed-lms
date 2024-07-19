@@ -22,7 +22,7 @@ const DropdownUserReport = ({
     <details className="dropdown" ref={detailsRef}>
       <summary
         className={classNames(
-          "btn btn-sm bg-core border-0 shadow-core text-utility font-normal",
+          "btn btn-sm bg-core border-0 shadow-core text-utility font-normal hover:bg-[#D2D2D2]",
           { "text-base": sessions == true },
           { "text-xl": sessions == false }
         )}
@@ -31,20 +31,20 @@ const DropdownUserReport = ({
         {title}
         <MdOutlineKeyboardArrowDown />
       </summary>
-      <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow">
+      <ul className="menu dropdown-content rounded-box z-[1] p-2 shadow bg-core">
         {dropDownData?.length ? (
           dropDownData.map((item, index) => (
             <li key={index}>
               {sessions ? (
                 <button
-                  className="text-utility btn bg-core shadow-core border-0"
+                  className="text-utility btn bg-core shadow-core border-0 hover:bg-[#D2D2D2]"
                   onClick={() => handleSelectAndClose(item)}
                 >
                   Session {item}
                 </button>
               ) : (
                 <button
-                  className="text-utility btn bg-core shadow-core border-0"
+                  className="text-utility btn bg-core shadow-core border-0 hover:bg-[#D2D2D2]"
                   onClick={() => handleSelectAndClose(item)}
                 >
                   {item}

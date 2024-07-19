@@ -98,7 +98,7 @@ export default function UserReport() {
             />
           </div>
           <div className="flex items-center">
-            <div className="btn btn-sm bg-core border-0 shadow-core text-utility text-base font-normal">
+            <div className="btn btn-sm bg-core border-0 shadow-core text-utility text-base font-normal hover:bg-[#D2D2D2]">
               {reportData.createdAt}
             </div>
             <div className="ml-8">
@@ -139,7 +139,7 @@ export default function UserReport() {
           <ScrollableTabs reportData={reportData} />
 
           {/* Add your graph or chart component here */}
-          <div className="bg-base-200 h-64 mb-8">
+          <div className="bg-core h-64 mb-8">
             {/* Placeholder for graph/chart */}
             <p className="text-center py-24">Graph/Chart Placeholder</p>
           </div>
@@ -167,7 +167,7 @@ export default function UserReport() {
             <h2 className="text-brand font-semibold text-2xl mb-2">
               Audio Preview
             </h2>
-            <div className="bg-base-200 p-4 rounded-lg mb-2">
+            <div className="bg-[#D2D2D2] p-4 rounded-lg mb-2">
               {/* Replace this with your actual audio player component */}
               <div className="text-center">Audio Play Coming Soon!</div>
             </div>
