@@ -8,13 +8,16 @@ const reportRoutes = require("./routes/reports.route");
 
 var app = express();
 
+// Updation to be made for CORS configuration later
+
 // let corsOptions = {
 //   origin: process.env.FRONTEND_SERVER.split(','),
+//   origin: ['http://localhost:3000', 'http://192.168.18.47:3000'],
 //   credentials: true,
 // };
 
-let corsOptions = {
-  origin: true,
+const corsOptions = {
+  origin: process.env.FRONTEND_SERVER,
   credentials: true,
 };
 

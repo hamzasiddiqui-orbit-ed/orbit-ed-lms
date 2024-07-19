@@ -170,7 +170,7 @@ const getSessionReport = async (req, res) => {
   } else {
     return res
       .status(400)
-      .json("ERROR: Something went wrong, could not find user ID.");
+      .json({ message: "Something went wrong, could not find user ID." });
   }
   if (req.body.module_name) {
     var module_name = req.body.module_name;
@@ -184,37 +184,43 @@ const getSessionReport = async (req, res) => {
   };
 
   if (user_id && module_name && session_count) {
-    var query = {
-      user_id: mongoose.Types.ObjectId.createFromHexString(user_id),
-      module_name: module_name,
-      session_count: session_count,
-    };
-
     try {
+      var query = {
+        user_id: mongoose.Types.ObjectId.createFromHexString(user_id),
+        module_name: module_name,
+        session_count: session_count,
+      };
+
       var result = await SessionReport.findOne(query, null, options);
     } catch (err) {
-      return res.status(400).json(err.message);
+      return res
+        .status(400)
+        .json({ message: `Query response: ${err.message}` });
     }
   } else if (user_id && module_name) {
-    var query = {
-      user_id: mongoose.Types.ObjectId.createFromHexString(user_id),
-      module_name: module_name,
-    };
-
     try {
+      var query = {
+        user_id: mongoose.Types.ObjectId.createFromHexString(user_id),
+        module_name: module_name,
+      };
+
       var result = await SessionReport.findOne(query, null, options);
     } catch (err) {
-      return res.status(400).json(err.message);
+      return res
+        .status(400)
+        .json({ message: `Query response: ${err.message}` });
     }
   } else {
-    var query = {
-      user_id: mongoose.Types.ObjectId.createFromHexString(user_id),
-    };
-
     try {
+      var query = {
+        user_id: mongoose.Types.ObjectId.createFromHexString(user_id),
+      };
+
       var result = await SessionReport.findOne(query, null, options);
     } catch (err) {
-      return res.status(400).json(err.message);
+      return res
+        .status(400)
+        .json({ message: `Query response: ${err.message}` });
     }
   }
 
@@ -223,45 +229,43 @@ const getSessionReport = async (req, res) => {
   if (result) {
     return res.status(200).json(result);
   } else {
-    return res.status(404).json("ERROR 404: No report found");
+    return res.status(404).json({ message: "No report found!" });
   }
 };
 
 // Gets Unique module names for user's session reports
 const getUniqueModulesFromReports = async (req, res) => {
   const user_id = req.body.user_id;
-
   if (!user_id) {
-    return res.status(400).json("ERROR: No user Id found.");
+    return res.status(400).json({ message: "No user Id found." });
   }
 
-  var query = {
-    user_id: mongoose.Types.ObjectId.createFromHexString(user_id),
-  };
-
-  var projection = {
-    module_name: 1,
-  };
-
-  var options = {
-    sort: { createdAt: -1 },
-    limit: 5,
-  };
-
   try {
-    const result = await SessionReport.find(
-      query,
-      projection,
-      options
-    ).distinct("module_name");
+    var query = {
+      user_id: mongoose.Types.ObjectId.createFromHexString(user_id),
+    };
 
-    if (result) {
-      return res.status(200).json(result);
+    const result = await SessionReport.aggregate([
+      { $match: query },
+      { $sort: { createdAt: -1 } },
+      {
+        $group: {
+          _id: "$module_name",
+          createdAt: { $first: "$createdAt" },
+        },
+      },
+      { $sort: { createdAt: -1 } },
+      { $limit: 5 },
+      { $project: { _id: 0, module_name: "$_id" } },
+    ]);
+
+    if (result && result.length > 0) {
+      return res.status(200).json(result.map((item) => item.module_name));
     } else {
-      return res.status(404).json("ERROR 404: No report found");
+      return res.status(404).json({ message: "No report found" });
     }
   } catch (err) {
-    return res.status(400).json(err.message);
+    return res.status(400).json({ message: `Query response: ${err.message}` });
   }
 };
 
@@ -271,37 +275,38 @@ const getModuleSessionsFromReport = async (req, res) => {
   const module_name = req.body.module_name;
 
   if (!user_id || !module_name) {
-    return res
-      .status(400)
-      .json(
-        "ERROR: Something went wrong. Could not retreive user Id or module"
-      );
+    return res.status(400).json({ message: "Missing required data." });
   }
 
-  var query = {
-    user_id: mongoose.Types.ObjectId.createFromHexString(user_id),
-    module_name: module_name,
-  };
-
-  var projection = {
-    session_count: 1,
-  };
-
-  var options = {
-    sort: { createdAt: -1 },
-    limit: 5,
-  };
-
   try {
-    const result = await SessionReport.find(query, projection, options).distinct("session_count");
+    const query = {
+      user_id: mongoose.Types.ObjectId.createFromHexString(user_id),
+      module_name: module_name,
+    };
 
-    if (result) {
-      return res.status(200).json(result);
+    const projection = {
+      session_count: 1,
+      _id: 0, // Exclude the _id field to make the array cleaner
+    };
+
+    const options = {
+      sort: { createdAt: -1 },
+      limit: 5,
+    };
+
+    const reports = await SessionReport.find(query, projection, options);
+
+    if (reports && reports.length > 0) {
+      // Extract unique session counts from the reports
+      const sessionCounts = [
+        ...new Set(reports.map((report) => report.session_count)),
+      ];
+      return res.status(200).json(sessionCounts);
     } else {
-      return res.status(404).json("ERROR 404: No report found");
+      return res.status(404).json({ message: "No report found" });
     }
   } catch (err) {
-    return res.status(400).json(err.message);
+    return res.status(400).json({ message: `Query response: ${err.message}` });
   }
 };
 
@@ -327,7 +332,7 @@ const getUserReportsDetailed = async (req, res) => {
       return res.status(404).json("No session reports found.");
     }
   } catch (err) {
-    return res.status(400).json(err.message);
+    return res.status(400).json({ message: `Query response: ${err.message}` });
   }
 };
 
