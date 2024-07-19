@@ -8,8 +8,13 @@ const reportRoutes = require("./routes/reports.route");
 
 var app = express();
 
+// let corsOptions = {
+//   origin: process.env.FRONTEND_SERVER.split(','),
+//   credentials: true,
+// };
+
 let corsOptions = {
-  origin: process.env.FRONTEND_SERVER,
+  origin: true,
   credentials: true,
 };
 

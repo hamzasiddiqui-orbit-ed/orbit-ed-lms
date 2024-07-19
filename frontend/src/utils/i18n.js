@@ -12,8 +12,8 @@ const resources = {
       loginSubHeading: "Log in to preview your progress.",
       usernameLabel: "Username",
       passwordLabel: "Password",
-      loginLabel: "Log In",
-      loggingInLabel: "Loggin In"
+      loginLabel: "Log in",
+      loggingInLabel: "Logging in"
     },
   },
   ar: {

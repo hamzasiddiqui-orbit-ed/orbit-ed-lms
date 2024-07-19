@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import * as reportsService from "../services/reportsService";
 
 // Fetch the most recent user report
+// expired (to be removed)
 export const useMostRecentUserReport = (userId) => {
   return useQuery({
     queryKey: ["userReport", userId],
@@ -10,6 +11,8 @@ export const useMostRecentUserReport = (userId) => {
 };
 
 export const useSessionReport = (userId, moduleName, sessionCount) => {
+  console.log('Fetching reports! (useReports)')
+
   return useQuery({
     queryKey: ["sessionReport", userId],
     queryFn: () =>

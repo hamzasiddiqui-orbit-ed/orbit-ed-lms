@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/user.context";
+import { UserReportContext } from "../contexts/userReport.context";
 import { useFormatReport } from "../hooks/useFormatReport";
 import {
   useModuleFromReports,
@@ -10,13 +11,14 @@ import DropdownUserReport from "../components/DropdownUserReport";
 import RadialProgressUserReport from "./RadialProgressUserReport";
 import TranscriptionCollapsable from "./TranscriptionCollapsable";
 import ScrollableTabs from "./ScrollableTabs";
+import BaseParametersList from "./BaseParametersList";
 import { IoIosArrowForward } from "react-icons/io";
 
 export default function UserReport() {
-  const [queryModuleName, setQueryModuleName] = useState(null);
-  const [querySessionCount, setQuerySessionCount] = useState(null);
-
   const { state: userState } = useContext(UserContext);
+  const { state: userReportState, dispatch: userReportDispatch } =
+    useContext(UserReportContext);
+
   const userId = userState.user._id;
 
   const {
@@ -25,13 +27,17 @@ export default function UserReport() {
     isError,
     error,
     refetch: refetchReport,
-  } = useFormatReport(userId, queryModuleName, querySessionCount);
+  } = useFormatReport(
+    userId,
+    userReportState.moduleName,
+    userReportState.sessionCount
+  );
 
   useEffect(() => {
-    if (queryModuleName || querySessionCount) {
+    if (userReportState.moduleName || userReportState.sessionCount) {
       refetchReport();
     }
-  }, [queryModuleName, querySessionCount, refetchReport]);
+  }, [userReportState.moduleName, userReportState.sessionCount, refetchReport]);
 
   const {
     data: moduleData,
@@ -46,8 +52,8 @@ export default function UserReport() {
     refetch: refetchSessions,
     isLoading: isSessionLoading,
     isError: isSessionError,
-    error: sessionErro,
-  } = useModuleSessionsFromReports(userId, queryModuleName);
+    error: sessionError,
+  } = useModuleSessionsFromReports(userId, userReportState.moduleName);
 
   const handleModuleClick = async () => {
     await refetchModules();
@@ -55,8 +61,7 @@ export default function UserReport() {
   };
 
   const handleModuleSelect = (moduleName) => {
-    setQueryModuleName(moduleName);
-    setQuerySessionCount(null);
+    userReportDispatch({ type: "SET_MODULE_NAME", payload: moduleName });
   };
 
   const handleSessionClick = async () => {
@@ -65,7 +70,7 @@ export default function UserReport() {
   };
 
   const handleSessionSelect = (sessionCount) => {
-    setQuerySessionCount(sessionCount);
+    userReportDispatch({ type: "SET_SESSION_COUNT", payload: sessionCount });
   };
 
   if (isLoading) return <SkeletonUserReport />;
@@ -74,7 +79,10 @@ export default function UserReport() {
 
   return (
     <div className="w-full h-full pe-5 mt-28">
-      {/* Top section */}
+      {/* ------------------------------------
+      TOP SECTION - MODULE NAME, DATE, SESSION
+      -------------------------------------*/}
+
       <div className="flex items-start mb-12 ps-5">
         <div className="w-full">
           <h1 className="text-3xl font-medium text-brand mb-4 ps-2 text-start">
@@ -106,49 +114,41 @@ export default function UserReport() {
         </div>
       </div>
 
-      {/* Main content - 3 columns */}
+      {/* ---------------------------------------------------
+      MAIN SECTION - LEFT COLUMN, MIDDLE COLUMN, RIGHT COLUMN
+      ----------------------------------------------------*/}
+
       <div className="flex justify-between">
-        {/* Left column */}
+        {/* ------------------------------------------------
+        LEFT COLUMN - RADIAL PROGRESS SCORE, BASE PARAMETERS
+        -------------------------------------------------*/}
+
         <div className="w-2/12 flex flex-col items-center">
           <RadialProgressUserReport totalScore={reportData.totalScore} />
+
+          {/* Parameters section */}
+
+          <BaseParametersList reportData={reportData} />
         </div>
 
-        {/* Middle column (widest) */}
+        {/* --------------------------------------------
+        MIDDLE COLUMN - DERIVED PARAMETERS TAB & DETAILS
+        ---------------------------------------------*/}
+
         <div className="w-6/12">
-        <ScrollableTabs reportData={reportData} />
+          <ScrollableTabs reportData={reportData} />
 
           {/* Add your graph or chart component here */}
           <div className="bg-base-200 h-64 mb-8">
             {/* Placeholder for graph/chart */}
             <p className="text-center py-24">Graph/Chart Placeholder</p>
           </div>
-
-          {/* Parameters section */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-base-200 p-4 rounded">
-              <h3 className="font-semibold mb-2">Words per minute</h3>
-              {/* Add progress bar or other visualization */}
-            </div>
-            <div className="bg-base-200 p-4 rounded">
-              <h3 className="font-semibold mb-2">Filler sounds</h3>
-              {/* Add progress bar or other visualization */}
-            </div>
-            <div className="bg-base-200 p-4 rounded">
-              <h3 className="font-semibold mb-2">Pauses</h3>
-              {/* Add progress bar or other visualization */}
-            </div>
-            <div className="bg-base-200 p-4 rounded">
-              <h3 className="font-semibold mb-2">Repetitive words</h3>
-              {/* Add progress bar or other visualization */}
-            </div>
-            <div className="bg-base-200 p-4 rounded">
-              <h3 className="font-semibold mb-2">Speech rate</h3>
-              {/* Add progress bar or other visualization */}
-            </div>
-          </div>
         </div>
 
-        {/* Right column */}
+        {/* ----------------------------------------
+        RIGHT COLUMN - MISC & BASE PARAMETERS GRAPHS
+        -----------------------------------------*/}
+
         <div className="w-3/12 text-start">
           <div className="mb-8">
             <h2 className="text-brand font-semibold text-2xl mb-2">

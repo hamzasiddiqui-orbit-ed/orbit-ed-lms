@@ -64,7 +64,7 @@ function LoginPage() {
       <div className="flex flex-initial w-full sm:w-5/12 bg-core items-center justify-center">
         <div
           className={classNames(
-            "bg-[#8497DB] bg-opacity-20 w-full h-full text-brand flex flex-col items-start justify-center pt-44 ps-5 sm:p-28",
+            "bg-[#E4E8F7] w-full h-full text-brand flex flex-col items-start justify-center pt-44 ps-5 sm:p-28",
             { "sm:rounded-l-3xl": state.layout == "ltr" },
             { "sm:rounded-r-3xl": state.layout == "rtl" }
           )}
@@ -86,7 +86,7 @@ function LoginPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className={classNames(
-                  "input input-bordered w-full max-w-xs rounded-full size-8 bg-[#8497DB] border-brand bg-opacity-20",
+                  "input input-bordered w-full max-w-xs rounded-full size-8 bg-[#E4E8F7] border-brand",
                   {
                     "border-error placeholder-error": error,
                   }
@@ -107,7 +107,7 @@ function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className={classNames(
-                  "input input-bordered w-full max-w-xs rounded-full size-8 bg-[#8497DB] border-brand bg-opacity-20",
+                  "input input-bordered w-full max-w-xs rounded-full size-8 bg-[#E4E8F7] border-brand",
                   {
                     "border-error placeholder-error": error,
                   }
@@ -117,6 +117,7 @@ function LoginPage() {
                 <label
                   onClick={() => setShowPassword(!showPassword)}
                   htmlFor="toggle"
+                  style={{cursor: 'pointer'}}
                 >
                   {showPassword ? (
                     <BiHide className="text-utility size-5" />
@@ -134,7 +135,7 @@ function LoginPage() {
 
             <div className="w-full flex">
               <button
-                className="btn-sm bg-[#8497DB] bg-opacity-20 text-brand mt-8 rounded-full px-6 border-[#B5BDD4]"
+                className="btn-sm bg-[#E4E8F7] text-brand mt-8 rounded-full px-6 border-[#B5BDD4] hover:bg-[#8E9FDB] "
                 type="submit"
                 style={{ borderWidth: "1px" }}
               >

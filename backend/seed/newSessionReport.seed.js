@@ -10,7 +10,7 @@ const importData = async () => {
   try {
     const sessionReport = new SessionReport({
       user_id: "66828d7be72b779d4c60cd21",
-      module_name: "Conflict Resolution",
+      module_name: "Behavioral Analysis",
       session_count: 1,
       device_name: "Occulus",
       total_word_count: 71,
