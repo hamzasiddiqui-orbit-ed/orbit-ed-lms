@@ -5,6 +5,7 @@ import { BiMenu } from "react-icons/bi";
 import { MdClose } from "react-icons/md";
 
 import UserReport from "../components/UserReport";
+import SessionReport from "../components/SessionReport";
 
 function DashboardLearner() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -48,7 +49,7 @@ function DashboardLearner() {
           </label>
 
           <div className="w-full flex flex-col">
-            <UserReport />
+            <SessionReport />
           </div>
         </div>
         <SideNav />

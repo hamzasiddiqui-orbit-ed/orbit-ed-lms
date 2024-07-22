@@ -24,6 +24,7 @@ export const useModuleFromReports = (userId) => {
   return useQuery({
     queryKey: ["modulesFromReports", userId],
     queryFn: () => reportsService.getModuleFromReports(userId),
+    enabled: !!userId,
   });
 };
 
@@ -32,6 +33,42 @@ export const useModuleSessionsFromReports = (userId, moduleName) => {
     queryKey: ["moduleSessionsFromReports", userId, moduleName],
     queryFn: () =>
       reportsService.getModuleSessionsFromReports(userId, moduleName),
-    enabled: !!moduleName, // Only run the query if moduleName is provided
+    enabled: !!userId && !!moduleName, // Only run the query if moduleName is provided
+  });
+};
+
+export const useSessionReportGeneral = (userId, moduleName, sessionCount) => {
+  return useQuery({
+    queryKey: ['sessionReportGeneral', userId, moduleName, sessionCount],
+    queryFn: () => 
+      reportsService.getSessionReportGeneral(userId, moduleName, sessionCount),
+    enabled: !!userId,
+  });
+};
+
+export const useSessionReportMisc = (reportId) => {
+  return useQuery({
+    queryKey: ['sessionReportMisc', reportId],
+    queryFn: () => 
+      reportsService.getSessionReportMisc(reportId),
+    enabled: !!reportId,
+  });
+};
+
+export const useSessionReportDerivedParameters = (reportId) => {
+  return useQuery({
+    queryKey: ['sessionReportDerivedParameters', reportId],
+    queryFn: () => 
+      reportsService.getSessionReportDerivedParamters(reportId),
+    enabled: !!reportId,
+  });
+};
+
+export const useBaseParametersFromDerived = (reportId, derivedParameter) => {
+  return useQuery({
+    queryKey: ['naseParameters', reportId, derivedParameter],
+    queryFn: () => 
+      reportsService.getBaseParametersFromDerived(reportId, derivedParameter),
+    enabled: !!reportId && !!derivedParameter,
   });
 };

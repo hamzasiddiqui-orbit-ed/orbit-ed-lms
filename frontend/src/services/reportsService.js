@@ -20,3 +20,39 @@ export const getModuleSessionsFromReports = async (userId, moduleName) => {
   });
   return response;
 };
+
+export const getSessionReportGeneral = async (
+  userId,
+  moduleName,
+  sessionCount
+) =>
+  api.post("reports/session-report-general", {
+    user_id: userId,
+    module_name: moduleName,
+    session_count: sessionCount,
+  });
+
+export const getSessionReportMisc = async (reportId) => {
+  const response = await api.post("reports/session-report-misc", {
+    report_id: reportId,
+  });
+  
+  return response;
+};
+
+export const getSessionReportDerivedParamters = async (reportId) => {
+  const response = await api.post("reports/session-report-derived-parameters", {
+    report_id: reportId,
+  });
+
+  return response;
+};
+
+export const getBaseParametersFromDerived = async (reportId, derivedParameter) => {
+  const response = await api.post("reports/base-parameters-from-derived", {
+    report_id: reportId,
+    derived_parameter: derivedParameter,
+  });
+
+  return response;
+};

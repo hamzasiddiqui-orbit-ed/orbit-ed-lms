@@ -1,16 +1,22 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { UserReportContext } from "../contexts/userReport.context";
+import { SessionReportContext } from "../contexts/sessionReport.context";
 
 const ScrollableTabs = ({ reportData }) => {
-  const { state: userReportState, dispatch: userReportDispatch } =
-    useContext(UserReportContext);
+  const { derivedParameter, setDerivedParameter } = useContext(SessionReportContext);
 
   const [scrollPosition, setScrollPosition] = useState(0);
   const tabListRef = useRef(null);
 
   const derivedKeys = Object.keys(reportData.parameters.derived);
   const showScrollButtons = derivedKeys.length > 5;
+
+  useEffect(() => {
+    // Set the first parameter as default if not already set
+    if (!derivedParameter && derivedKeys.length > 0) {
+      setDerivedParameter(derivedKeys[0]);
+    }
+  }, [derivedKeys, derivedParameter, setDerivedParameter]);
 
   const scroll = (direction) => {
     const container = tabListRef.current;
@@ -22,7 +28,7 @@ const ScrollableTabs = ({ reportData }) => {
   };
 
   const handleTabClick = (key) => {
-    userReportDispatch({ type: "SET_DERIVED_PARAMETER", payload: key });
+    setDerivedParameter(key);
   };
 
   return (
@@ -49,9 +55,13 @@ const ScrollableTabs = ({ reportData }) => {
                 <a
                   key={key}
                   className={`tab ${
-                    userReportState.derivedParameter === key ? "tab-active" : ""
+                    derivedParameter === key ? "tab-active" : ""
                   }`}
                   onClick={() => handleTabClick(key)}
+                  style={{
+                    borderBottom: derivedParameter === key ? "2px solid currentColor" : "none",
+                    paddingBottom: "4px"
+                  }}
                 >
                   {key.charAt(0).toUpperCase() + key.slice(1)}
                 </a>
@@ -70,16 +80,15 @@ const ScrollableTabs = ({ reportData }) => {
         </div>
 
         <div className="tab-content p-10">
-          {userReportState.derivedParameter && (
+          {derivedParameter && (
             <>
               <h3 className="text-lg font-semibold mb-4">
-                {userReportState.derivedParameter.charAt(0).toUpperCase() +
-                  userReportState.derivedParameter.slice(1)}
+                {derivedParameter.charAt(0).toUpperCase() +
+                  derivedParameter.slice(1)}
               </h3>
               <p>
-                Content for {userReportState.derivedParameter} goes here. You
-                can add any components or data visualization related to{" "}
-                {userReportState.derivedParameter}.
+                Content for {derivedParameter} goes here. You can add any
+                components or data visualization related to {derivedParameter}.
               </p>
             </>
           )}

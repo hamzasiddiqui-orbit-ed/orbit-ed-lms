@@ -85,13 +85,14 @@ function LoginPage() {
                 placeholder="Type here"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                disabled={loginMutation.isPending}
                 className={classNames(
                   "input input-bordered w-full max-w-xs rounded-full size-8 bg-[#E4E8F7] border-brand",
                   {
                     "border-error placeholder-error": error,
                   }
                 )}
-                style={{ fontSize: '0.75rem' }}
+                style={{ fontSize: "0.75rem" }}
               />
             </label>
 
@@ -107,19 +108,20 @@ function LoginPage() {
                 placeholder="Type here"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                disabled={loginMutation.isPending}
                 className={classNames(
                   "input input-bordered w-full max-w-xs rounded-full size-8 bg-[#E4E8F7] border-brand",
                   {
                     "border-error placeholder-error": error,
                   }
                 )}
-                style={{ fontSize: '0.75rem' }}
+                style={{ fontSize: "0.75rem" }}
               />
               <span className="absolute inset-y-0 top-9 end-3 flex items-center">
                 <label
                   onClick={() => setShowPassword(!showPassword)}
                   htmlFor="toggle"
-                  style={{cursor: 'pointer'}}
+                  style={{ cursor: "pointer" }}
                 >
                   {showPassword ? (
                     <BiHide className="text-utility size-5" />
@@ -137,14 +139,16 @@ function LoginPage() {
 
             <div className="w-full flex">
               <button
-                className="btn-sm bg-[#E4E8F7] text-brand mt-8 rounded-full px-6 border-[#B5BDD4] hover:bg-[#8E9FDB] "
+                className="btn-sm bg-[#E4E8F7] text-brand mt-8 rounded-full px-6 border-[#B5BDD4] hover:bg-[#8E9FDB]"
                 type="submit"
                 style={{ borderWidth: "1px" }}
               >
                 {loginMutation.isPending ? (
                   <>
-                    <span className="loading loading-spinner"></span>
-                    {t("loggingInLabel")}
+                    <div className="flex justify-evenly">
+                      <span className="loading loading-dots loading-md"></span>
+                      {/* <p>{t("loggingInLabel")}</p> */}
+                    </div>
                   </>
                 ) : (
                   <p>{t("loginLabel")} </p>
