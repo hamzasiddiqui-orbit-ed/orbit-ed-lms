@@ -1,40 +1,16 @@
 const express = require("express");
 const {
-  getUserReports,
-  getUserReport,
-  getMostRecentUserReport,
-  getModuleReport,
-  getModuleSessionReport,
   getSessionReport,
   getUniqueModulesFromReports,
   getModuleSessionsFromReport,
-  getUserReportsDetailed,
+  getSessionReportGeneral,
+  getSessionReportMisc,
+  getSessionReportDerivedParameters,
+  getBaseParametersForDerived,
 } = require("../controllers/reports.controller");
 const { protect } = require("../middlewares/auth");
 
 const router = express.Router();
-
-router.post("/getUserReports", protect, getUserReports);
-
-router.post("/getUserReport", protect, (req, res, next) => {
-  console.log("getUserReport route hit");
-  next();
-}, getUserReport);
-
-router.post("/getMostRecentUserReport", protect, (req, res, next) => {
-  console.log("\nROUTE HIT (reports.route): getMostRecentUserReport\n");
-  next();
-}, getMostRecentUserReport);
-
-router.post("/getModuleReport", protect, (req, res, next) => {
-  console.log("\nROUTE HIT (reports.route): getModuleReport\n");
-  next();
-}, getModuleReport);
-
-router.post("/getModuleSessionReport", protect, (req, res, next) => {
-  console.log("\nROUTE HIT (reports.route): getModuleSessionReport\n");
-  next();
-}, getModuleSessionReport);
 
 router.post("/getSessionReport", protect, (req, res, next) => {
   console.log("\nROUTE HIT (reports.route): getSessionReport\n");
@@ -51,6 +27,24 @@ router.post("/getModuleSessionsFromReport", protect, (req, res, next) => {
   next();
 }, getModuleSessionsFromReport);
 
-router.post("/getUserReportsDetailed", protect, getUserReportsDetailed);
+router.post("/session-report-general", protect, (req, res, next) => {
+  console.log("\nROUTE HIT (reports.route): session-report-general\n");
+  next();
+}, getSessionReportGeneral)
+
+router.post("/session-report-misc", protect, (req, res, next) => {
+  console.log("\nROUTE HIT (reports.route): session-report-misc\n");
+  next();
+}, getSessionReportMisc)
+
+router.post("/session-report-derived-parameters", protect, (req, res, next) => {
+  console.log("\nROUTE HIT (reports.route): session-report-derived-parameters\n");
+  next();
+}, getSessionReportDerivedParameters)
+
+router.post("/base-parameters-from-derived", protect, (req, res, next) => {
+  console.log("\nROUTE HIT (reports.route): base-parameters-from-derived\n");
+  next();
+}, getBaseParametersForDerived)
 
 module.exports = router;

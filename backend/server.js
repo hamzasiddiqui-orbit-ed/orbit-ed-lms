@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/user.route");
 const reportRoutes = require("./routes/reports.route");
+const moduleRoutes = require("./routes/modules.route");
 
 var app = express();
 
@@ -17,7 +18,7 @@ var app = express();
 // };
 
 const corsOptions = {
-  origin: process.env.FRONTEND_SERVER,
+  origin: 'http://192.168.18.44:3000',
   credentials: true,
 };
 
@@ -32,6 +33,7 @@ connectDB();
 
 app.use("/api/users", userRoutes);
 app.use("/api/reports", reportRoutes);
+app.use("/api/modules", moduleRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
