@@ -15,7 +15,14 @@ const SessionReportLeftCol = () => {
   } = useBaseParametersFromDerived(reportId, derivedParameter);
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex w-2/12 flex-col gap-4 ms-10 items-center">
+        <div className="skeleton h-44 w-44 shrink-0 rounded-full"></div>
+        <div className="skeleton h-10 w-full"></div>
+        <div className="skeleton h-10 w-full"></div>
+        <div className="skeleton h-10 w-full"></div>
+      </div>
+    );
   }
 
   if (isError) {

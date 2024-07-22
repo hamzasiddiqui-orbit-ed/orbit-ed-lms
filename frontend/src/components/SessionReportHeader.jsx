@@ -2,7 +2,10 @@ import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "../contexts/user.context";
 import { SessionReportContext } from "../contexts/sessionReport.context";
 import { useFormatReportGeneral } from "../hooks/useFormatReportGeneral";
-import { useModuleFromReports, useModuleSessionsFromReports } from "../hooks/useReports";
+import {
+  useModuleFromReports,
+  useModuleSessionsFromReports,
+} from "../hooks/useReports";
 import DropdownUserReport from "./DropdownUserReport";
 
 const SessionReportHeader = () => {
@@ -14,24 +17,25 @@ const SessionReportHeader = () => {
 
   const { setReportId, setTotalScore } = useContext(SessionReportContext);
 
-  const { reportData, isPending, isError, refetch: refetchReport } = useFormatReportGeneral(
-    userId,
-    selectedModule,
-    selectedSessionCount
-  );
+  const {
+    reportData,
+    isPending,
+    isError,
+    refetch: refetchReport,
+  } = useFormatReportGeneral(userId, selectedModule, selectedSessionCount);
 
-  const { 
-    data: moduleData, 
-    refetch: refetchModules, 
-    isLoading: isModuleLoading, 
-    isError: isModuleError 
+  const {
+    data: moduleData,
+    refetch: refetchModules,
+    isLoading: isModuleLoading,
+    isError: isModuleError,
   } = useModuleFromReports(userId);
 
-  const { 
-    data: sessionData, 
-    refetch: refetchSessions, 
-    isLoading: isSessionLoading, 
-    isError: isSessionError 
+  const {
+    data: sessionData,
+    refetch: refetchSessions,
+    isLoading: isSessionLoading,
+    isError: isSessionError,
   } = useModuleSessionsFromReports(userId, selectedModule);
 
   useEffect(() => {
@@ -45,7 +49,13 @@ const SessionReportHeader = () => {
       setReportId(reportData.reportId);
       setTotalScore(reportData.totalScore);
     }
-  }, [reportData, selectedModule, selectedSessionCount, setReportId, setTotalScore]);
+  }, [
+    reportData,
+    selectedModule,
+    selectedSessionCount,
+    setReportId,
+    setTotalScore,
+  ]);
 
   useEffect(() => {
     if (selectedModule && selectedSessionCount) {
@@ -63,7 +73,13 @@ const SessionReportHeader = () => {
   };
 
   if (isPending || isModuleLoading || isSessionLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col gap-4 ps-5 mb-12">
+        <div className="skeleton h-10 w-44"></div>
+        <div className="skeleton h-8"></div>
+        <div className="skeleton h-8"></div>
+      </div>
+    );
   }
 
   if (isError || isModuleError || isSessionError) {

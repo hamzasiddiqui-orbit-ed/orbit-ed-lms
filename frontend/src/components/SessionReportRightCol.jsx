@@ -14,7 +14,14 @@ const SessionReportRightCol = () => {
   } = useSessionReportMisc(reportId);
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex w-3/12 flex-col gap-4 me-5">
+        <div className="skeleton h-10 w-28"></div>
+        <div className="skeleton h-8 w-full"></div>
+        <div className="skeleton h-8 w-full"></div>
+        <div className="skeleton h-32 w-full"></div>
+      </div>
+    );
   }
 
   if (isError) {
@@ -53,7 +60,9 @@ const SessionReportRightCol = () => {
           <div className="text-center">Audio Play Coming Soon!</div>
         </div>
         {reportMisc.data.transcription && (
-          <TranscriptionCollapsable transcription={reportMisc.data.transcription} />
+          <TranscriptionCollapsable
+            transcription={reportMisc.data.transcription}
+          />
         )}
       </div>
 
