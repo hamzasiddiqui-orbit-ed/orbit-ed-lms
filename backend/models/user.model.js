@@ -44,10 +44,16 @@ const userSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "Module",
         },
+        assigned_by: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        assigned_date: Date,
         due_date: Date,
+        average_score: Number,
         sessions_completed: Number,
-        cumulative_score: Number,
         is_completed: Boolean,
+        completed_date: Date,
       },
     ],
     first_login: {
