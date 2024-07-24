@@ -207,9 +207,7 @@ const getSessionReportGeneral = async (req, res) => {
       var result = await SessionReport.findOne(query, projection, options);
     }
   } catch (err) {
-    return res
-        .status(400)
-        .json({ message: `Query response: ${err.message}` });
+    return res.status(400).json({ message: `Query response: ${err.message}` });
   }
 
   console.log(result);
@@ -237,7 +235,7 @@ const getSessionReportMisc = async (req, res) => {
     };
 
     projection = {
-      'quiz.score': 1,
+      "quiz.score": 1,
       audio_url: 1,
       transcription: 1,
     };
@@ -252,9 +250,7 @@ const getSessionReportMisc = async (req, res) => {
       return res.status(404).json({ message: "No report found!" });
     }
   } catch (err) {
-    return res
-        .status(400)
-        .json({ message: `Query response: ${err.message}` });
+    return res.status(400).json({ message: `Query response: ${err.message}` });
   }
 };
 
@@ -274,7 +270,7 @@ const getSessionReportDerivedParameters = async (req, res) => {
     };
 
     projection = {
-      'parameters.derived': 1,
+      "parameters.derived": 1,
     };
 
     var result = await SessionReport.findOne(query, projection);
@@ -287,9 +283,7 @@ const getSessionReportDerivedParameters = async (req, res) => {
       return res.status(404).json({ message: "No report found!" });
     }
   } catch (err) {
-    return res
-        .status(400)
-        .json({ message: `Query response: ${err.message}` });
+    return res.status(400).json({ message: `Query response: ${err.message}` });
   }
 };
 
@@ -305,7 +299,9 @@ const getBaseParametersForDerived = async (req, res) => {
   }
 
   if (!derivedParameter) {
-    return res.status(400).json({ message: "Could not find derived parameter." });
+    return res
+      .status(400)
+      .json({ message: "Could not find derived parameter." });
   }
 
   try {
@@ -316,20 +312,116 @@ const getBaseParametersForDerived = async (req, res) => {
 
     const parameterData = await Parameters.findOne({ name: derivedParameter });
     if (!parameterData) {
-      return res.status(404).json({ message: `No parameter found for ${derivedParameter}` });
+      return res
+        .status(404)
+        .json({ message: `No parameter found for ${derivedParameter}` });
     }
 
     const baseParameters = parameterData.base_parameters;
     const baseScores = {};
 
-    baseParameters.forEach(param => {
+    baseParameters.forEach((param) => {
       if (sessionReport.parameters.base[param]) {
         baseScores[param] = sessionReport.parameters.base[param].score;
       }
     });
 
     return res.status(200).json(baseScores);
+  } catch (err) {
+    return res.status(400).json({ message: `Query response: ${err.message}` });
+  }
+};
 
+// ------------------------------
+// Fetch derivedParameter details
+// ------------------------------
+const getDerivedParameterDetails = async (req, res) => {
+  const reportId = req.body.report_id;
+  const derivedParameter = req.body.derived_parameter;
+
+  if (!reportId) {
+    return res.status(400).json({ message: "Could not find report ID." });
+  }
+
+  if (!derivedParameter) {
+    return res.status(400).json({ message: "Could not find derived parameter." });
+  }
+
+  try {
+    const report = await SessionReport.findById(reportId);
+    if (!report) {
+      return res.status(404).json({ message: "Report not found." });
+    }
+
+    const derivedParameters = report.parameters.derived;
+    if (!derivedParameters || !(derivedParameter in derivedParameters)) {
+      return res.status(404).json({ message: `Derived parameter '${derivedParameter}' not found.` });
+    }
+
+    const parameter = await Parameters.findOne({ name: derivedParameter });
+    if (!parameter) {
+      return res.status(404).json({ message: `Parameter description for '${derivedParameter}' not found.` });
+    }
+
+    const score = derivedParameters[derivedParameter];
+    const description = parameter.description;
+
+    return res.status(200).json({
+      derived_parameter: derivedParameter,
+      score: score,
+      description: description,
+    });
+  } catch (err) {
+    return res.status(400).json({ message: `Query response: ${err.message}` });
+  }
+};
+
+// -----------------------------------------------------------
+// Fetch base parameters for all derived parameters per report
+// -----------------------------------------------------------
+const getDerivedParameterBaseScores = async (req, res) => {
+  const reportId = req.body.report_id;
+
+  if (!reportId) {
+    return res.status(400).json({ message: "Could not find report ID." });
+  }
+
+  try {
+    const report = await SessionReport.findById(reportId);
+    if (!report) {
+      return res.status(404).json({ message: "Report not found." });
+    }
+
+    const derivedParameters = report.parameters.derived;
+    if (!derivedParameters) {
+      return res.status(404).json({ message: "Derived parameters not found in the report." });
+    }
+
+    const result = [];
+
+    for (const derivedParameter in derivedParameters) {
+      const parameter = await Parameters.findOne({ name: derivedParameter });
+      if (!parameter) {
+        return res.status(404).json({ message: `Parameter description for '${derivedParameter}' not found.` });
+      }
+
+      const baseParameters = parameter.base_parameters;
+
+      console.log(baseParameters)
+      
+      const baseScores = {};
+
+      baseParameters.forEach(baseParam => {
+        baseScores[baseParam] = report.parameters.base[baseParam]?.score || null;
+      });
+
+      result.push({
+        derivedParameter: derivedParameter,
+        baseParameters: baseScores,
+      });
+    }
+
+    return res.status(200).json(result);
   } catch (err) {
     return res.status(400).json({ message: `Query response: ${err.message}` });
   }
@@ -343,4 +435,6 @@ module.exports = {
   getSessionReportMisc,
   getSessionReportDerivedParameters,
   getBaseParametersForDerived,
+  getDerivedParameterDetails,
+  getDerivedParameterBaseScores,
 };

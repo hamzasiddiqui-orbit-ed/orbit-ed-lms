@@ -6,6 +6,7 @@ const parameterSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        description: String,
         base_parameters: [String],
     },
     {

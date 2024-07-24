@@ -7,6 +7,8 @@ const {
   getSessionReportMisc,
   getSessionReportDerivedParameters,
   getBaseParametersForDerived,
+  getDerivedParameterDetails,
+  getDerivedParameterBaseScores,
 } = require("../controllers/reports.controller");
 const { protect } = require("../middlewares/auth");
 
@@ -46,5 +48,15 @@ router.post("/base-parameters-from-derived", protect, (req, res, next) => {
   console.log("\nROUTE HIT (reports.route): base-parameters-from-derived\n");
   next();
 }, getBaseParametersForDerived)
+
+router.post("/derived-parameter-detail", protect, (req, res, next) => {
+  console.log("\nROUTE HIT (reports.route): derived-parameter-detail\n");
+  next();
+}, getDerivedParameterDetails)
+
+router.post("/derived-parameter-base-scores", protect, (req, res, next) => {
+  console.log("\nROUTE HIT (reports.route): derived-parameter-base-scores\n");
+  next();
+}, getDerivedParameterBaseScores)
 
 module.exports = router;

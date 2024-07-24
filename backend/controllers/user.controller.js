@@ -96,6 +96,7 @@ const unrealAuthUser = async (req, res) => {
           category_name: category ? category.name : null,
           category_description: category ? category.description : null,
           category_tags: category ? category.tags : null,
+          is_completed: assignedModule.is_completed,
         };
       })
     );
@@ -120,6 +121,7 @@ const unrealAuthUser = async (req, res) => {
         name: module.name,
         description: module.description,
         image_url: module.image_url,
+        is_completed: module.is_completed,
       });
 
       return acc;
@@ -144,6 +146,7 @@ const unrealAuthUser = async (req, res) => {
     return res.status(401).json({ message: "Password is incorrect" });
   }
 };
+
 
 const logoutUser = (req, res) => {
   res.cookie("jwt", "", {
