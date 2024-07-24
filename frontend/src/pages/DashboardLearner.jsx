@@ -3,14 +3,21 @@ import { LanguageContext } from "../contexts/language.context";
 import SideNav from "../components/SideNav";
 import { BiMenu } from "react-icons/bi";
 import { MdClose } from "react-icons/md";
-
-import UserReport from "../components/UserReport";
-import SessionReport from "../components/SessionReport";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 function DashboardLearner() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const { state } = useContext(LanguageContext);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.pathname === "/learner-dashboard") {
+      navigate("my-dashboard");
+    }
+  }, [location, navigate]);
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
@@ -49,7 +56,7 @@ function DashboardLearner() {
           </label>
 
           <div className="w-full flex flex-col">
-            <SessionReport />
+            <Outlet />
           </div>
         </div>
         <SideNav />

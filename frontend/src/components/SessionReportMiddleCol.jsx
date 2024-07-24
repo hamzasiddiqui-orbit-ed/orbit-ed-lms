@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { SessionReportContext } from "../contexts/sessionReport.context";
 import { useSessionReportDerivedParameters } from "../hooks/useReports";
 import ScrollableTabs from "./ScrollableTabs";
+import ParameterSelect from "./ParameterSelect";
 
 const SessionReportMiddleCol = () => {
   const { reportId } = useContext(SessionReportContext);
@@ -38,7 +39,7 @@ const SessionReportMiddleCol = () => {
           {/* Add your graph or chart component here */}
           <div className="bg-core h-64 mb-8">
             {/* Placeholder for graph/chart */}
-            <p className="text-center py-24">Graph/Chart Placeholder</p>
+            <ParameterSelect />
           </div>
         </>
       )}

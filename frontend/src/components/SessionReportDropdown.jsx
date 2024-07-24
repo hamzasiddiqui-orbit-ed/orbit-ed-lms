@@ -22,7 +22,7 @@ const DropdownUserReport = ({
     <details className="dropdown" ref={detailsRef}>
       <summary
         className={classNames(
-          "btn btn-sm bg-core border-0 shadow-core text-utility font-normal hover:bg-[#D2D2D2]",
+          "btn btn-sm bg-core border-0 shadow-core text-textLight font-normal hover:bg-sideNavBG",
           { "text-base": sessions == true },
           { "text-xl": sessions == false }
         )}
@@ -37,14 +37,14 @@ const DropdownUserReport = ({
             <li key={index}>
               {sessions ? (
                 <button
-                  className="text-utility btn bg-core shadow-core border-0 hover:bg-[#D2D2D2]"
+                  className="text-textLight btn bg-core shadow-core border-0 hover:bg-sideNavBG"
                   onClick={() => handleSelectAndClose(item)}
                 >
                   Session {item}
                 </button>
               ) : (
                 <button
-                  className="text-utility btn bg-core shadow-core border-0 hover:bg-[#D2D2D2]"
+                  className="text-textLight btn bg-core shadow-core border-0 hover:bg-sideNavBG"
                   onClick={() => handleSelectAndClose(item)}
                 >
                   {item}
@@ -54,7 +54,7 @@ const DropdownUserReport = ({
           ))
         ) : (
           <li>
-            <span className="text-utility">No data available</span>
+            <span className="text-textLight">No data available</span>
           </li>
         )}
       </ul>

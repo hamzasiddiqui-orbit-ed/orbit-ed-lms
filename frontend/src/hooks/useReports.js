@@ -11,7 +11,7 @@ export const useMostRecentUserReport = (userId) => {
 };
 
 export const useSessionReport = (userId, moduleName, sessionCount) => {
-  console.log('Fetching reports! (useReports)')
+  console.log("Fetching reports! (useReports)");
 
   return useQuery({
     queryKey: ["sessionReport", userId],
@@ -39,8 +39,8 @@ export const useModuleSessionsFromReports = (userId, moduleName) => {
 
 export const useSessionReportGeneral = (userId, moduleName, sessionCount) => {
   return useQuery({
-    queryKey: ['sessionReportGeneral', userId, moduleName, sessionCount],
-    queryFn: () => 
+    queryKey: ["sessionReportGeneral", userId, moduleName, sessionCount],
+    queryFn: () =>
       reportsService.getSessionReportGeneral(userId, moduleName, sessionCount),
     enabled: !!userId,
   });
@@ -48,27 +48,34 @@ export const useSessionReportGeneral = (userId, moduleName, sessionCount) => {
 
 export const useSessionReportMisc = (reportId) => {
   return useQuery({
-    queryKey: ['sessionReportMisc', reportId],
-    queryFn: () => 
-      reportsService.getSessionReportMisc(reportId),
+    queryKey: ["sessionReportMisc", reportId],
+    queryFn: () => reportsService.getSessionReportMisc(reportId),
     enabled: !!reportId,
   });
 };
 
 export const useSessionReportDerivedParameters = (reportId) => {
   return useQuery({
-    queryKey: ['sessionReportDerivedParameters', reportId],
-    queryFn: () => 
-      reportsService.getSessionReportDerivedParamters(reportId),
+    queryKey: ["sessionReportDerivedParameters", reportId],
+    queryFn: () => reportsService.getSessionReportDerivedParamters(reportId),
     enabled: !!reportId,
   });
 };
 
 export const useBaseParametersFromDerived = (reportId, derivedParameter) => {
   return useQuery({
-    queryKey: ['naseParameters', reportId, derivedParameter],
-    queryFn: () => 
+    queryKey: ["baseParameters", reportId, derivedParameter],
+    queryFn: () =>
       reportsService.getBaseParametersFromDerived(reportId, derivedParameter),
+    enabled: !!reportId && !!derivedParameter,
+  });
+};
+
+export const useDerivedParameterDetail = (reportId, derivedParameter) => {
+  return useQuery({
+    queryKey: ["derivedParameterDetail", reportId, derivedParameter],
+    queryFn: () =>
+      reportsService.getDerivedParameterDetail(reportId, derivedParameter),
     enabled: !!reportId && !!derivedParameter,
   });
 };

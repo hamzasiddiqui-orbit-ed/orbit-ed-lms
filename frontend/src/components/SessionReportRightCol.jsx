@@ -2,10 +2,11 @@ import React, { useContext } from "react";
 import { SessionReportContext } from "../contexts/sessionReport.context";
 import { useSessionReportMisc } from "../hooks/useReports";
 import TranscriptionCollapsable from "./TranscriptionCollapsable";
+import BaseParameterHistoryGraph from "./BaseParameterHistoryGraph";
 import { IoIosArrowForward } from "react-icons/io";
 
 const SessionReportRightCol = () => {
-  const { reportId } = useContext(SessionReportContext);
+  const { reportId, baseParameter } = useContext(SessionReportContext);
 
   const {
     data: reportMisc,
@@ -29,18 +30,22 @@ const SessionReportRightCol = () => {
   }
 
   if (!reportMisc) {
-    return <div>No report data available</div>;
+    return <div className="w-3/12 me-5">No report data available</div>;
+  }
+
+  if (baseParameter) {
+    return <BaseParameterHistoryGraph />
   }
 
   return (
     <div className="w-3/12 text-start me-5">
       <div className="mb-8">
-        <h2 className="text-brand font-semibold text-2xl mb-2">
+        <h2 className="text-headingDark font-semibold text-2xl mb-2">
           Quiz Performance
         </h2>
         {reportMisc.data.quiz && (
           <>
-            <p className="text-utility text-sm">
+            <p className="text-textLight text-sm">
               You scored {reportMisc.data.quiz.score}% on the quiz.
             </p>
             <a className="link link-hover text-xs text-utility flex items-center mt-1">
@@ -52,7 +57,7 @@ const SessionReportRightCol = () => {
       </div>
 
       <div className="mb-8">
-        <h2 className="text-brand font-semibold text-2xl mb-2">
+        <h2 className="text-headingDark font-semibold text-2xl mb-2">
           Audio Preview
         </h2>
         <div className="bg-[#D2D2D2] p-4 rounded-lg mb-2">
@@ -67,7 +72,7 @@ const SessionReportRightCol = () => {
       </div>
 
       <div>
-        <h2 className="text-brand font-semibold text-2xl mb-2">Useful Tips</h2>
+        <h2 className="text-headingDark font-semibold text-2xl mb-2">Useful Tips</h2>
         <div className="card bg-[#C6CFEE] shadow-xl border-r-2 border-b-2">
           <div className="card-body">
             <h3 className="card-title">Insight No. 1</h3>

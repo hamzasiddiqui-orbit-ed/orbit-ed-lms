@@ -1,7 +1,8 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import SideNavButton from "./SideNavButton";
-import OrbitEdLogoWhite from "../assets/Orbit-Ed-logo-white.svg";
+import OrbitEdLogoColored from "../assets/Orbit-Ed-logo-coloured.svg";
 import { RxDashboard } from "react-icons/rx";
 import { PiGraduationCap } from "react-icons/pi";
 import {
@@ -18,7 +19,7 @@ function SideNav() {
     try {
       logoutMutation.mutate();
     } catch (err) {
-      console.log(`ERROR (SideNav.jsx): ${err.message}`)
+      console.log(`ERROR (SideNav.jsx): ${err.message}`);
     }
   };
 
@@ -29,13 +30,36 @@ function SideNav() {
         aria-label="close sidebar"
         className="drawer-overlay"
       ></label>
-      <ul className="menu bg-brand text-base-content min-h-full w-80 lg:w-52 rounded-e-3xl flex flex-col items-center justify-between">
+      <ul className="menu bg-sideNavBG text-base-content min-h-full w-80 lg:w-52 rounded-e-3xl flex flex-col items-center justify-between">
         {/* Sidebar content here */}
-        <img src={OrbitEdLogoWhite} alt="Orbit-Ed" className="size-24 mt-5" />
+        <img src={OrbitEdLogoColored} alt="Orbit-Ed" className="size-24 mt-5" />
 
         <div className="pb-32 ms-2 sm:ms-0 w-full">
-          <SideNavButton icon={RxDashboard} text="My Dashboard" />
-          <SideNavButton icon={PiGraduationCap} text="Learner Board" />
+          <NavLink
+            to="my-dashboard"
+            end
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            {({ isActive }) => (
+              <SideNavButton
+                icon={RxDashboard}
+                text="My Dashboard"
+                className={isActive ? "active" : ""}
+              />
+            )}
+          </NavLink>
+          <NavLink
+            to="user-report"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            {({ isActive }) => (
+              <SideNavButton
+                icon={PiGraduationCap}
+                text="User Report"
+                className={isActive ? "active" : ""}
+              />
+            )}
+          </NavLink>
           <SideNavButton icon={HiOutlineUserGroup} text="Team Board" />
           <SideNavButton icon={HiOutlineFolderMinus} className="h-14">
             <p className="font-light text-left leading-7 sm:leading-5 tracking-wide">

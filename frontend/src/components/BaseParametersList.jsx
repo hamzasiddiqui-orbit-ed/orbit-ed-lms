@@ -1,29 +1,43 @@
-import React from "react";
-import FeedbackText from "./FeedbackText";
+import React, { useContext } from "react";
+import { SessionReportContext } from "../contexts/sessionReport.context";
 
 const BaseParametersList = ({ baseParameters }) => {
-  const handleParameterClick = (parameterName) => {
-    // You can add functionality here when a parameter is clicked
-    console.log(`Clicked on parameter: ${parameterName}`);
+  const { baseParameter, setBaseParameter } = useContext(SessionReportContext);
+
+  const handleParameterClick = (baseParameterName) => {
+    if (baseParameter === baseParameterName) {
+      setBaseParameter(null);
+    } else {
+      setBaseParameter(baseParameterName);
+    }
   };
 
   return (
     <div className="flex flex-col gap-4 w-full mt-6">
       {Object.entries(baseParameters).map(([key, value]) => (
-        <div key={key} className="flex justify-start items-center">
-          <div className="flex flex-col w-32">
-            <button
-              onClick={() => handleParameterClick(key)}
-              className="text-left hover:underline focus:outline-none font-semibold text-sm"
-            >
-              {key.charAt(0).toUpperCase() + key.slice(1).replace("_", " ")}
-            </button>
+        <button
+          key={key}
+          onClick={() => handleParameterClick(key)}
+          className="text-left focus:outline-none font-semibold text-sm flex group"
+        >
+          <div
+            className={`w-2 h-2 mt-3 me-4 rounded-full group-hover:bg-highlight ${
+              baseParameter === key ? "bg-brand" : "bg-sideNavBG"
+            }`}
+          />
 
-            {/* <span className="font-semibold">{value.toFixed(2)}</span> */}
-            <progress className="progress progress-primary w-16 h-2" value={value.toFixed(2)} max="100"></progress>
+          <div className="flex flex-col">
+            <p>
+              {key.charAt(0).toUpperCase() + key.slice(1).replace("_", " ")}
+            </p>
+
+            <progress
+              className="progress progress-primary w-16 h-2"
+              value={value.toFixed(2)}
+              max="100"
+            ></progress>
           </div>
-          <FeedbackText score={value.toFixed(2)} />
-        </div>
+        </button>
       ))}
     </div>
   );

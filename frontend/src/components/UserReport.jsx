@@ -7,7 +7,7 @@ import {
   useModuleSessionsFromReports,
 } from "../hooks/useReports";
 import SkeletonUserReport from "./SkeletonUserReport";
-import DropdownUserReport from "../components/DropdownUserReport";
+import DropdownUserReport from "./DropdownUserReport";
 import RadialProgressUserReport from "./RadialProgressUserReport";
 import TranscriptionCollapsable from "./TranscriptionCollapsable";
 import ScrollableTabs from "./ScrollableTabs";
@@ -91,7 +91,7 @@ export default function UserReport() {
 
       <div className="flex items-start mb-12 ps-5">
         <div className="w-full">
-          <h1 className="text-3xl font-medium text-brand mb-4 ps-2 text-start">
+          <h1 className="text-3xl font-medium text-headingDark mb-4 ps-2 text-start">
             Module Performance
           </h1>
           <div className="mb-4 text-start">

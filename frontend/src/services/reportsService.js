@@ -36,7 +36,7 @@ export const getSessionReportMisc = async (reportId) => {
   const response = await api.post("reports/session-report-misc", {
     report_id: reportId,
   });
-  
+
   return response;
 };
 
@@ -48,11 +48,27 @@ export const getSessionReportDerivedParamters = async (reportId) => {
   return response;
 };
 
-export const getBaseParametersFromDerived = async (reportId, derivedParameter) => {
+export const getBaseParametersFromDerived = async (
+  reportId,
+  derivedParameter
+) => {
   const response = await api.post("reports/base-parameters-from-derived", {
     report_id: reportId,
     derived_parameter: derivedParameter,
   });
+
+  return response;
+};
+
+export const getDerivedParameterDetail = async (reportId, derivedParameter) => {
+  console.log("derived parameter detail called.");
+  
+  const response = await api.post("reports/derived-parameter-detail", {
+    report_id: reportId,
+    derived_parameter: derivedParameter,
+  });
+
+  console.log(`derived parameter: ${response}`);
 
   return response;
 };

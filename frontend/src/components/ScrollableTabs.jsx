@@ -3,7 +3,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { SessionReportContext } from "../contexts/sessionReport.context";
 
 const ScrollableTabs = ({ reportData }) => {
-  const { derivedParameter, setDerivedParameter } = useContext(SessionReportContext);
+  const { derivedParameter, setDerivedParameter, setBaseParameter } = useContext(SessionReportContext);
 
   const [scrollPosition, setScrollPosition] = useState(0);
   const tabListRef = useRef(null);
@@ -29,6 +29,7 @@ const ScrollableTabs = ({ reportData }) => {
 
   const handleTabClick = (key) => {
     setDerivedParameter(key);
+    setBaseParameter(null);
   };
 
   return (
@@ -48,7 +49,7 @@ const ScrollableTabs = ({ reportData }) => {
           <div className="relative flex-grow overflow-hidden">
             <div
               ref={tabListRef}
-              className="tabs tabs-bordered whitespace-nowrap overflow-x-scroll scrollbar-hide"
+              className="tabs tabs-bordered whitespace-nowrap overflow-x-scroll scrollbar-hide text-textDark"
               style={{ scrollBehavior: "smooth" }}
             >
               {derivedKeys.map((key) => (

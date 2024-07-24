@@ -12,16 +12,16 @@ export const useAuth = () => {
     switch (userType) {
       case "Root":
         // navigate to root cms
-        navigate("/admin_dashboard");
+        navigate("/admin-dashboard");
         break;
       case "Admin":
-        navigate("/admin_dashboard");
+        navigate("/admin-dashboard");
         break;
       case "Manager":
-        navigate("/manager_dashboard");
+        navigate("/manager-dashboard");
         break;
       case "Learner":
-        navigate("/learner_dashboard");
+        navigate("/learner-dashboard");
         break;
       default:
         navigate("/");

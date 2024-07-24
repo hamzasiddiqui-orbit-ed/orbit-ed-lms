@@ -1,3 +1,7 @@
+// -------------
+// TO BE REMOVED
+// -------------
+
 import React from "react";
 
 const FeedbackText = ({ score }) => {

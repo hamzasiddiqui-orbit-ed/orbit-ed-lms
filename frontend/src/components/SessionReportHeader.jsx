@@ -6,7 +6,7 @@ import {
   useModuleFromReports,
   useModuleSessionsFromReports,
 } from "../hooks/useReports";
-import DropdownUserReport from "./DropdownUserReport";
+import DropdownUserReport from "./SessionReportDropdown";
 
 const SessionReportHeader = () => {
   const { state: userState } = useContext(UserContext);
@@ -89,7 +89,7 @@ const SessionReportHeader = () => {
   return (
     <div className="flex items-start mb-12 ps-5">
       <div className="w-full">
-        <h1 className="text-3xl font-medium text-brand mb-4 ps-2 text-start">
+        <h1 className="text-3xl font-medium text-headingDark mb-4 ps-2 text-start">
           Module Performance
         </h1>
         <div className="mb-4 text-start">
@@ -102,7 +102,7 @@ const SessionReportHeader = () => {
           />
         </div>
         <div className="flex items-center">
-          <div className="btn btn-sm bg-core border-0 shadow-core text-utility text-base font-normal hover:bg-[#D2D2D2]">
+          <div className="btn btn-sm bg-core border-0 shadow-core text-textLight text-base font-normal hover:bg-sideNavHighlight">
             {reportData?.createdAt || "N/A"}
           </div>
           <div className="ml-8">

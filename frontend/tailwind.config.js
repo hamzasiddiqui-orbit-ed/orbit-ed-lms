@@ -16,6 +16,15 @@ export default {
       highlight: '#F15A29', // Orange
       core: '#FFFFFF',  // White
       utility: '#929292', // Grey
+      sideNavBG: '#E4E7EA',
+      sideNavHighlight: '#D0D6E7',
+      headingDark: '#595959',
+      textDark: '#505152',
+      textLight: '#929292',
+      textBlue: '#7890E1',
+      progressBad: '#F4470E',
+      progressAverage: '#F6B757',
+      progressGood: '#8BCB7B',
     },
     extend: {},
   },
