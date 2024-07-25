@@ -79,3 +79,12 @@ export const useDerivedParameterDetail = (reportId, derivedParameter) => {
     enabled: !!reportId && !!derivedParameter,
   });
 };
+
+export const useDerivedParameterScores = (userId, moduleName, derivedParameter) => {
+  return useQuery({
+    queryKey: ["derivedParameterScores", userId, moduleName, derivedParameter],
+    queryFn: () =>
+      reportsService.getDerivedParameterScores(userId, moduleName, derivedParameter),
+    enabled: !!userId && !!moduleName && !!derivedParameter,
+  });
+};

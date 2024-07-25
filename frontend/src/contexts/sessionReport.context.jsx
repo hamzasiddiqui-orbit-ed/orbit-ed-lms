@@ -4,6 +4,7 @@ export const SessionReportContext = createContext();
 
 export const SessionReportProvider = ({ children }) => {
   const [reportId, setReportId] = useState(null);
+  const [moduleName, setModuleName] = useState(null);
   const [totalScore, setTotalScore] = useState(null);
   const [derivedParameter, setDerivedParameter] = useState(null);
   const [baseParameter, setBaseParameter] = useState(null);
@@ -13,6 +14,8 @@ export const SessionReportProvider = ({ children }) => {
       value={{
         reportId,
         setReportId,
+        moduleName,
+        setModuleName,
         totalScore,
         setTotalScore,
         derivedParameter,

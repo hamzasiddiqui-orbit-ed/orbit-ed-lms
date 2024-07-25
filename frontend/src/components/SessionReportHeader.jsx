@@ -15,7 +15,7 @@ const SessionReportHeader = () => {
   const [selectedModule, setSelectedModule] = useState(null);
   const [selectedSessionCount, setSelectedSessionCount] = useState(null);
 
-  const { setReportId, setTotalScore } = useContext(SessionReportContext);
+  const { setReportId, setModuleName, setTotalScore } = useContext(SessionReportContext);
 
   const {
     reportData,
@@ -48,6 +48,7 @@ const SessionReportHeader = () => {
       }
       setReportId(reportData.reportId);
       setTotalScore(reportData.totalScore);
+      setModuleName(reportData.moduleName);
     }
   }, [
     reportData,

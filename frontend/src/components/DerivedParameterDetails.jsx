@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import DerivedParameterChart from "./DerivedParameterChart";
 import { SessionReportContext } from "../contexts/sessionReport.context";
 import { useDerivedParameterDetail } from "../hooks/useReports";
 
@@ -45,7 +46,7 @@ const DerivedParameterDetails = () => {
         </div>
       </div>
       <p className="pt-5 text-start text-textLight">{derivedParameterDescription}</p>
-
+      <DerivedParameterChart />
     </div>
   );
 };

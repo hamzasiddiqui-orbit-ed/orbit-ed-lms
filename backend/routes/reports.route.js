@@ -9,6 +9,7 @@ const {
   getBaseParametersForDerived,
   getDerivedParameterDetails,
   getDerivedParameterBaseScores,
+  getDerivedParameterScores,
 } = require("../controllers/reports.controller");
 const { protect } = require("../middlewares/auth");
 
@@ -58,5 +59,10 @@ router.post("/derived-parameter-base-scores", protect, (req, res, next) => {
   console.log("\nROUTE HIT (reports.route): derived-parameter-base-scores\n");
   next();
 }, getDerivedParameterBaseScores)
+
+router.post("/derived-parameter-scores", protect, (req, res, next) => {
+  console.log("\nROUTE HIT (reports.route): derived-parameter-scores\n");
+  next();
+}, getDerivedParameterScores)
 
 module.exports = router;

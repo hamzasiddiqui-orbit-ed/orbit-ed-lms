@@ -427,6 +427,43 @@ const getDerivedParameterBaseScores = async (req, res) => {
   }
 };
 
+// -----------------------------------------------------------
+// Fetch base parameters for all derived parameters per report
+// -----------------------------------------------------------
+const getDerivedParameterScores = async (req, res) => {
+  const { user_id: userId, module_name: moduleName, derived_parameter: derivedParameter } = req.body;
+
+  if (!userId || !moduleName || !derivedParameter) {
+    return res.status(400).json({ message: "Missing required data." });
+  }
+
+  try {
+    const query = {
+      user_id: mongoose.Types.ObjectId.createFromHexString(userId),
+      module_name: moduleName
+    };
+
+    const sessionReports = await SessionReport.find(query).sort({ session_count: 1 });
+
+    if (!sessionReports || sessionReports.length === 0) {
+      return res.status(404).json({ message: 'No session reports found for this user and module.' });
+    }
+
+    if (!sessionReports[0].parameters.derived.hasOwnProperty(derivedParameter)) {
+      return res.status(400).json({ message: `Derived parameter '${derivedParameter}' not found.` });
+    }
+
+    const data = sessionReports.map(report => ({
+      sessionCount: report.session_count,
+      score: report.parameters.derived[derivedParameter]
+    }));
+
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ message: `Server error: ${err.message}` });
+  }
+};
+
 module.exports = {
   getSessionReport,
   getUniqueModulesFromReports,
@@ -437,4 +474,5 @@ module.exports = {
   getBaseParametersForDerived,
   getDerivedParameterDetails,
   getDerivedParameterBaseScores,
+  getDerivedParameterScores,
 };
