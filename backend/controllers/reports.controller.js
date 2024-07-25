@@ -344,7 +344,9 @@ const getDerivedParameterDetails = async (req, res) => {
   }
 
   if (!derivedParameter) {
-    return res.status(400).json({ message: "Could not find derived parameter." });
+    return res
+      .status(400)
+      .json({ message: "Could not find derived parameter." });
   }
 
   try {
@@ -355,12 +357,16 @@ const getDerivedParameterDetails = async (req, res) => {
 
     const derivedParameters = report.parameters.derived;
     if (!derivedParameters || !(derivedParameter in derivedParameters)) {
-      return res.status(404).json({ message: `Derived parameter '${derivedParameter}' not found.` });
+      return res.status(404).json({
+        message: `Derived parameter '${derivedParameter}' not found.`,
+      });
     }
 
     const parameter = await Parameters.findOne({ name: derivedParameter });
     if (!parameter) {
-      return res.status(404).json({ message: `Parameter description for '${derivedParameter}' not found.` });
+      return res.status(404).json({
+        message: `Parameter description for '${derivedParameter}' not found.`,
+      });
     }
 
     const score = derivedParameters[derivedParameter];
@@ -394,7 +400,9 @@ const getDerivedParameterBaseScores = async (req, res) => {
 
     const derivedParameters = report.parameters.derived;
     if (!derivedParameters) {
-      return res.status(404).json({ message: "Derived parameters not found in the report." });
+      return res
+        .status(404)
+        .json({ message: "Derived parameters not found in the report." });
     }
 
     const result = [];
@@ -402,17 +410,20 @@ const getDerivedParameterBaseScores = async (req, res) => {
     for (const derivedParameter in derivedParameters) {
       const parameter = await Parameters.findOne({ name: derivedParameter });
       if (!parameter) {
-        return res.status(404).json({ message: `Parameter description for '${derivedParameter}' not found.` });
+        return res.status(404).json({
+          message: `Parameter description for '${derivedParameter}' not found.`,
+        });
       }
 
       const baseParameters = parameter.base_parameters;
 
-      console.log(baseParameters)
-      
+      console.log(baseParameters);
+
       const baseScores = {};
 
-      baseParameters.forEach(baseParam => {
-        baseScores[baseParam] = report.parameters.base[baseParam]?.score || null;
+      baseParameters.forEach((baseParam) => {
+        baseScores[baseParam] =
+          report.parameters.base[baseParam]?.score || null;
       });
 
       result.push({
@@ -427,11 +438,15 @@ const getDerivedParameterBaseScores = async (req, res) => {
   }
 };
 
-// -----------------------------------------------------------
-// Fetch base parameters for all derived parameters per report
-// -----------------------------------------------------------
+// ------------------------------------------------------------
+// Fetch derived parameter scores for all reports of the module
+// ------------------------------------------------------------
 const getDerivedParameterScores = async (req, res) => {
-  const { user_id: userId, module_name: moduleName, derived_parameter: derivedParameter } = req.body;
+  const {
+    user_id: userId,
+    module_name: moduleName,
+    derived_parameter: derivedParameter,
+  } = req.body;
 
   if (!userId || !moduleName || !derivedParameter) {
     return res.status(400).json({ message: "Missing required data." });
@@ -440,27 +455,82 @@ const getDerivedParameterScores = async (req, res) => {
   try {
     const query = {
       user_id: mongoose.Types.ObjectId.createFromHexString(userId),
-      module_name: moduleName
+      module_name: moduleName,
     };
 
-    const sessionReports = await SessionReport.find(query).sort({ session_count: 1 });
+    const sessionReports = await SessionReport.find(query).sort({
+      session_count: 1,
+    });
 
     if (!sessionReports || sessionReports.length === 0) {
-      return res.status(404).json({ message: 'No session reports found for this user and module.' });
+      return res.status(404).json({
+        message: "No session reports found for this user and module.",
+      });
     }
 
-    if (!sessionReports[0].parameters.derived.hasOwnProperty(derivedParameter)) {
-      return res.status(400).json({ message: `Derived parameter '${derivedParameter}' not found.` });
+    if (
+      !sessionReports[0].parameters.derived.hasOwnProperty(derivedParameter)
+    ) {
+      return res.status(400).json({
+        message: `Derived parameter '${derivedParameter}' not found.`,
+      });
     }
 
-    const data = sessionReports.map(report => ({
+    const data = sessionReports.map((report) => ({
       sessionCount: report.session_count,
-      score: report.parameters.derived[derivedParameter]
+      score: report.parameters.derived[derivedParameter],
     }));
 
-    res.json(data);
+    return res.json(data);
   } catch (err) {
-    res.status(500).json({ message: `Server error: ${err.message}` });
+    return res.status(400).json({ message: `Query response: ${err.message}` });
+  }
+};
+
+// ------------------------------------------------------------
+// Fetch base parameter scores for all reports of the module
+// ------------------------------------------------------------
+const getBaseParameterScores = async (req, res) => {
+  const {
+    user_id: userId,
+    module_name: moduleName,
+    base_parameter: baseParameter,
+  } = req.body;
+
+  if (!userId || !moduleName || !baseParameter) {
+    return res.status(400).json({ message: "Missing required data." });
+  }
+
+  try {
+    const query = {
+      user_id: mongoose.Types.ObjectId.createFromHexString(userId),
+      module_name: moduleName,
+    };
+
+    const sessionReports = await SessionReport.find(query).sort({
+      session_count: 1,
+    });
+
+    if (!sessionReports || sessionReports.length === 0) {
+      return res.status(404).json({
+        message: "No session reports found for this user and module.",
+      });
+    }
+
+    if (!sessionReports[0].parameters.base.hasOwnProperty(baseParameter)) {
+      return res.status(400).json({
+        message: `Base parameter '${baseParameter}' not found.`,
+      });
+    }
+
+    const data = sessionReports.map((report) => ({
+      sessionCount: report.session_count,
+      score: report.parameters.base[baseParameter].score,
+    }));
+
+    return res.json(data);
+  } catch (err) {
+    return res.status(400).json({ message: `Query response: ${err.message}` });
   }
 };
 
@@ -475,4 +545,5 @@ module.exports = {
   getDerivedParameterDetails,
   getDerivedParameterBaseScores,
   getDerivedParameterScores,
+  getBaseParameterScores,
 };
