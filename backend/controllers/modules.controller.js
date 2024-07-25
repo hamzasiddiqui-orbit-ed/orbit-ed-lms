@@ -181,7 +181,72 @@ const getUniqueAssignedModules = async (req, res) => {
   }
 };
 
+// -----------------------------------------------------------------------------------------
+// Fetch Assigned date, Completed date, Due date, Assigned by, average score of given module
+// -----------------------------------------------------------------------------------------
+// Utility function to format dates (move to middleware)
+const formatDate = (date) => {
+  const options = { day: 'numeric', month: 'short', year: 'numeric' };
+  return new Date(date).toLocaleDateString('en-GB', options);
+};
+
+const getAssignedModuleDetails = async (req, res) => {
+  const userId = req.body.user_id;
+  const moduleName = req.body.module_name;
+
+  if (!userId) {
+    return res.status(400).json({ message: "User Id not found." });
+  }
+  if (!moduleName) {
+    return res.status(400).json({ message: "Module name not found."});
+  }
+
+  try {
+    var query = {
+      _id: mongoose.Types.ObjectId.createFromHexString(userId),
+    };
+
+    // Find the user by ID
+    const user = await User.findById(query);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Find the module by name
+    const module = await Module.findOne({ name: moduleName });
+    if (!module) {
+      return res.status(404).json({ message: 'Module not found' });
+    }
+
+    // Find the assigned module details in the user document
+    const assignedModule = user.assigned_modules.find(m => m.module_id.toString() === module._id.toString());
+    if (!assignedModule) {
+      return res.status(404).json({ message: 'Assigned module not found for this user' });
+    }
+
+    // Find the assigned by user details
+    const assignedByUser = await User.findById(assignedModule.assigned_by);
+    if (!assignedByUser) {
+      return res.status(404).json({ message: 'Assigned by user not found' });
+    }
+
+    // Prepare the response
+    const response = {
+      assignedDate: formatDate(assignedModule.assigned_date),
+      completedDate: formatDate(assignedModule.completed_date),
+      dueDate: formatDate(assignedModule.due_date),
+      assignedBy: assignedByUser.name,
+      averageScore: assignedModule.average_score
+    };
+
+    res.json(response);
+  } catch (err) {
+    res.status(400).json({ message: `Query response: ${err.message}` });
+  }
+};
+
 module.exports = {
   getSessionModule,
   getUniqueAssignedModules,
+  getAssignedModuleDetails,
 };

@@ -8,3 +8,11 @@ export const useAssignedModules = (userId) => {
         enabled: !!userId,
     })
 };
+
+export const useModuleGeneralDetails = (userId, moduleName) => {
+    return useQuery({
+        queryKey: ["assignedModules", userId, moduleName],
+        queryFn: () => modulesService.getModuleGeneralDetails(userId, moduleName),
+        enabled: !!userId && !!moduleName,
+    })
+};
