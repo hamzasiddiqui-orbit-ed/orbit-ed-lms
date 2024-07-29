@@ -12,6 +12,16 @@ const BaseParametersList = ({ baseParameters }) => {
     }
   };
 
+  const getProgressColorClass = (value) => {
+    if (value < 40) {
+      return "progress-bad";
+    } else if (value < 70) {
+      return "progress-average";
+    } else {
+      return "progress-good";
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4 w-full mt-6">
       {Object.entries(baseParameters).map(([key, value]) => (
@@ -32,7 +42,9 @@ const BaseParametersList = ({ baseParameters }) => {
             </p>
 
             <progress
-              className="progress progress-primary w-16 h-2"
+              className={`progress ${getProgressColorClass(
+                value.toFixed(2)
+              )} w-16 h-2`}
               value={value.toFixed(2)}
               max="100"
             ></progress>

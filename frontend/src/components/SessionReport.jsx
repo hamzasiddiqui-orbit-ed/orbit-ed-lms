@@ -4,13 +4,16 @@ import SessionReportHeader from "./SessionReportHeader";
 import SessionReportMiddleCol from "./SessionReportMiddleCol";
 import SessionReportRightCol from "./SessionReportRightCol";
 import SessionReportLeftCol from "./SessionReportLeftCol";
+import UserAvatar from "./UserAvatar";
 
 function SessionReport() {
   return (
-    <div className="w-full h-full pe-5 mt-28">
+    <div className="w-100 h-full pe-5 relative pt-10">
       {/* ------------------------------------
       TOP SECTION - MODULE NAME, DATE, SESSION
       -------------------------------------*/}
+      <UserAvatar />
+      
       <SessionReportHeader />
 
       {/* ---------------------------------------------------

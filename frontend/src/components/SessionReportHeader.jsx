@@ -93,6 +93,7 @@ const SessionReportHeader = () => {
         <h1 className="text-3xl font-medium text-headingDark mb-4 ps-2 text-start">
           Module Performance
         </h1>
+        
         <div className="mb-4 text-start">
           <DropdownUserReport
             title={selectedModule || "Select Module"}

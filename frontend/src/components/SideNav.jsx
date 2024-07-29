@@ -24,15 +24,15 @@ function SideNav() {
   };
 
   return (
-    <div className="drawer-side">
+    <div className="drawer-side h-full">
       <label
         htmlFor="my-drawer-2"
         aria-label="close sidebar"
         className="drawer-overlay"
       ></label>
-      <ul className="menu bg-sideNavBG text-base-content min-h-full w-80 lg:w-52 rounded-e-3xl flex flex-col items-center justify-between">
+      <ul className="menu bg-sideNavBG text-base-content h-full w-80 lg:w-52 rounded-e-3xl flex flex-col items-center justify-between">
         {/* Sidebar content here */}
-        <img src={OrbitEdLogoColored} alt="Orbit-Ed" className="size-24 mt-5" />
+        <img src={OrbitEdLogoColored} alt="Orbit-Ed" className="size-32 mt-5" />
 
         <div className="pb-32 ms-2 sm:ms-0 w-full">
           <NavLink

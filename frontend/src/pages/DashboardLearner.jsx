@@ -33,7 +33,7 @@ function DashboardLearner() {
       className="flex bg-core text-brand w-screen h-screen overflow-auto"
       dir={state.layout}
     >
-      <div className="drawer lg:drawer-open relative min-h-full">
+      <div className="drawer lg:drawer-open relative h-full">
         <input
           id="my-drawer-2"
           type="checkbox"
@@ -55,7 +55,7 @@ function DashboardLearner() {
             )}
           </label>
 
-          <div className="w-full flex flex-col">
+          <div className="w-full h-full flex flex-col overscroll-auto">
             <Outlet />
           </div>
         </div>

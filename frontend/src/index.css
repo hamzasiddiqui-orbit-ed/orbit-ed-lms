@@ -2,6 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+.progress-bad::-webkit-progress-value {
+  @apply bg-progressBad;
+}
+
+.progress-average::-webkit-progress-value {
+  @apply bg-progressAverage;
+}
+
+.progress-good::-webkit-progress-value {
+  @apply bg-progressGood;
+}
+
+.progress-basic::-webkit-progress-value {
+  @apply bg-progressBasic;
+}
+
+.progress-bad::-moz-progress-bar {
+  @apply bg-progressBad;
+}
+
+.progress-average::-moz-progress-bar {
+  @apply bg-progressAverage;
+}
+
+.progress-good::-moz-progress-bar {
+  @apply bg-progressGood;
+}
+
+.progress-good::-moz-progress-bar {
+  @apply bg-progressBasic;
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

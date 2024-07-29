@@ -19,6 +19,13 @@ const DerivedParameterDetails = () => {
     var derivedParameterDescription = data.data.description;
   }
 
+  let progressColorClass = 'progress-good'; // Default to 'good'
+  if (derivedParameterScore < 40) {
+    progressColorClass = 'progress-bad';
+  } else if (derivedParameterScore < 70) {
+    progressColorClass = 'progress-average';
+  }
+
   if (isPending) {
     return (
       <div className="text-center py-24">
@@ -34,18 +41,23 @@ const DerivedParameterDetails = () => {
   return (
     <div className="flex flex-col">
       <div className="flex flex-row justify-between font-medium">
-        <p className="text-2xl text-headingDark font-semibold">{derivedParameterHeading}</p>
+        <p className="text-2xl text-headingDark font-semibold">
+          {derivedParameterHeading}
+        </p>
 
         <div className="flex flex-row justify-start gap-3 pt-1">
+
           <progress
-            className="progress w-56 mt-2"
+            className={`progress ${progressColorClass} bg-[#D9D9D9] w-56 mt-2`}
             value={derivedParameterScore}
             max="100"
           />
           <p className="text-textDark me-3">{derivedParameterScore} %</p>
         </div>
       </div>
-      <p className="pt-5 text-start text-textLight">{derivedParameterDescription}</p>
+      <p className="pt-5 text-start text-textLight">
+        {derivedParameterDescription}
+      </p>
       <DerivedParameterChart />
     </div>
   );

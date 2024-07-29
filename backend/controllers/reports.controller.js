@@ -534,6 +534,44 @@ const getBaseParameterScores = async (req, res) => {
   }
 };
 
+// -------------------------------------------------
+// Fetch base parameter details for a session report
+// -------------------------------------------------
+const getBaseParameterDetails = async (req, res) => {
+  const { report_id: reportId, base_parameter: baseParameter } = req.body;
+
+  if (!reportId || !baseParameter) {
+    return res.status(400).json({ message: "Missing required data." });
+  }
+
+  console.log(reportId, baseParameter);
+
+  try {
+    const query = {
+      _id: mongoose.Types.ObjectId.createFromHexString(reportId),
+    };
+
+    const projection = {
+      [`parameters.base.${baseParameter}`]: 1,
+    };
+
+    const response = await SessionReport.findOne(query, projection);
+
+    const data =  {
+      [baseParameter]: response.parameters.base[baseParameter],
+    }
+
+    if (!response) {
+      return res.status(404).json({ message: "No report found." });
+    } else {
+      return res.status(200).json(data);
+    }
+
+  } catch (err) {
+    return res.status(500).json({ message: `Query response: ${err.message}` });
+  }
+};
+
 module.exports = {
   getSessionReport,
   getUniqueModulesFromReports,
@@ -546,4 +584,5 @@ module.exports = {
   getDerivedParameterBaseScores,
   getDerivedParameterScores,
   getBaseParameterScores,
+  getBaseParameterDetails,
 };

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { SessionReportContext } from "../contexts/sessionReport.context";
 import { useSessionReportMisc } from "../hooks/useReports";
 import TranscriptionCollapsable from "./TranscriptionCollapsable";
-import BaseParameterHistoryGraph from "./BaseParameterHistoryGraph";
+import BaseParameterChart from "./BaseParameterChart";
 import { IoIosArrowForward } from "react-icons/io";
 
 const SessionReportRightCol = () => {
@@ -34,7 +34,7 @@ const SessionReportRightCol = () => {
   }
 
   if (baseParameter) {
-    return <BaseParameterHistoryGraph />
+    return <BaseParameterChart />
   }
 
   return (

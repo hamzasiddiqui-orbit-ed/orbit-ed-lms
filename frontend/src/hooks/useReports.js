@@ -88,3 +88,21 @@ export const useDerivedParameterScores = (userId, moduleName, derivedParameter) 
     enabled: !!userId && !!moduleName && !!derivedParameter,
   });
 };
+
+export const useBaseParameterScores = (userId, moduleName, baseParameter) => {
+  return useQuery({
+    queryKey: ["baseParameterScores", userId, moduleName, baseParameter],
+    queryFn: () =>
+      reportsService.getBaseParameterScores(userId, moduleName, baseParameter),
+    enabled: !!userId && !!moduleName && !!baseParameter,
+  });
+};
+
+export const useBaseParameterDetails = (reportId, baseParameter) => {
+  return useQuery({
+    queryKey: ["baseParameterDetails", reportId, baseParameter],
+    queryFn: () =>
+      reportsService.getBaseParameterDetails(reportId, baseParameter),
+    enabled: !!reportId && !!baseParameter,
+  });
+};

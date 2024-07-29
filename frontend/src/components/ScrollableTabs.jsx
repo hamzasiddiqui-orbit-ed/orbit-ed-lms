@@ -3,7 +3,8 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { SessionReportContext } from "../contexts/sessionReport.context";
 
 const ScrollableTabs = ({ reportData }) => {
-  const { derivedParameter, setDerivedParameter, setBaseParameter } = useContext(SessionReportContext);
+  const { derivedParameter, setDerivedParameter, setBaseParameter } =
+    useContext(SessionReportContext);
 
   const [scrollPosition, setScrollPosition] = useState(0);
   const tabListRef = useRef(null);
@@ -55,13 +56,16 @@ const ScrollableTabs = ({ reportData }) => {
               {derivedKeys.map((key) => (
                 <a
                   key={key}
-                  className={`tab ${
+                  className={`hover:text-highlight tab ${
                     derivedParameter === key ? "tab-active" : ""
                   }`}
                   onClick={() => handleTabClick(key)}
                   style={{
-                    borderBottom: derivedParameter === key ? "2px solid currentColor" : "none",
-                    paddingBottom: "4px"
+                    borderBottom:
+                      derivedParameter === key
+                        ? "2px solid #F15A29"
+                        : "2px solid #505152",
+                    paddingBottom: "4px",
                   }}
                 >
                   {key.charAt(0).toUpperCase() + key.slice(1)}
