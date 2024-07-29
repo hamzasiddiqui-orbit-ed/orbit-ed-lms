@@ -7,6 +7,7 @@ import LoudnessDetails from "./LoudnessDetails";
 import ClarityDetails from "./ClarityDetails";
 import EyeContactDetails from "./EyeContactDetails";
 import FillerSoundsDetails from "./FillerSoundsDetails";
+import RepetitiveWordsDetails from "./RepetitiveWordsDetails";
 
 const BaseParameterDetails = () => {
   const { baseParameter } = useContext(SessionReportContext);
@@ -25,7 +26,10 @@ const BaseParameterDetails = () => {
     return <EyeContactDetails />;
   } else if (baseParameter == "filler_sounds") {
     return <FillerSoundsDetails />;
-  }  else {
+  } else if (baseParameter == "repetitive_words") {
+    return <RepetitiveWordsDetails />;
+    // return;
+  } else {
     return (
       <div className="text-center py-24">
         Error! Do not having any data to display!

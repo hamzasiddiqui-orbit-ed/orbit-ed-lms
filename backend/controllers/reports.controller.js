@@ -487,9 +487,9 @@ const getDerivedParameterScores = async (req, res) => {
   }
 };
 
-// ------------------------------------------------------------
+// ---------------------------------------------------------
 // Fetch base parameter scores for all reports of the module
-// ------------------------------------------------------------
+// ---------------------------------------------------------
 const getBaseParameterScores = async (req, res) => {
   const {
     user_id: userId,
