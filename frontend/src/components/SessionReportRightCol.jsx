@@ -73,7 +73,7 @@ const SessionReportRightCol = () => {
 
       <div>
         <h2 className="text-headingDark font-semibold text-2xl mb-2">Useful Tips</h2>
-        <div className="card bg-[#C6CFEE] shadow-xl border-r-2 border-b-2">
+        <div className="card bg-[#C6CFEE] shadow-xl border-textDark border-r-2 border-b-2">
           <div className="card-body">
             <h3 className="card-title">Insight No. 1</h3>
             <p>If a dog chews shoes whose shoes does he choose?</p>

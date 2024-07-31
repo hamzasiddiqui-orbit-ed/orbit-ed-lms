@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { SessionReportContext } from "../contexts/sessionReport.context";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import SideNavButton from "./SideNavButton";
@@ -13,6 +14,14 @@ import {
 import { IoSettingsOutline, IoLogOutOutline } from "react-icons/io5";
 
 function SideNav() {
+  const {
+    setReportId,
+    setModuleName,
+    setTotalScore,
+    setDerivedParameter,
+    setBaseParameter,
+  } = useContext(SessionReportContext);
+
   const { logoutMutation } = useAuth();
 
   const handleLogOut = async (e) => {
@@ -21,6 +30,15 @@ function SideNav() {
     } catch (err) {
       console.log(`ERROR (SideNav.jsx): ${err.message}`);
     }
+  };
+
+  // Set SessionReport Context to null
+  const handleButtonClick = () => {
+    setReportId(null);
+    setModuleName(null);
+    setTotalScore(null);
+    setDerivedParameter(null);
+    setBaseParameter(null);
   };
 
   return (
@@ -45,6 +63,7 @@ function SideNav() {
                 icon={RxDashboard}
                 text="My Dashboard"
                 className={isActive ? "active" : ""}
+                onClick={handleButtonClick}
               />
             )}
           </NavLink>
@@ -57,6 +76,7 @@ function SideNav() {
                 icon={PiGraduationCap}
                 text="User Report"
                 className={isActive ? "active" : ""}
+                onClick={handleButtonClick}
               />
             )}
           </NavLink>

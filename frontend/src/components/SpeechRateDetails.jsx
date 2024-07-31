@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { SessionReportContext } from "../contexts/sessionReport.context";
 import { useBaseParameterDetails } from "../hooks/useReports";
-import { wpm } from "../utils/baseParametersInfo";
+import { speechRate } from "../utils/baseParametersInfo";
 import { RiMapPin2Fill } from "react-icons/ri";
-import { IoIosInformationCircleOutline } from "react-icons/io";
+import TooltipPopOver from "./TooltipPopOver";
 import ProgressBarLinear from "./ProgressBarLinear";
 
-const WpmDetails = () => {
+const SpeechRateDetails = () => {
   const { reportId, baseParameter } = useContext(SessionReportContext);
 
   const { data, isPending, isError } = useBaseParameterDetails(
@@ -15,7 +15,7 @@ const WpmDetails = () => {
   );
 
   if (data) {
-    var baseParameterDetails = data.data["wpm"];
+    var baseParameterDetails = data.data["speech_rate"];
     console.log(baseParameterDetails);
   }
 
@@ -45,7 +45,7 @@ const WpmDetails = () => {
     <div className="flex flex-col">
       <div className="flex flex-row justify-between font-medium">
         <p className="text-2xl text-headingDark font-semibold">
-          Words per Minute
+          Speech Rate
         </p>
 
         <div className="flex flex-row justify-start gap-3 pt-1">
@@ -53,14 +53,12 @@ const WpmDetails = () => {
           <p className="text-textDark me-3">{baseParameterDetails.score} %</p>
         </div>
       </div>
-      <p className="pt-5 text-start text-textLight">{wpm.description}</p>
+      <p className="pt-5 text-start text-textLight">{speechRate.description}</p>
 
       {/* Benchmark Bar */}
       <p className="text-2xl text-headingDark font-semibold text-start mt-8 flex">
         <span>Benchmarks</span>
-        <div className="tooltip" data-tip="See WPM benchmark below">
-          <IoIosInformationCircleOutline className="text-[16px] ms-1 mt-2" />
-        </div>
+        <TooltipPopOver text="Sample text for WPM benchmarks." align="middle" />
       </p>
       <div className="flex justify-center w-full">
         <div className="w-7/12 mt-6">
@@ -80,10 +78,10 @@ const WpmDetails = () => {
               style={{ left: "55%" }}
             ></div>
             <div className="absolute -top-6" style={{ left: "30%" }}>
-              <span className="text-xs">120 wpm</span>
+              <span className="text-xs">120 speechRate</span>
             </div>
             <div className="absolute -top-6" style={{ left: "50%" }}>
-              <span className="text-xs">160 wpm</span>
+              <span className="text-xs">160 speechRate</span>
             </div>
           </div>
           <div className="flex justify-between mt-1 text-sm text-textLight">
@@ -97,9 +95,7 @@ const WpmDetails = () => {
       {/* Stats Bar */}
       <p className="text-2xl text-headingDark font-semibold text-start mt-8 flex">
         <span>Stats</span>
-        <div className="tooltip" data-tip="See your average WPM below">
-          <IoIosInformationCircleOutline className="text-[16px] ms-1 mt-2" />
-        </div>
+        <TooltipPopOver text="Sample text for WPM benchmarks." align="middle" />
       </p>
       <div className="flex justify-center w-full mt-4">
         <div className="w-7/12 relative">
@@ -117,10 +113,10 @@ const WpmDetails = () => {
             <RiMapPin2Fill className="text-[#F4470E] text-xl" />
             <div className="absolute top-5 left-1/2 transform -translate-x-1/2 text-xs whitespace-nowrap mt-3">
               {baseParameterDetails.mean > maxWpm
-                ? ">250 wpm"
+                ? ">250 speechRate"
                 : baseParameterDetails.mean < minWpm
-                ? "<50 wpm"
-                : `${baseParameterDetails.mean} wpm`}
+                ? "<50 speechRate"
+                : `${baseParameterDetails.mean} speechRate`}
             </div>
           </div>
         </div>
@@ -129,4 +125,4 @@ const WpmDetails = () => {
   );
 };
 
-export default WpmDetails;
+export default SpeechRateDetails;

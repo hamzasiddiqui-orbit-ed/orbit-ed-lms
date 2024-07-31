@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { SessionReportContext } from "../contexts/sessionReport.context";
-import WpmDetails from "./WpmDetails";
+import SpeechRateDetails from "./SpeechRateDetails";
 import PausesDetail from "./PausesDetail";
 import PitchDetails from "./PitchDetails";
 import LoudnessDetails from "./LoudnessDetails";
@@ -12,8 +12,8 @@ import RepetitiveWordsDetails from "./RepetitiveWordsDetails";
 const BaseParameterDetails = () => {
   const { baseParameter } = useContext(SessionReportContext);
 
-  if (baseParameter == "wpm") {
-    return <WpmDetails />;
+  if (baseParameter == "speech_rate") {
+    return <SpeechRateDetails />;
   } else if (baseParameter == "pauses") {
     return <PausesDetail />;
   } else if (baseParameter == "pitch") {

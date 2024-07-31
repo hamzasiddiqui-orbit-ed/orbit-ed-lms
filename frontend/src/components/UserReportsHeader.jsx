@@ -6,7 +6,7 @@ import {
   useModuleGeneralDetails,
 } from "../hooks/useModules";
 
-const UserReportsHeader = () => {
+const UserReportsHeader = ({sendModuleNameToParent}) => {
   const { state: userState } = useContext(UserContext);
   const userId = userState.user._id;
 
@@ -27,6 +27,7 @@ const UserReportsHeader = () => {
 
   const handleModuleSelect = (moduleName) => {
     setSelectedModule(moduleName === "All Modules" ? null : moduleName);
+    sendModuleNameToParent(moduleName)
   };
 
   const dropdownData = assignedModules?.data
@@ -34,7 +35,7 @@ const UserReportsHeader = () => {
     : ["All Modules"];
 
   return (
-    <div className="flex items-start mb-12 ps-5">
+    <div className="flex items-start ps-5">
       <div className="w-full">
         <h1 className="text-3xl font-medium text-headingDark mb-4 ps-2 text-start">
           Module Overview
@@ -45,26 +46,27 @@ const UserReportsHeader = () => {
             dropDownData={dropdownData}
             handleDropDownExpand={refetchAssignedModules}
             handleDropDownSelect={handleModuleSelect}
+            sessions={false}
           />
         </div>
         {moduleGeneralDetails?.data && (
           <>
-            <div className="flex items-center">
-              <div className="btn btn-sm bg-core border-0 shadow-core text-textLight text-base font-normal hover:bg-sideNavHighlight">
+            <div className="flex items-center mt-3">
+              <div className="text-textLight text-base font-normal ps-3">
                 Assigned Date: {moduleGeneralDetails.data.assignedDate}
               </div>
-              <div className="btn btn-sm bg-core border-0 shadow-core text-textLight text-base font-normal hover:bg-sideNavHighlight ms-16">
+              <div className="text-textLight text-base font-normal ps-16">
                 Due Date: {moduleGeneralDetails.data.dueDate}
               </div>
-              <div className="btn btn-sm bg-core border-0 shadow-core text-textLight text-base font-normal hover:bg-sideNavHighlight ms-16">
+              <div className="text-textLight text-base font-normal ps-16">
                 Completed Date: {moduleGeneralDetails.data.completedDate}
               </div>
             </div>
-            <div className="flex items-center justify-between">
-              <div className="btn btn-sm bg-core border-0 shadow-core text-textLight text-base font-normal hover:bg-sideNavHighlight">
+            <div className="flex items-center justify-between mt-3">
+              <div className="text-textLight text-base font-normal ps-3">
                 Assigned By: {moduleGeneralDetails.data.assignedBy}
               </div>
-              <div className="btn btn-sm bg-core border-0 shadow-core text-textLight text-base font-normal hover:bg-sideNavHighlight me-16">
+              <div className="text-textLight text-base font-normal ps-3 pe-8">
                 Module Average Score: {moduleGeneralDetails.data.averageScore}%
               </div>
             </div>

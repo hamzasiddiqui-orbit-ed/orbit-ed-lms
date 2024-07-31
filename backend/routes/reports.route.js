@@ -12,6 +12,7 @@ const {
   getDerivedParameterScores,
   getBaseParameterScores,
   getBaseParameterDetails,
+  getSessionReportList,
 } = require("../controllers/reports.controller");
 const { protect } = require("../middlewares/auth");
 
@@ -52,8 +53,8 @@ router.post("/base-parameters-from-derived", protect, (req, res, next) => {
   next();
 }, getBaseParametersForDerived)
 
-router.post("/derived-parameter-detail", protect, (req, res, next) => {
-  console.log("\nROUTE HIT (reports.route): derived-parameter-detail\n");
+router.post("/derived-parameter-details", protect, (req, res, next) => {
+  console.log("\nROUTE HIT (reports.route): derived-parameter-details\n");
   next();
 }, getDerivedParameterDetails)
 
@@ -76,5 +77,10 @@ router.post("/base-parameter-details", protect, (req, res, next) => {
   console.log("\nROUTE HIT (reports.route): base-parameter-details\n");
   next();
 }, getBaseParameterDetails)
+
+router.post("/session-report-list", protect, (req, res, next) => {
+  console.log("\nROUTE HIT (reports.route): session-report-list\n");
+  next();
+}, getSessionReportList)
 
 module.exports = router;

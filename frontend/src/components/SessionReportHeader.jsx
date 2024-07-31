@@ -104,7 +104,7 @@ const SessionReportHeader = () => {
           />
         </div>
         <div className="flex items-center">
-          <div className="btn btn-sm bg-core border-0 shadow-core text-textLight text-base font-normal hover:bg-sideNavHighlight">
+          <div className="text-textLight text-base font-normal ps-3">
             {reportData?.createdAt || "N/A"}
           </div>
           <div className="ml-8">

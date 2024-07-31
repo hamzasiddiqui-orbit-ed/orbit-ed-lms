@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
 const DropdownUserReport = ({
@@ -9,12 +9,33 @@ const DropdownUserReport = ({
   handleDropDownSelect,
   sessions,
 }) => {
-  const detailsRef = React.useRef(null);
+  const detailsRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (detailsRef.current && !detailsRef.current.contains(event.target)) {
+        detailsRef.current.removeAttribute("open");
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleSelectAndClose = (moduleName) => {
     handleDropDownSelect(moduleName);
     if (detailsRef.current) {
       detailsRef.current.removeAttribute("open");
+    }
+  };
+
+  const handleSummaryClick = (e) => {
+    e.preventDefault();
+    handleDropDownExpand();
+    if (detailsRef.current) {
+      detailsRef.current.setAttribute("open", "");
     }
   };
 
@@ -26,7 +47,7 @@ const DropdownUserReport = ({
           { "text-base": sessions == true },
           { "text-xl": sessions == false }
         )}
-        onClick={handleDropDownExpand}
+        onClick={handleSummaryClick}
       >
         {title}
         <MdOutlineKeyboardArrowDown />

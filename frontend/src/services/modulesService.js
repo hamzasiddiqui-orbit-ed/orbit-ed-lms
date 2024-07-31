@@ -14,7 +14,5 @@ export const getModuleGeneralDetails = async (userId, moduleName) => {
     module_name: moduleName,
   });
 
-  console.log(response);
-
   return response;
 };

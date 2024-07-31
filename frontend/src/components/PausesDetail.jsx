@@ -3,7 +3,7 @@ import { SessionReportContext } from "../contexts/sessionReport.context";
 import { useBaseParameterDetails } from "../hooks/useReports";
 import { pauses } from "../utils/baseParametersInfo";
 import { RiMapPin2Fill } from "react-icons/ri";
-import { IoIosInformationCircleOutline } from "react-icons/io";
+import TooltipPopOver from "./TooltipPopOver";
 import ProgressBarLinear from "./ProgressBarLinear";
 
 const PausesDetail = () => {
@@ -55,9 +55,7 @@ const PausesDetail = () => {
       {/* Benchmark Bar */}
       <p className="text-2xl text-headingDark font-semibold text-start mt-8 flex">
         <span>Benchmarks</span>
-        <div className="tooltip" data-tip="See pauses benchmark below">
-          <IoIosInformationCircleOutline className="text-[16px] ms-1 mt-2" />
-        </div>
+        <TooltipPopOver text="Sample text for Pauses benchmarks." align="middle" />
       </p>
       <div className="flex justify-center w-full">
         <div className="w-7/12 mt-6">
@@ -86,9 +84,7 @@ const PausesDetail = () => {
       {/* Stats Bar */}
       <p className="text-2xl text-headingDark font-semibold text-start mt-8 flex">
         <span>Stats</span>
-        <div className="tooltip" data-tip="See your average pauses below">
-          <IoIosInformationCircleOutline className="text-[16px] ms-1 mt-2" />
-        </div>
+        <TooltipPopOver text="Sample text for Pauses Stats." align="middle" />
       </p>
       <div className="flex justify-center w-full mt-4">
         <div className="w-7/12 relative">

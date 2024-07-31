@@ -61,7 +61,7 @@ export const getBaseParametersFromDerived = async (
 };
 
 export const getDerivedParameterDetail = async (reportId, derivedParameter) => {
-  const response = await api.post("reports/derived-parameter-detail", {
+  const response = await api.post("reports/derived-parameter-details", {
     report_id: reportId,
     derived_parameter: derivedParameter,
   });
@@ -106,7 +106,21 @@ export const getBaseParameterDetails = async (
     base_parameter: baseParameter,
   });
 
-  console.log(response);
+  return response;
+};
+
+export const getSessionReportList = async (
+  userId,
+  moduleName,
+  page,
+  sort
+) => {
+  const response = await api.post("reports/session-report-list", {
+    user_id: userId,
+    module_name: moduleName,
+    page,
+    sort,
+  });
 
   return response;
 };

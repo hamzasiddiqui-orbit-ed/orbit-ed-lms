@@ -3,7 +3,7 @@ import { SessionReportContext } from "../contexts/sessionReport.context";
 import { useBaseParameterDetails } from "../hooks/useReports";
 import { repetitiveWords } from "../utils/baseParametersInfo";
 import { RiMapPin2Fill } from "react-icons/ri";
-import { IoIosInformationCircleOutline } from "react-icons/io";
+import TooltipPopOver from "./TooltipPopOver";
 import ProgressBarLinear from "./ProgressBarLinear";
 
 const RepetitiveWordsDetails = () => {
@@ -63,9 +63,7 @@ const RepetitiveWordsDetails = () => {
       {/* Benchmark Bar */}
       <p className="text-2xl text-headingDark font-semibold text-start mt-8 flex">
         <span>Benchmarks</span>
-        <div className="tooltip" data-tip="See pauses benchmark below">
-          <IoIosInformationCircleOutline className="text-[16px] ms-1 mt-2" />
-        </div>
+        <TooltipPopOver text="Sample text for Repetitive Words benchmarks." align="middle" />
       </p>
       <div className="flex justify-center w-full">
         <div className="w-7/12 mt-6">
@@ -94,9 +92,7 @@ const RepetitiveWordsDetails = () => {
       {/* Stats Bar */}
       <p className="text-2xl text-headingDark font-semibold text-start mt-8 flex">
         <span>Stats</span>
-        <div className="tooltip" data-tip="See your average WPM below">
-          <IoIosInformationCircleOutline className="text-[16px] ms-1 mt-2" />
-        </div>
+        <TooltipPopOver text="Sample text for Repetitive Words benchmarks." align="middle" />
       </p>
       <div className="flex justify-center w-full mt-4">
         <div className="w-7/12 relative">
@@ -124,7 +120,7 @@ const RepetitiveWordsDetails = () => {
       </div>
 
       {/* Progress Bars for Sounds */}
-      <div className="mt-8 flex flex-wrap justify-between me-3">
+      <div className="mt-8 flex flex-wrap justify-between me-5">
         {baseParameterDetails.list.map((item) => {
           const [sound, count] = Object.entries(item)[0];
           const progressValue = (count / maxCount) * 100;

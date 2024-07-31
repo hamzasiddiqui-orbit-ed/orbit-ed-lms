@@ -6,9 +6,9 @@ const UserAvatar = () => {
   const name = userState.user.name;
 
   return (
-    <div className="flex absolute top-10 end-10 btn bg-core border-0 shadow-core rounded-full">
+    <div className="flex absolute top-12 end-10 btn btn-lg bg-core border-0 shadow-core rounded-full">
       <div className="avatar online placeholder">
-        <div className="bg-textLight text-core w-8 rounded-full">
+        <div className="bg-textLight text-core w-12 rounded-full">
           <span className="text-xs">T</span>
         </div>
       </div>

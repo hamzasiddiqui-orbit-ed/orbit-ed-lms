@@ -10,7 +10,6 @@ import {
   Label,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 
@@ -47,11 +46,22 @@ const DerivedParameterChart = () => {
     return null;
   };
 
+  const isSingleDataPoint = data && data.length === 1;
+
   return (
-    <div className="w-10/12 mt-8 ms-5">
+    <div className="w-10/12 mt-8 ms-5 relative">
+      {isSingleDataPoint && (
+        <div className="absolute inset-0 flex items-center justify-center backdrop-blur-xl">
+          <p className="text-lg font-semibold text-textDark">
+            You scored {data[0].score}% in your first session. <br /> Take more
+            sessions to see trend.
+          </p>
+        </div>
+      )}
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
           data={data}
+          className={isSingleDataPoint ? "blur-sm" : ""}
           margin={{
             top: 5,
             right: 5,
@@ -61,12 +71,12 @@ const DerivedParameterChart = () => {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="sessionCount">
-            <Label value="No. of sessions" position="bottom" />
+            <Label value="Session Count" position="bottom" />
           </XAxis>
           <YAxis dataKey="score">
             <Label value="Score (%)" angle={-90} position="left" dy="-10" />
           </YAxis>
-          <Tooltip content={<CustomTooltip />} />
+          {!isSingleDataPoint && <Tooltip content={<CustomTooltip />} />}
           <Line
             type="monotone"
             dataKey="score"

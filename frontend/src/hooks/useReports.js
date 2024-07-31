@@ -106,3 +106,12 @@ export const useBaseParameterDetails = (reportId, baseParameter) => {
     enabled: !!reportId && !!baseParameter,
   });
 };
+
+export const useSessionReportList = (userId, moduleName, page, sort) => {
+  return useQuery({
+    queryKey: ["sessionReportList", userId, moduleName, page, sort],
+    queryFn: () =>
+      reportsService.getSessionReportList(userId, moduleName, page, sort),
+    // enabled: !!userId && !!moduleName && !!page,
+  });
+};

@@ -544,7 +544,20 @@ const getBaseParameterDetails = async (req, res) => {
     return res.status(400).json({ message: "Missing required data." });
   }
 
-  console.log(reportId, baseParameter);
+  paras = [
+    "speech_rate",
+    "eye_contact",
+    "loudness",
+    "pauses",
+    "repetitive_words",
+    "filler_sounds",
+    "pitch",
+    "clarity",
+  ];
+
+  if (!paras.includes(baseParameter)) {
+    return res.status(404).json({ message: "No base parameter found." });
+  }
 
   try {
     const query = {
@@ -557,18 +570,117 @@ const getBaseParameterDetails = async (req, res) => {
 
     const response = await SessionReport.findOne(query, projection);
 
-    const data =  {
+    const data = {
       [baseParameter]: response.parameters.base[baseParameter],
-    }
+    };
 
-    if (!response) {
+    if (!response || !data) {
       return res.status(404).json({ message: "No report found." });
     } else {
       return res.status(200).json(data);
     }
-
   } catch (err) {
-    return res.status(500).json({ message: `Query response: ${err.message}` });
+    return res.status(400).json({ message: `Query response: ${err.message}` });
+  }
+};
+
+// -----------------------------
+// Fetch List of reports of User
+// -----------------------------
+// Utility function to format dates (move to middleware)
+const formatDate = (date) => {
+  const options = { day: "numeric", month: "short", year: "numeric" };
+  return new Date(date).toLocaleDateString("en-GB", options);
+};
+
+// Utility function to format dates (move to middleware)
+const formatDuration = (seconds) => {
+  const hrs = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+
+  return `${hrs.toString().padStart(2, "0")}:${mins
+    .toString()
+    .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+};
+
+const getSessionReportList = async (req, res) => {
+  const { user_id: userId, module_name: moduleName, page, sort } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ message: "Missing required data." });
+  }
+
+  const dataPerPage = 10;
+
+  try {
+    let query = {
+      user_id: mongoose.Types.ObjectId.createFromHexString(userId),
+    };
+
+    if (moduleName) {
+      query.module_name = moduleName;
+    }
+
+    const sortOptions = {};
+    if (sort) {
+      switch (sort) {
+        case "sessionCount":
+          sortOptions.session_count = 1;
+          break;
+        case "moduleName":
+          sortOptions.module_name = 1;
+          break;
+        case "dateTaken":
+          sortOptions.createdAt = -1;
+          break;
+        case "duration":
+          sortOptions.total_time = -1;
+          break;
+        case "sessionScore":
+          sortOptions.total_score = -1;
+          break;
+        case "quizScore":
+          sortOptions["quiz.score"] = -1;
+          break;
+        default:
+          break;
+      }
+    } else {
+      sortOptions.createdAt = -1;
+    }
+
+    const reports = await SessionReport.find(query)
+      .select(
+        "session_count module_name createdAt total_time total_score quiz.score transcription"
+      )
+      .skip((page - 1) * dataPerPage)
+      .limit(dataPerPage)
+      .sort(sortOptions);
+
+    const totalReports = await SessionReport.countDocuments(query);
+    const totalPages = Math.ceil(totalReports / dataPerPage);
+
+    const formattedReports = reports.map((report) => ({
+      reportId: report._id,
+      sessionCount: report.session_count,
+      moduleName: report.module_name,
+      dateTaken: formatDate(report.createdAt),
+      duration: formatDuration(report.total_time),
+      sessionScore: report.total_score,
+      quizScore: report.quiz.score,
+      transcript: report.transcription,
+    }));
+
+    return res.status(200).json({
+      page,
+      totalPages,
+      dataPerPage,
+      totalReports,
+      reports: formattedReports,
+    });
+  } catch (err) {
+    return res.status(400).json({ message: `Query response: ${err.message}` });
   }
 };
 
@@ -585,4 +697,5 @@ module.exports = {
   getDerivedParameterScores,
   getBaseParameterScores,
   getBaseParameterDetails,
+  getSessionReportList,
 };

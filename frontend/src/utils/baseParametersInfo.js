@@ -1,5 +1,5 @@
 // 1.
-export const wpm = {
+export const speechRate = {
   description:
     "The pace at which you converse with your audience has a significant impact on how well you communicate your message. Therefore, it's crucial to comprehend your speaking rate, which is the number of words spoken per minute.",
 };

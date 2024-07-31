@@ -16,7 +16,7 @@ const SessionReportLeftCol = () => {
 
   if (isPending) {
     return (
-      <div className="flex w-2/12 flex-col gap-4 ms-10 items-center">
+      <div className="flex flex-col gap-4 ms-10 items-center">
         <div className="skeleton h-44 w-44 shrink-0 rounded-full"></div>
         <div className="skeleton h-10 w-full"></div>
         <div className="skeleton h-10 w-full"></div>
@@ -30,7 +30,7 @@ const SessionReportLeftCol = () => {
   }
 
   return (
-    <div className="w-2/12 flex flex-col items-center ms-10">
+    <div className="flex flex-col items-center ms-10">
       <RadialProgressUserReport totalScore={totalScore} />
 
       {/* Parameters section */}
