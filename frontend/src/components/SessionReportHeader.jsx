@@ -12,10 +12,18 @@ const SessionReportHeader = () => {
   const { state: userState } = useContext(UserContext);
   const userId = userState.user._id;
 
-  const [selectedModule, setSelectedModule] = useState(null);
-  const [selectedSessionCount, setSelectedSessionCount] = useState(null);
+  // const [selectedModule, setSelectedModule] = useState(null);
+  // const [selectedSessionCount, setSelectedSessionCount] = useState(null);
 
-  const { setReportId, setModuleName, setTotalScore } = useContext(SessionReportContext);
+  const {
+    setReportId,
+    setModuleName,
+    setTotalScore,
+    selectedModule,
+    setSelectedModule,
+    selectedSessionCount,
+    setSelectedSessionCount,
+  } = useContext(SessionReportContext);
 
   const {
     reportData,
@@ -38,6 +46,39 @@ const SessionReportHeader = () => {
     isError: isSessionError,
   } = useModuleSessionsFromReports(userId, selectedModule);
 
+  // useEffect(() => {
+  //   if (reportData) {
+  //     if (!selectedModule) {
+  //       setSelectedModule(reportData.moduleName);
+  //     }
+  //     if (!selectedSessionCount) {
+  //       setSelectedSessionCount(reportData.sessionCount);
+  //     }
+  //     setReportId(reportData.reportId);
+  //     setTotalScore(reportData.totalScore);
+  //     setModuleName(reportData.moduleName);
+  //   }
+  // }, [
+  //   reportData,
+  //   selectedModule,
+  //   selectedSessionCount,
+  //   setReportId,
+  //   setTotalScore,
+  // ]);
+
+  // useEffect(() => {
+  //   if (selectedModule && selectedSessionCount) {
+  //     refetchReport();
+  //   }
+  // }, [selectedModule, selectedSessionCount, refetchReport]);
+
+  useEffect(() => {
+    if (!selectedModule && !selectedSessionCount) {
+      // If no specific report is selected, fetch the latest report
+      refetchReport();
+    }
+  }, [selectedModule, selectedSessionCount, refetchReport]);
+
   useEffect(() => {
     if (reportData) {
       if (!selectedModule) {
@@ -50,26 +91,20 @@ const SessionReportHeader = () => {
       setTotalScore(reportData.totalScore);
       setModuleName(reportData.moduleName);
     }
-  }, [
-    reportData,
-    selectedModule,
-    selectedSessionCount,
-    setReportId,
-    setTotalScore,
-  ]);
+  }, [reportData, setSelectedModule, setSelectedSessionCount, setReportId, setTotalScore, setModuleName]);
 
-  useEffect(() => {
-    if (selectedModule && selectedSessionCount) {
-      refetchReport();
-    }
-  }, [selectedModule, selectedSessionCount, refetchReport]);
 
   const handleModuleSelect = (moduleName) => {
+    // setSelectedModule(moduleName);
+    // setSelectedSessionCount(null); // Reset session count when module changes
+
     setSelectedModule(moduleName);
-    setSelectedSessionCount(null); // Reset session count when module changes
+    setSelectedSessionCount(null);
   };
 
   const handleSessionSelect = (sessionCount) => {
+    // setSelectedSessionCount(sessionCount);
+
     setSelectedSessionCount(sessionCount);
   };
 
@@ -93,7 +128,7 @@ const SessionReportHeader = () => {
         <h1 className="text-3xl font-medium text-headingDark mb-4 ps-2 text-start">
           Module Performance
         </h1>
-        
+
         <div className="mb-4 text-start">
           <DropdownUserReport
             title={selectedModule || "Select Module"}

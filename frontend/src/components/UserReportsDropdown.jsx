@@ -30,7 +30,7 @@ const UserReportsDropdown = ({
           dropDownData.map((item, index) => (
             <li key={index}>
               <button
-                className="text-textLight btn bg-core shadow-core border-0 hover:bg-sideNavBG"
+                className="text-textLight btn bg-core shadow-core border-0 hover:bg-sideNavBG min-w-60"
                 onClick={() => handleSelectAndClose(item)}
               >
                 {item}

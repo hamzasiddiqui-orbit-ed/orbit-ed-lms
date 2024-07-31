@@ -15,7 +15,8 @@ const UserReportsTable = ({
   handleSort,
 }) => {
   const navigate = useNavigate();
-  const { setReportId } = useContext(SessionReportContext);
+  const { setSelectedModule, setSelectedSessionCount } =
+    useContext(SessionReportContext);
 
   const [selectedReport, setSelectedReport] = useState(null);
 
@@ -31,12 +32,15 @@ const UserReportsTable = ({
     return <FaSort size={12} />;
   };
 
-  const handleRowClick = (report) => {
-    // setReportId(report.reportId);
-    // navigate('/learner-dashboard/my-dashboard');
+  const handleShowMoreClick = (event, report) => {
+    event.stopPropagation();
+    setSelectedReport(report);
+  };
 
-    console.log(report);
-    console.log(report.reportId);
+  const handleRowClick = (report) => {
+    setSelectedModule(report.moduleName);
+    setSelectedSessionCount(report.sessionCount);
+    navigate("/learner-dashboard/my-dashboard");
   };
 
   return (
@@ -157,7 +161,9 @@ const UserReportsTable = ({
                             <a
                               href="#transcript_modal"
                               className="text-xs"
-                              onClick={() => setSelectedReport(report)}
+                              onClick={(event) =>
+                                handleShowMoreClick(event, report)
+                              }
                             >
                               Show more
                             </a>
@@ -165,13 +171,15 @@ const UserReportsTable = ({
                               className="modal"
                               role="dialog"
                               id="transcript_modal"
+                              // Prevents closing the modal from triggering row click
+                              onClick={(event) => event.stopPropagation()}
                             >
                               <div className="modal-box">
                                 {selectedReport && (
                                   <>
-                                    <h3 className="text-lg font-bold">
-                                      {selectedReport.moduleName} | Session{" "}
-                                      {selectedReport.sessionCount}
+                                    <h3 className="text-lg font-bold flex justify-between">
+                                      <p>{selectedReport.moduleName}</p>
+                                      <p>Session {selectedReport.sessionCount}</p>
                                     </h3>
                                     <h4 className="text-base font-bold pt-3">
                                       Transcription
@@ -183,6 +191,10 @@ const UserReportsTable = ({
                                       <a
                                         href="#"
                                         className="btn btn-sm bg-sideNavHighlight border-0 hover:bg-sideNavBG hover:text-textDark"
+                                        onClick={(event) =>
+                                          // Prevents closing the modal from triggering row click
+                                          event.stopPropagation()
+                                        }
                                       >
                                         Close
                                       </a>

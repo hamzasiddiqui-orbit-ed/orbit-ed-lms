@@ -9,6 +9,9 @@ export const SessionReportProvider = ({ children }) => {
   const [derivedParameter, setDerivedParameter] = useState(null);
   const [baseParameter, setBaseParameter] = useState(null);
 
+  const [selectedModule, setSelectedModule] = useState(null);
+  const [selectedSessionCount, setSelectedSessionCount] = useState(null);
+
   return (
     <SessionReportContext.Provider
       value={{
@@ -22,6 +25,10 @@ export const SessionReportProvider = ({ children }) => {
         setDerivedParameter,
         baseParameter,
         setBaseParameter,
+        selectedModule,
+        setSelectedModule,
+        selectedSessionCount,
+        setSelectedSessionCount,
       }}
     >
       {children}

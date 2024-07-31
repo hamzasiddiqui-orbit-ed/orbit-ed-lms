@@ -20,6 +20,8 @@ function SideNav() {
     setTotalScore,
     setDerivedParameter,
     setBaseParameter,
+    setSelectedModule,
+    setSelectedSessionCount,
   } = useContext(SessionReportContext);
 
   const { logoutMutation } = useAuth();
@@ -39,6 +41,8 @@ function SideNav() {
     setTotalScore(null);
     setDerivedParameter(null);
     setBaseParameter(null);
+    setSelectedModule(null);
+    setSelectedSessionCount(null);
   };
 
   return (
@@ -74,7 +78,7 @@ function SideNav() {
             {({ isActive }) => (
               <SideNavButton
                 icon={PiGraduationCap}
-                text="User Report"
+                text="User Reports"
                 className={isActive ? "active" : ""}
                 onClick={handleButtonClick}
               />
