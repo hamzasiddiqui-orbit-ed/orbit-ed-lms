@@ -20,7 +20,7 @@ function SideNavButton({
             className.includes("active") ? "text-textBlue" : ""
           }`}
         />
-        {text ? (
+        {text != "Pending" ? (
           <p
             className={`font-light tracking-wide ${className} ${
               className.includes("active") ? "text-textBlue" : ""
@@ -29,7 +29,7 @@ function SideNavButton({
             {text}
           </p>
         ) : (
-          children
+          <span className="loading loading-dots loading-md"></span>
         )}
       </button>
     </li>

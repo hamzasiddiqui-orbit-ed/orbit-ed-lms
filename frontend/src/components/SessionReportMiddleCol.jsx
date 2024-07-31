@@ -13,11 +13,11 @@ const SessionReportMiddleCol = () => {
     isError,
   } = useSessionReportDerivedParameters(reportId);
 
-  if (isPending) {
+  if (isPending ) {
     return (
       <div className="flex w-6/12 flex-col gap-4 me-5">
-        <div className="skeleton h-10 w-full"></div>
-        <div className="skeleton h-80 w-full"></div>
+        <div className="skeleton bg-slate-200 h-10 w-full"></div>
+        <div className="skeleton bg-slate-200 h-80 w-full"></div>
       </div>
     );
   }

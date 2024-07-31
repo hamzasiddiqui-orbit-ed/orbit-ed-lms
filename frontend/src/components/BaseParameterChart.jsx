@@ -26,7 +26,11 @@ const BaseParameterChart = () => {
     isError,
   } = useBaseParameterScores(userId, moduleName, baseParameter);
 
-  if (isPending) return <div>Loading...</div>;
+  if (isPending) return (
+    <div className="w-3/12 text-center py-24">
+        <span className="loading loading-dots loading-lg"></span>
+      </div>
+  );
   if (isError) return <div>Error loading data</div>;
 
   const data = parameter?.data?.map((item) => ({

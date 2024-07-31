@@ -17,10 +17,10 @@ const SessionReportRightCol = () => {
   if (isPending) {
     return (
       <div className="flex w-3/12 flex-col gap-4 me-5">
-        <div className="skeleton h-10 w-28"></div>
-        <div className="skeleton h-8 w-full"></div>
-        <div className="skeleton h-8 w-full"></div>
-        <div className="skeleton h-32 w-full"></div>
+        <div className="skeleton bg-slate-200 h-10 w-28"></div>
+        <div className="skeleton bg-slate-200 h-8 w-full"></div>
+        <div className="skeleton bg-slate-200 h-8 w-full"></div>
+        <div className="skeleton bg-slate-200 h-60 w-full"></div>
       </div>
     );
   }

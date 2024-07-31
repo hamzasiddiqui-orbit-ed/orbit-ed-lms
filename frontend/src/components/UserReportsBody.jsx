@@ -16,7 +16,13 @@ const UserReportsBody = ({ moduleName }) => {
   } = useSessionReportList(userId, moduleName, page, sort);
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col gap-4 ps-5 mb-12">
+        <div className="skeleton bg-slate-200 h-10"></div>
+        <div className="skeleton bg-slate-200 h-10"></div>
+        <div className="skeleton bg-slate-200 h-80"></div>
+      </div>
+    );
   }
 
   if (isError) {

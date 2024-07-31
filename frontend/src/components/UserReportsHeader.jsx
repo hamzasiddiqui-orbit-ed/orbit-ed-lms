@@ -34,6 +34,20 @@ const UserReportsHeader = ({sendModuleNameToParent}) => {
     ? ["All Modules", ...assignedModules.data]
     : ["All Modules"];
 
+    if (isPending) {
+      return (
+        <div className="flex flex-col gap-4 ps-5 mb-12">
+          <div className="skeleton bg-slate-200 h-10 w-44"></div>
+          <div className="skeleton bg-slate-200 h-8"></div>
+          <div className="skeleton bg-slate-200 h-8"></div>
+        </div>
+      );
+    }
+  
+    if (isError) {
+      return <div>Error loading data. Please try again.</div>;
+    }
+
   return (
     <div className="flex items-start ps-5">
       <div className="w-full">

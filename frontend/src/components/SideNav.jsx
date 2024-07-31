@@ -97,11 +97,19 @@ function SideNav() {
 
         <div className="mb-5 ms-2 sm:ms-0 w-full">
           <SideNavButton icon={HiOutlineUserCircle} text="My Profile" />
-          <SideNavButton
-            icon={IoLogOutOutline}
-            text="Log Out"
-            onClick={handleLogOut}
-          />
+          {!logoutMutation.isPending ? (
+            <SideNavButton
+              icon={IoLogOutOutline}
+              text="Log Out"
+              onClick={handleLogOut}
+            />
+          ) : (
+            <SideNavButton
+              icon={IoLogOutOutline}
+              text="Pending"
+              onClick={handleLogOut}
+            />
+          )}
         </div>
       </ul>
     </div>

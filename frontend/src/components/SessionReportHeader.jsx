@@ -46,32 +46,6 @@ const SessionReportHeader = () => {
     isError: isSessionError,
   } = useModuleSessionsFromReports(userId, selectedModule);
 
-  // useEffect(() => {
-  //   if (reportData) {
-  //     if (!selectedModule) {
-  //       setSelectedModule(reportData.moduleName);
-  //     }
-  //     if (!selectedSessionCount) {
-  //       setSelectedSessionCount(reportData.sessionCount);
-  //     }
-  //     setReportId(reportData.reportId);
-  //     setTotalScore(reportData.totalScore);
-  //     setModuleName(reportData.moduleName);
-  //   }
-  // }, [
-  //   reportData,
-  //   selectedModule,
-  //   selectedSessionCount,
-  //   setReportId,
-  //   setTotalScore,
-  // ]);
-
-  // useEffect(() => {
-  //   if (selectedModule && selectedSessionCount) {
-  //     refetchReport();
-  //   }
-  // }, [selectedModule, selectedSessionCount, refetchReport]);
-
   useEffect(() => {
     if (!selectedModule && !selectedSessionCount) {
       // If no specific report is selected, fetch the latest report
@@ -91,8 +65,14 @@ const SessionReportHeader = () => {
       setTotalScore(reportData.totalScore);
       setModuleName(reportData.moduleName);
     }
-  }, [reportData, setSelectedModule, setSelectedSessionCount, setReportId, setTotalScore, setModuleName]);
-
+  }, [
+    reportData,
+    setSelectedModule,
+    setSelectedSessionCount,
+    setReportId,
+    setTotalScore,
+    setModuleName,
+  ]);
 
   const handleModuleSelect = (moduleName) => {
     // setSelectedModule(moduleName);
@@ -111,9 +91,9 @@ const SessionReportHeader = () => {
   if (isPending || isModuleLoading || isSessionLoading) {
     return (
       <div className="flex flex-col gap-4 ps-5 mb-12">
-        <div className="skeleton h-10 w-44"></div>
-        <div className="skeleton h-8"></div>
-        <div className="skeleton h-8"></div>
+        <div className="skeleton bg-slate-200 h-10 w-44"></div>
+        <div className="skeleton bg-slate-200 h-8"></div>
+        <div className="skeleton bg-slate-200 h-8"></div>
       </div>
     );
   }
