@@ -2,6 +2,9 @@ import React, { useState, useContext } from "react";
 import { SessionReportContext } from "../contexts/sessionReport.context";
 import { useNavigate } from "react-router-dom";
 import { TiArrowUnsorted } from "react-icons/ti";
+import { FaSort } from "react-icons/fa6";
+import { FaSortDown } from "react-icons/fa6";
+import { FaSortUp } from "react-icons/fa6";
 
 const UserReportsTable = ({
   reportsList,
@@ -16,10 +19,17 @@ const UserReportsTable = ({
 
   const [selectedReport, setSelectedReport] = useState(null);
 
-  const getButtonClass = (sortBy) =>
-    sort === sortBy
-      ? "btn btn-xs shadow-sideNavHighlight rounded-full px-1 ms-1 bg-brand text-textLight hover:bg-progressBasic hover:text-textDark border-0"
-      : "btn btn-xs shadow-sideNavHighlight rounded-full px-1 ms-1 hover:bg-progressBasic hover:text-textDark border-0";
+  const getButtonClass = (sortBy) => {
+    if (sort)
+      return "btn btn-xs shadow-sideNavHighlight rounded-full px-1 ms-1 bg-sideNavHighlight text-textDark hover:bg-progressBasic hover:text-textDark border-0";
+    return "btn btn-xs shadow-sideNavHighlight rounded-full px-1 ms-1 hover:bg-progressBasic hover:text-textDark border-0";
+  };
+
+  const getSortIcon = (sortBy) => {
+    if (sort === sortBy + "Asc") return <FaSortUp size={12} />;
+    if (sort === sortBy + "Desc") return <FaSortDown size={12} />;
+    return <FaSort size={12} />;
+  };
 
   const handleRowClick = (report) => {
     // setReportId(report.reportId);
@@ -27,7 +37,7 @@ const UserReportsTable = ({
 
     console.log(report);
     console.log(report.reportId);
-  }
+  };
 
   return (
     <>
@@ -44,7 +54,7 @@ const UserReportsTable = ({
                         className={getButtonClass("sessionCount")}
                         onClick={() => handleSort("sessionCount")}
                       >
-                        <TiArrowUnsorted size={15} />
+                        {getSortIcon("sessionCount")}
                       </button>
                     </div>
                   </th>
@@ -56,22 +66,11 @@ const UserReportsTable = ({
                           className={getButtonClass("moduleName")}
                           onClick={() => handleSort("moduleName")}
                         >
-                          <TiArrowUnsorted size={15} />
+                          {getSortIcon("moduleName")}
                         </button>
                       </div>
                     </th>
                   )}
-                  <th className="px-3 py-3">
-                    <div className="flex items-center justify-center">
-                      Duration
-                      <button
-                        className={getButtonClass("duration")}
-                        onClick={() => handleSort("duration")}
-                      >
-                        <TiArrowUnsorted size={15} />
-                      </button>
-                    </div>
-                  </th>
                   <th className="px-3 py-3">
                     <div className="flex items-center justify-center">
                       Date Taken
@@ -79,7 +78,18 @@ const UserReportsTable = ({
                         className={getButtonClass("dateTaken")}
                         onClick={() => handleSort("dateTaken")}
                       >
-                        <TiArrowUnsorted size={15} />
+                        {getSortIcon("dateTaken")}
+                      </button>
+                    </div>
+                  </th>
+                  <th className="px-3 py-3">
+                    <div className="flex items-center justify-center">
+                      Duration
+                      <button
+                        className={getButtonClass("duration")}
+                        onClick={() => handleSort("duration")}
+                      >
+                        {getSortIcon("duration")}
                       </button>
                     </div>
                   </th>
@@ -90,7 +100,7 @@ const UserReportsTable = ({
                         className={getButtonClass("sessionScore")}
                         onClick={() => handleSort("sessionScore")}
                       >
-                        <TiArrowUnsorted size={15} />
+                        {getSortIcon("sessionScore")}
                       </button>
                     </div>
                   </th>
@@ -101,7 +111,7 @@ const UserReportsTable = ({
                         className={getButtonClass("quizScore")}
                         onClick={() => handleSort("quizScore")}
                       >
-                        <TiArrowUnsorted size={15} />
+                        {getSortIcon("quizScore")}
                       </button>
                     </div>
                   </th>
@@ -129,10 +139,10 @@ const UserReportsTable = ({
                         </td>
                       )}
                       <td className="px-3 py-4 text-center">
-                        {report.duration}
+                        {report.dateTaken}
                       </td>
                       <td className="px-3 py-4 text-center">
-                        {report.dateTaken}
+                        {report.duration}
                       </td>
                       <td className="px-3 py-4 text-center">
                         {report.sessionScore}%

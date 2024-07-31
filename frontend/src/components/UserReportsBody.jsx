@@ -29,7 +29,11 @@ const UserReportsBody = ({ moduleName }) => {
   
   const handleSort = (sortBy) => {
     setPage(1);
-    setSort((prevSort) => (prevSort === sortBy ? "" : sortBy));
+    setSort((prevSort) => {
+      if (prevSort === sortBy + "Asc") return sortBy + "Desc";
+      if (prevSort === sortBy + "Desc") return "";
+      return sortBy + "Asc";
+    });
   };
 
   return (

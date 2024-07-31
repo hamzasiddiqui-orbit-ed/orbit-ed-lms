@@ -625,22 +625,40 @@ const getSessionReportList = async (req, res) => {
     const sortOptions = {};
     if (sort) {
       switch (sort) {
-        case "sessionCount":
+        case "sessionCountAsc":
           sortOptions.session_count = 1;
           break;
-        case "moduleName":
+        case "moduleNameAsc":
           sortOptions.module_name = 1;
           break;
-        case "dateTaken":
+        case "dateTakenAsc":
+          sortOptions.createdAt = 1;
+          break;
+        case "durationAsc":
+          sortOptions.total_time = 1;
+          break;
+        case "sessionScoreAsc":
+          sortOptions.total_score = 1;
+          break;
+        case "quizScoreAsc":
+          sortOptions["quiz.score"] = 1;
+          break;
+        case "sessionCountDesc":
+          sortOptions.session_count = -1;
+          break;
+        case "moduleNameDesc":
+          sortOptions.module_name = -1;
+          break;
+        case "dateTakenDesc":
           sortOptions.createdAt = -1;
           break;
-        case "duration":
+        case "durationDesc":
           sortOptions.total_time = -1;
           break;
-        case "sessionScore":
+        case "sessionScoreDesc":
           sortOptions.total_score = -1;
           break;
-        case "quizScore":
+        case "quizScoreDesc":
           sortOptions["quiz.score"] = -1;
           break;
         default:
