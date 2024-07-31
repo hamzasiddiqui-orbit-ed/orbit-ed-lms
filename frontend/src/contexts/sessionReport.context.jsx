@@ -8,6 +8,7 @@ export const SessionReportProvider = ({ children }) => {
   const [totalScore, setTotalScore] = useState(null);
   const [derivedParameter, setDerivedParameter] = useState(null);
   const [baseParameter, setBaseParameter] = useState(null);
+  const [showQuiz, setShowQuiz] = useState(false);
 
   const [selectedModule, setSelectedModule] = useState(null);
   const [selectedSessionCount, setSelectedSessionCount] = useState(null);
@@ -29,6 +30,8 @@ export const SessionReportProvider = ({ children }) => {
         setSelectedModule,
         selectedSessionCount,
         setSelectedSessionCount,
+        showQuiz,
+        setShowQuiz,
       }}
     >
       {children}

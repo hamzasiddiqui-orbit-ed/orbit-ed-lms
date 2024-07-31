@@ -6,7 +6,7 @@ import BaseParameterChart from "./BaseParameterChart";
 import { IoIosArrowForward } from "react-icons/io";
 
 const SessionReportRightCol = () => {
-  const { reportId, baseParameter } = useContext(SessionReportContext);
+  const { reportId, baseParameter, setShowQuiz } = useContext(SessionReportContext);
 
   const {
     data: reportMisc,
@@ -37,6 +37,10 @@ const SessionReportRightCol = () => {
     return <BaseParameterChart />
   }
 
+  const handleQuizDetailsOpen = () => {
+    setShowQuiz(true)
+  }
+
   return (
     <div className="w-3/12 text-start me-5">
       <div className="mb-8">
@@ -48,10 +52,10 @@ const SessionReportRightCol = () => {
             <p className="text-textLight text-sm">
               You scored {reportMisc.data.quiz.score}% on the quiz.
             </p>
-            <a className="link link-hover text-xs text-utility flex items-center mt-1">
+            <button className="link link-hover text-xs text-utility flex items-center mt-1 hover:text-brand" onClick={handleQuizDetailsOpen}>
               View Details
               <IoIosArrowForward className="ml-1" />
-            </a>
+            </button>
           </>
         )}
       </div>
