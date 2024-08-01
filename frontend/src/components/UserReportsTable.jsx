@@ -20,9 +20,12 @@ const UserReportsTable = ({
   const [selectedReport, setSelectedReport] = useState(null);
 
   const getButtonClass = (sortBy) => {
-    if (sort)
-      return "btn btn-xs shadow-sideNavHighlight rounded-full px-1 ms-1 bg-sideNavHighlight text-textDark hover:bg-progressBasic hover:text-textDark border-0";
-    return "btn btn-xs shadow-sideNavHighlight rounded-full px-1 ms-1 hover:bg-progressBasic hover:text-textDark border-0";
+    console.log(`SORT == ${sort}`);
+    console.log(`SORTBY == ${sortBy}`);
+
+    if (sort === sortBy + "Asc" || sort === sortBy + "Desc")
+      return "px-3 py-3 bg-progressBasic hover:bg-sideNavHighlight hover:cursor-pointer";
+    return "px-3 py-3 hover:bg-sideNavHighlight hover:cursor-pointer";
   };
 
   const getSortIcon = (sortBy) => {
@@ -50,72 +53,60 @@ const UserReportsTable = ({
             <table className="w-full text-sm text-left text-textDark">
               <thead className="text-xs uppercase bg-sideNavBG border-b border-sideNavBG rounded-t-lg">
                 <tr className="h-14">
-                  <th className="px-3 py-3">
+                  <th
+                    className={getButtonClass("sessionCount")}
+                    onClick={() => handleSort("sessionCount")}
+                  >
                     <div className="flex items-center justify-center">
-                      Session no.
-                      <button
-                        className={getButtonClass("sessionCount")}
-                        onClick={() => handleSort("sessionCount")}
-                      >
-                        {getSortIcon("sessionCount")}
-                      </button>
+                      <p className="me-2">Session no.</p>
+                      {getSortIcon("sessionCount")}
                     </div>
                   </th>
                   {!moduleName && (
-                    <th className="px-3 py-3">
+                    <th
+                      className={getButtonClass("moduleName")}
+                      onClick={() => handleSort("moduleName")}
+                    >
                       <div className="flex items-center justify-center">
-                        Module Name
-                        <button
-                          className={getButtonClass("moduleName")}
-                          onClick={() => handleSort("moduleName")}
-                        >
-                          {getSortIcon("moduleName")}
-                        </button>
+                        <p className="me-2">Module Name</p>
+                        {getSortIcon("moduleName")}
                       </div>
                     </th>
                   )}
-                  <th className="px-3 py-3">
+                  <th
+                    className={getButtonClass("dateTaken")}
+                    onClick={() => handleSort("dateTaken")}
+                  >
                     <div className="flex items-center justify-center">
-                      Date Taken
-                      <button
-                        className={getButtonClass("dateTaken")}
-                        onClick={() => handleSort("dateTaken")}
-                      >
-                        {getSortIcon("dateTaken")}
-                      </button>
+                      <p className="me-2">Date Taken</p>
+                      {getSortIcon("dateTaken")}
                     </div>
                   </th>
-                  <th className="px-3 py-3">
+                  <th
+                    className={getButtonClass("duration")}
+                    onClick={() => handleSort("duration")}
+                  >
                     <div className="flex items-center justify-center">
-                      Duration
-                      <button
-                        className={getButtonClass("duration")}
-                        onClick={() => handleSort("duration")}
-                      >
-                        {getSortIcon("duration")}
-                      </button>
+                      <p className="me-2">Duration</p>
+                      {getSortIcon("duration")}
                     </div>
                   </th>
-                  <th className="px-3 py-3">
+                  <th
+                    className={getButtonClass("sessionScore")}
+                    onClick={() => handleSort("sessionScore")}
+                  >
                     <div className="flex items-center justify-center">
-                      Cumulative Score
-                      <button
-                        className={getButtonClass("sessionScore")}
-                        onClick={() => handleSort("sessionScore")}
-                      >
-                        {getSortIcon("sessionScore")}
-                      </button>
+                      <p className="me-3">Cumulative Score</p>
+                      {getSortIcon("sessionScore")}
                     </div>
                   </th>
-                  <th className="px-3 py-3">
+                  <th
+                    className={getButtonClass("quizScore")}
+                    onClick={() => handleSort("quizScore")}
+                  >
                     <div className="flex items-center justify-center">
-                      Quiz Score
-                      <button
-                        className={getButtonClass("quizScore")}
-                        onClick={() => handleSort("quizScore")}
-                      >
-                        {getSortIcon("quizScore")}
-                      </button>
+                      <p className="me-3">Quiz Score</p>
+                      {getSortIcon("quizScore")}
                     </div>
                   </th>
                   <th className="px-3 py-3">
@@ -167,18 +158,20 @@ const UserReportsTable = ({
                               Show more
                             </a>
                             <div
-                              className="modal"
+                              className="modal hover:cursor-default"
                               role="dialog"
                               id="transcript_modal"
                               // Prevents closing the modal from triggering row click
                               onClick={(event) => event.stopPropagation()}
                             >
-                              <div className="modal-box">
+                              <div className="modal-box max-w-5xl hover:cursor-default">
                                 {selectedReport && (
                                   <>
                                     <h3 className="text-lg font-bold flex justify-between">
                                       <p>{selectedReport.moduleName}</p>
-                                      <p>Session {selectedReport.sessionCount}</p>
+                                      <p>
+                                        Session {selectedReport.sessionCount}
+                                      </p>
                                     </h3>
                                     <h4 className="text-base font-bold pt-3">
                                       Transcription

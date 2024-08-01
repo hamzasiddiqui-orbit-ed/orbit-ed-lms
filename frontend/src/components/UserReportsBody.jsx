@@ -17,7 +17,7 @@ const UserReportsBody = ({ moduleName }) => {
 
   if (isPending) {
     return (
-      <div className="flex flex-col gap-4 ps-5 mb-12">
+      <div className="flex flex-col gap-4 ps-5 mb-12 mt-2">
         <div className="skeleton bg-slate-200 h-10"></div>
         <div className="skeleton bg-slate-200 h-80"></div>
       </div>
@@ -42,7 +42,7 @@ const UserReportsBody = ({ moduleName }) => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container-fluid mx-auto p-4">
       {sessionReports?.data?.reports?.length > 0 ? (
         <UserReportsTable
           reportsList={sessionReports.data}
