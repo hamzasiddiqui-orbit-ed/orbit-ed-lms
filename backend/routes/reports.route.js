@@ -13,6 +13,7 @@ const {
   getBaseParameterScores,
   getBaseParameterDetails,
   getSessionReportList,
+  getQuizDetails,
 } = require("../controllers/reports.controller");
 const { protect } = require("../middlewares/auth");
 
@@ -82,5 +83,10 @@ router.post("/session-report-list", protect, (req, res, next) => {
   console.log("\nROUTE HIT (reports.route): session-report-list\n");
   next();
 }, getSessionReportList)
+
+router.post("/quiz-details", protect, (req, res, next) => {
+  console.log("\nROUTE HIT (reports.route): quiz-details\n");
+  next();
+}, getQuizDetails)
 
 module.exports = router;

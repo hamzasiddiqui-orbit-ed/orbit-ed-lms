@@ -22,7 +22,10 @@ const sessionReportSchema = new mongoose.Schema(
       score: Number,
       details: [
         {
-          question_id: mongoose.Schema.Types.ObjectId,
+          question_type: String,
+          question_text: String,
+          options: [String],
+          correct_option: String,
           selected_option: String,
         },
       ],

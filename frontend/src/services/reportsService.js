@@ -124,3 +124,13 @@ export const getSessionReportList = async (
 
   return response;
 };
+
+export const getQuizDetails = async (
+  reportId,
+) => {
+  const response = await api.post("reports/quiz-details", {
+    report_id: reportId,
+  });
+
+  return response;
+};

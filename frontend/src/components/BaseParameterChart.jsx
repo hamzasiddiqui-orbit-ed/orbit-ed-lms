@@ -13,6 +13,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import TooltipPopOver from "./TooltipPopOver";
+import UsefulTip from "./UsefulTip";
+import * as info from "../utils/baseParametersInfo"
 
 const BaseParameterChart = () => {
   const { state: userState } = useContext(UserContext);
@@ -53,8 +55,30 @@ const BaseParameterChart = () => {
 
   const isSingleDataPoint = data && data.length === 1;
 
+  const RenderUsefulTip = () => {
+    if (baseParameter == "speech_rate") {
+      return <UsefulTip heading={info.speechRate.tip.heading} description={info.speechRate.tip.description} />;
+    } else if (baseParameter == "pauses") {
+      return <UsefulTip heading={info.pauses.tip.heading} description={info.pauses.tip.description} />;
+    } else if (baseParameter == "pitch") {
+      return <UsefulTip heading={info.pitch.tip.heading} description={info.pitch.tip.description} />;
+    } else if (baseParameter == "loudness") {
+      return <UsefulTip heading={info.loudness.tip.heading} description={info.loudness.tip.description} />;
+    } else if (baseParameter == "clarity") {
+      return <UsefulTip heading={info.clarity.tip.heading} description={info.clarity.tip.description} />;
+    } else if (baseParameter == "eye_contact") {
+      return <UsefulTip heading={info.eyeContact.tip.heading} description={info.eyeContact.tip.description} />;
+    } else if (baseParameter == "filler_sounds") {
+      return <UsefulTip heading={info.fillerSounds.tip.heading} description={info.fillerSounds.tip.description} />;
+    } else if (baseParameter == "repetitive_words") {
+      return <UsefulTip heading={info.repetitiveWords.tip.heading} description={info.repetitiveWords.tip.description} />;
+    } else {
+      return <UsefulTip />
+    }
+  }
+
   return (
-    <div className="w-3/12 me-5">
+    <div className="w-3/12 me-5 mb-3">
       <p className="text-2xl text-headingDark font-semibold text-start mt-16 mb-5 flex">
         <span>Performance Over Time</span>
         <TooltipPopOver
@@ -101,6 +125,8 @@ const BaseParameterChart = () => {
           </LineChart>
         </ResponsiveContainer>
       </div>
+      
+      {RenderUsefulTip()}
     </div>
   );
 };

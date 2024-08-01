@@ -4,6 +4,7 @@ import { useSessionReportMisc } from "../hooks/useReports";
 import TranscriptionCollapsable from "./TranscriptionCollapsable";
 import BaseParameterChart from "./BaseParameterChart";
 import { IoIosArrowForward } from "react-icons/io";
+import UsefulTip from "./UsefulTip";
 
 const SessionReportRightCol = () => {
   const { reportId, baseParameter, setShowQuiz } = useContext(SessionReportContext);
@@ -75,15 +76,7 @@ const SessionReportRightCol = () => {
         )}
       </div>
 
-      <div>
-        <h2 className="text-headingDark font-semibold text-2xl mb-2">Useful Tips</h2>
-        <div className="card bg-[#C6CFEE] shadow-xl border-textDark border-r-2 border-b-2">
-          <div className="card-body">
-            <h3 className="card-title">Insight No. 1</h3>
-            <p>If a dog chews shoes whose shoes does he choose?</p>
-          </div>
-        </div>
-      </div>
+      <UsefulTip />
     </div>
   );
 };

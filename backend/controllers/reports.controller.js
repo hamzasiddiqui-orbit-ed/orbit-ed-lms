@@ -685,8 +685,8 @@ const getSessionReportList = async (req, res) => {
       moduleName: report.module_name,
       dateTaken: formatDate(report.createdAt),
       duration: formatDuration(report.total_time),
-      sessionScore: report.total_score,
-      quizScore: report.quiz.score,
+      sessionScore: report.total_score.toFixed(1),
+      quizScore: report.quiz.score.toFixed(1),
       transcript: report.transcription,
     }));
 
@@ -697,6 +697,51 @@ const getSessionReportList = async (req, res) => {
       totalReports,
       reports: formattedReports,
     });
+  } catch (err) {
+    return res.status(400).json({ message: `Query response: ${err.message}` });
+  }
+};
+
+// ---------------------------------------------
+// Fetch quiz details of a user's session report
+// ---------------------------------------------
+const getQuizDetails = async (req, res) => {
+  const { report_id: reportId } = req.body;
+
+  if (!reportId) {
+    return res.status(400).json({ error: "No report ID found." });
+  }
+
+  try {
+    const sessionReport = await SessionReport.findById({ _id: reportId });
+
+    if (!sessionReport) {
+      return res.status(404).json({ error: "Session report not found" });
+    }
+
+    if (!sessionReport.quiz || !sessionReport.quiz.details) {
+      return res.status(404).json({ error: "Quiz details not found" });
+    }
+
+    const quizDetails = sessionReport.quiz.details;
+
+    const mcqDetails = quizDetails.filter((q) => {
+      return q.question_type === "MCQ";
+    });
+
+    const tfDetails = quizDetails.filter((q) => {
+      return q.question_type === "T/F";
+    });
+
+    const response = {
+      quiz_score: sessionReport.quiz.score,
+      quiz_details: {
+        MCQ: mcqDetails,
+        TF: tfDetails,
+      },
+    };
+
+    res.status(200).json(response);
   } catch (err) {
     return res.status(400).json({ message: `Query response: ${err.message}` });
   }
@@ -716,4 +761,5 @@ module.exports = {
   getBaseParameterScores,
   getBaseParameterDetails,
   getSessionReportList,
+  getQuizDetails,
 };

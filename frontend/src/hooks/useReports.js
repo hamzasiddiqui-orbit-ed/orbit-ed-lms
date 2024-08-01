@@ -115,3 +115,12 @@ export const useSessionReportList = (userId, moduleName, page, sort) => {
     // enabled: !!userId && !!moduleName && !!page,
   });
 };
+
+export const useQuizDetails = (reportId) => {
+  return useQuery({
+    queryKey: ["quizDetails", reportId],
+    queryFn: () =>
+      reportsService.getQuizDetails(reportId),
+    enabled: !!reportId,
+  });
+};

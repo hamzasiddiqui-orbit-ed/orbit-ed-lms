@@ -48,7 +48,7 @@ const UserReportsTable = ({
         <div className="rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left text-textDark">
-              <thead className="text-xs uppercase bg-sideNavHighlight border-b border-sideNavHighlight rounded-t-lg">
+              <thead className="text-xs uppercase bg-sideNavBG border-b border-sideNavBG rounded-t-lg">
                 <tr className="h-14">
                   <th className="px-3 py-3">
                     <div className="flex items-center justify-center">
@@ -159,7 +159,7 @@ const UserReportsTable = ({
                             {`${report.transcript.substr(0, 40)}... `}
                             <a
                               href="#transcript_modal"
-                              className="text-xs"
+                              className="text-xs text-brand hover:underline hover:text-brand"
                               onClick={(event) =>
                                 handleShowMoreClick(event, report)
                               }
