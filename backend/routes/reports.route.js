@@ -14,6 +14,7 @@ const {
   getBaseParameterDetails,
   getSessionReportList,
   getQuizDetails,
+  addSessionReport,
 } = require("../controllers/reports.controller");
 const { protect } = require("../middlewares/auth");
 
@@ -88,5 +89,10 @@ router.post("/quiz-details", protect, (req, res, next) => {
   console.log("\nROUTE HIT (reports.route): quiz-details\n");
   next();
 }, getQuizDetails)
+
+router.post("/save-session-report", protect, (req, res, next) => {
+  console.log("\nROUTE HIT (reports.route): save-session-report\n");
+  next();
+}, addSessionReport)
 
 module.exports = router;

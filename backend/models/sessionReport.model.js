@@ -7,10 +7,16 @@ const sessionReportSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    module_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Module",
+      required: true,
+    },
     module_name: {
       type: String,
       required: true,
     },
+    session_id: String,
     session_count: Number,
     device_name: String,
     total_word_count: Number,

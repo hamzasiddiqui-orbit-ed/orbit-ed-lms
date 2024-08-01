@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const SessionReport = require("../models/sessionReport.model");
 const Parameters = require("../models/parameter.model");
+const User = require("../models/user.model");
+const Module = require("../models/module.model");
 
 // ----------------------------------------
 // Get session report for learner dashboard
@@ -747,6 +749,74 @@ const getQuizDetails = async (req, res) => {
   }
 };
 
+const addSessionReport = async (req, res) => {
+  const {
+    user_id,
+    module_id,
+    module_name,
+    session_id,
+    device_name,
+    total_word_count,
+    total_time,
+    total_score,
+    audio_url,
+    transcription,
+    quiz,
+    parameters,
+  } = req.body;
+
+  if (!user_id || !module_id) {
+    return res.status(400).json({ error: "User ID and Module ID are required." });
+  }
+
+  try {
+    const newUserId = mongoose.Types.ObjectId.createFromHexString(user_id);
+    const newModuleId = mongoose.Types.ObjectId.createFromHexString(module_id);
+
+    const user = await User.findById(newUserId);
+    if (!user) {
+      return res.status(404).json({ message: "Could not find user!" });
+    }
+
+    const module = await Module.findById(newModuleId);
+    if (!module) {
+      return res.status(404).json({ message: "Could not find module!" });
+    }
+
+    if (module.name != module_name) {
+      return res.status(404).json({ message: "Module id and module name do not match!" })
+    }
+
+    const latestSession = await SessionReport.findOne({
+      user_id: newUserId,
+      module_id: newModuleId,
+    }).sort({ session_count: -1 });
+
+    const newSessionCount = latestSession ? latestSession.session_count + 1 : 1;
+
+    const newSessionReport = new SessionReport({
+      user_id: newUserId,
+      module_id: newModuleId,
+      module_name,
+      session_id,
+      session_count: newSessionCount,
+      device_name,
+      total_word_count,
+      total_time,
+      total_score,
+      audio_url,
+      transcription,
+      quiz,
+      parameters,
+    });
+
+    const savedReport = await newSessionReport.save();
+    res.status(201).json(savedReport);
+  } catch (err) {
+    res.status(400).json({ error: `Failed to add session report: ${err.message}` });
+  }
+};
+
 module.exports = {
   getSessionReport,
   getUniqueModulesFromReports,
@@ -762,4 +832,5 @@ module.exports = {
   getBaseParameterDetails,
   getSessionReportList,
   getQuizDetails,
+  addSessionReport,
 };
