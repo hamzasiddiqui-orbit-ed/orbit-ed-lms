@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { SessionReportContext } from "../contexts/sessionReport.context";
 import { useNavigate } from "react-router-dom";
-import { TiArrowUnsorted } from "react-icons/ti";
 import { FaSort } from "react-icons/fa6";
 import { FaSortDown } from "react-icons/fa6";
 import { FaSortUp } from "react-icons/fa6";
