@@ -1,12 +1,12 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../contexts/user.context";
-import DropdownUserReport from "./SessionReportDropdown";
+import DropdownUserReport from "./UserReportsDropdown";
 import {
   useAssignedModules,
   useModuleGeneralDetails,
 } from "../hooks/useModules";
 
-const UserReportsHeader = ({sendModuleNameToParent}) => {
+const UserReportsHeader = ({ sendModuleNameToParent }) => {
   const { state: userState } = useContext(UserContext);
   const userId = userState.user._id;
 
@@ -27,26 +27,36 @@ const UserReportsHeader = ({sendModuleNameToParent}) => {
 
   const handleModuleSelect = (moduleName) => {
     setSelectedModule(moduleName === "All Modules" ? null : moduleName);
-    sendModuleNameToParent(moduleName)
+    sendModuleNameToParent(moduleName);
   };
 
   const dropdownData = assignedModules?.data
     ? ["All Modules", ...assignedModules.data]
     : ["All Modules"];
 
-    if (isPending) {
-      return (
-        <div className="flex flex-col gap-4 ps-5 mb-12">
-          <div className="skeleton bg-slate-200 h-10 w-44"></div>
-          <div className="skeleton bg-slate-200 h-8"></div>
-          <div className="skeleton bg-slate-200 h-8"></div>
-        </div>
-      );
+  if (isPending) {
+    return (
+      <div className="flex flex-col gap-4 ps-5 mb-12">
+        <div className="skeleton bg-slate-200 h-10 w-44"></div>
+        <div className="skeleton bg-slate-200 h-8"></div>
+        <div className="skeleton bg-slate-200 h-8"></div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <div>Error loading data. Please try again.</div>;
+  }
+
+  const getScoreColorClass = () => {
+    if (moduleGeneralDetails.data.averageScore < 40) {
+      return  "text-progressBad ms-1";
+    } else if (moduleGeneralDetails.data.averageScore < 70) {
+      return "text-progressAverage ms-1";
+    } else {
+      return "text-progressGood ms-1"
     }
-  
-    if (isError) {
-      return <div>Error loading data. Please try again.</div>;
-    }
+  }
 
   return (
     <div className="flex items-start ps-5">
@@ -80,8 +90,9 @@ const UserReportsHeader = ({sendModuleNameToParent}) => {
               <div className="text-textLight text-base font-normal ps-3">
                 Assigned By: {moduleGeneralDetails.data.assignedBy}
               </div>
-              <div className="text-textLight text-base font-normal ps-3 pe-8">
-                Module Average Score: {moduleGeneralDetails.data.averageScore}%
+              <div className="text-textLight text-base font-normal ps-3 pe-8 flex">
+                <p>Module Average Score:</p>
+                <p className={getScoreColorClass()}>{moduleGeneralDetails.data.averageScore}%</p>
               </div>
             </div>
           </>

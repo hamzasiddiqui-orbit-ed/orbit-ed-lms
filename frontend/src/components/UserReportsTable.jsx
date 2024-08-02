@@ -1,9 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import { SessionReportContext } from "../contexts/sessionReport.context";
 import { useNavigate } from "react-router-dom";
-import { FaSort } from "react-icons/fa6";
-import { FaSortDown } from "react-icons/fa6";
-import { FaSortUp } from "react-icons/fa6";
+import { FaSort, FaSortDown, FaSortUp } from "react-icons/fa6";
 
 const UserReportsTable = ({
   reportsList,
@@ -18,6 +16,20 @@ const UserReportsTable = ({
     useContext(SessionReportContext);
 
   const [selectedReport, setSelectedReport] = useState(null);
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setSelectedReport(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const getButtonClass = (sortBy) => {
     console.log(`SORT == ${sort}`);
@@ -50,21 +62,21 @@ const UserReportsTable = ({
       <div className="overflow-hidden rounded-lg shadow">
         <div className="rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left text-textDark">
+            <table className="w-full text-sm text-left text-textDark table-fixed">
               <thead className="text-xs uppercase bg-sideNavBG border-b border-sideNavBG rounded-t-lg">
                 <tr className="h-14">
                   <th
-                    className={getButtonClass("sessionCount")}
+                    className={`${getButtonClass("sessionCount")} w-20`}
                     onClick={() => handleSort("sessionCount")}
                   >
                     <div className="flex items-center justify-center">
-                      <p className="me-2">Session no.</p>
+                      <p className="me-2">Session</p>
                       {getSortIcon("sessionCount")}
                     </div>
                   </th>
                   {!moduleName && (
                     <th
-                      className={getButtonClass("moduleName")}
+                      className={`${getButtonClass("moduleName")} w-48`}
                       onClick={() => handleSort("moduleName")}
                     >
                       <div className="flex items-center justify-center">
@@ -74,7 +86,7 @@ const UserReportsTable = ({
                     </th>
                   )}
                   <th
-                    className={getButtonClass("dateTaken")}
+                    className={`${getButtonClass("dateTaken")} w-32`}
                     onClick={() => handleSort("dateTaken")}
                   >
                     <div className="flex items-center justify-center">
@@ -83,7 +95,7 @@ const UserReportsTable = ({
                     </div>
                   </th>
                   <th
-                    className={getButtonClass("duration")}
+                    className={`${getButtonClass("duration")} w-24`}
                     onClick={() => handleSort("duration")}
                   >
                     <div className="flex items-center justify-center">
@@ -92,7 +104,7 @@ const UserReportsTable = ({
                     </div>
                   </th>
                   <th
-                    className={getButtonClass("sessionScore")}
+                    className={`${getButtonClass("sessionScore")} w-40`}
                     onClick={() => handleSort("sessionScore")}
                   >
                     <div className="flex items-center justify-center">
@@ -101,7 +113,7 @@ const UserReportsTable = ({
                     </div>
                   </th>
                   <th
-                    className={getButtonClass("quizScore")}
+                    className={`${getButtonClass("quizScore")} w-32`}
                     onClick={() => handleSort("quizScore")}
                   >
                     <div className="flex items-center justify-center">
@@ -109,7 +121,7 @@ const UserReportsTable = ({
                       {getSortIcon("quizScore")}
                     </div>
                   </th>
-                  <th className="px-3 py-3">
+                  <th className="px-3 py-3 w-64">
                     <div className="flex items-center justify-center">
                       Transcript
                     </div>
@@ -124,30 +136,30 @@ const UserReportsTable = ({
                       className={`border-b bg-core hover:bg-sideNavHighlight hover:cursor-pointer`}
                       onClick={() => handleRowClick(report)}
                     >
-                      <td className="px-3 py-4 text-center">
+                      <td className="px-3 py-4 text-center whitespace-normal max-h-20 overflow-y-auto">
                         {report.sessionCount}
                       </td>
                       {!moduleName && (
-                        <td className="px-3 py-4 text-center">
+                        <td className="px-3 py-4 text-center whitespace-normal max-h-20 overflow-y-auto">
                           {report.moduleName}
                         </td>
                       )}
-                      <td className="px-3 py-4 text-center">
+                      <td className="px-3 py-4 text-center whitespace-normal max-h-20 overflow-y-auto">
                         {report.dateTaken}
                       </td>
-                      <td className="px-3 py-4 text-center">
+                      <td className="px-3 py-4 text-center whitespace-normal max-h-20 overflow-y-auto">
                         {report.duration}
                       </td>
-                      <td className="px-3 py-4 text-center">
+                      <td className="px-3 py-4 text-center whitespace-normal max-h-20 overflow-y-auto">
                         {report.sessionScore}%
                       </td>
-                      <td className="px-3 py-4 text-center">
+                      <td className="px-3 py-4 text-center whitespace-normal max-h-20 overflow-y-auto">
                         {report.quizScore}%
                       </td>
-                      <td className="px-3 py-4 w-52 text-justify">
-                        {report.transcript.length > 40 ? (
+                      <td className="px-3 py-4 w-64 text-justify whitespace-normal max-h-20 overflow-y-auto">
+                        {report.transcript.length > 70 ? (
                           <>
-                            {`${report.transcript.substr(0, 40)}... `}
+                            {`${report.transcript.substr(0, 70)}... `}
                             <a
                               href="#transcript_modal"
                               className="text-xs text-brand hover:underline hover:text-brand"
@@ -157,44 +169,48 @@ const UserReportsTable = ({
                             >
                               Show more
                             </a>
-                            <div
-                              className="modal hover:cursor-default"
-                              role="dialog"
-                              id="transcript_modal"
-                              // Prevents closing the modal from triggering row click
-                              onClick={(event) => event.stopPropagation()}
-                            >
-                              <div className="modal-box max-w-5xl hover:cursor-default">
-                                {selectedReport && (
-                                  <>
-                                    <h3 className="text-lg font-bold flex justify-between">
-                                      <p>{selectedReport.moduleName}</p>
+                            {selectedReport && (
+                              <div
+                                className="modal hover:cursor-default"
+                                role="dialog"
+                                id="transcript_modal"
+                              >
+                                <div
+                                  className="modal-box max-w-5xl hover:cursor-default m-0 p-0"
+                                  ref={modalRef}
+                                  // Prevents closing the modal from triggering row click
+                                  onClick={(event) => event.stopPropagation()}
+                                >
+                                  <div className="flex flex-col sticky top-0 bg-core m-0 p-5">
+                                    <h1 className="text-lg font-bold flex justify-between">
                                       <p>
-                                        Session {selectedReport.sessionCount}
+                                        {selectedReport.moduleName} - Session{" "}
+                                        {selectedReport.sessionCount}
                                       </p>
-                                    </h3>
-                                    <h4 className="text-base font-bold pt-3">
+                                      <div className="modal-action m-0 p-0">
+                                        <a
+                                          href="#"
+                                          className="btn btn-sm bg-sideNavBG border-0 hover:bg-sideNavHighlight hover:text-textDark"
+                                          onClick={(event) => {
+                                            // Prevents closing the modal from triggering row click
+                                            event.stopPropagation();
+                                            setSelectedReport(null);
+                                          }}
+                                        >
+                                          Close
+                                        </a>
+                                      </div>
+                                    </h1>
+                                    <h4 className="text-base font-bold pt-2">
                                       Transcription
                                     </h4>
-                                    <p className="py-4 text-base">
-                                      {selectedReport.transcript}
-                                    </p>
-                                    <div className="modal-action">
-                                      <a
-                                        href="#"
-                                        className="btn btn-sm bg-sideNavHighlight border-0 hover:bg-sideNavBG hover:text-textDark"
-                                        onClick={(event) =>
-                                          // Prevents closing the modal from triggering row click
-                                          event.stopPropagation()
-                                        }
-                                      >
-                                        Close
-                                      </a>
-                                    </div>
-                                  </>
-                                )}
+                                  </div>
+                                  <p className="text-base bg-sideNavBG p-4 mx-5 mb-5 rounded-2xl">
+                                    {selectedReport.transcript}
+                                  </p>
+                                </div>
                               </div>
-                            </div>
+                            )}
                           </>
                         ) : (
                           report.transcript
