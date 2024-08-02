@@ -93,7 +93,7 @@ const QuizDetails = () => {
           <h3 className="font-base mb-2 text-textDark text-sm">
             Multiple Choice
           </h3>
-          <div className="flex space-x-1">
+          <div className="flex flex-wrap w-1/2 gap-1">
             {renderScoreBreakdown(data.data.quiz_details.MCQ)}
           </div>
         </div>
@@ -101,7 +101,7 @@ const QuizDetails = () => {
           <h3 className="font-base mb-2 text-textDark text-sm pt-2">
             True/False
           </h3>
-          <div className="flex space-x-1">
+          <div className="flex flex-wrap w-1/2 gap-1">
             {renderScoreBreakdown(data.data.quiz_details.TF)}
           </div>
         </div>

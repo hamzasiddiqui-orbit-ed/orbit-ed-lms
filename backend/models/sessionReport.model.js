@@ -21,6 +21,7 @@ const sessionReportSchema = new mongoose.Schema(
     device_name: String,
     total_word_count: Number,
     total_time: Number,
+    talking_time: Number,
     total_score: Number,
     audio_url: String,
     transcription: String,

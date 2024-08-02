@@ -306,6 +306,8 @@ const getBaseParametersForDerived = async (req, res) => {
       .json({ message: "Could not find derived parameter." });
   }
 
+  console.log(reportId, derivedParameter);
+
   try {
     const sessionReport = await SessionReport.findById(reportId);
     if (!sessionReport) {
@@ -681,6 +683,10 @@ const getSessionReportList = async (req, res) => {
     const totalReports = await SessionReport.countDocuments(query);
     const totalPages = Math.ceil(totalReports / dataPerPage);
 
+    if (page > totalPages) {
+      return res.status(400).json({ message: "Invalid page number. Page number exceeds total pages." });
+    }
+
     const formattedReports = reports.map((report) => ({
       reportId: report._id,
       sessionCount: report.session_count,
@@ -758,6 +764,7 @@ const addSessionReport = async (req, res) => {
     device_name,
     total_word_count,
     total_time,
+    talking_time,
     total_score,
     audio_url,
     transcription,
@@ -783,8 +790,16 @@ const addSessionReport = async (req, res) => {
       return res.status(404).json({ message: "Could not find module!" });
     }
 
-    if (module.name != module_name) {
-      return res.status(404).json({ message: "Module id and module name do not match!" })
+    if (module.name !== module_name) {
+      return res.status(404).json({ message: "Module ID and module name do not match!" });
+    }
+
+    const assignedModule = user.assigned_modules.find(
+      (m) => m.module_id.toString() === newModuleId.toString()
+    );
+
+    if (!assignedModule) {
+      return res.status(404).json({ message: "Module not assigned to user!" });
     }
 
     const latestSession = await SessionReport.findOne({
@@ -803,6 +818,7 @@ const addSessionReport = async (req, res) => {
       device_name,
       total_word_count,
       total_time,
+      talking_time,
       total_score,
       audio_url,
       transcription,
@@ -810,8 +826,29 @@ const addSessionReport = async (req, res) => {
       parameters,
     });
 
-    const savedReport = await newSessionReport.save();
-    res.status(201).json(savedReport);
+    // const savedReport = await newSessionReport.save();
+    await newSessionReport.save();
+
+
+    // Update sessions_completed and average_score in assigned_modules
+    assignedModule.sessions_completed = newSessionCount;
+    assignedModule.average_score = assignedModule.average_score
+      ? (assignedModule.average_score + total_score) / 2
+      : total_score;
+
+    // Check completion criteria
+    const { completion_criteria } = module;
+    if (completion_criteria.number_of_sessions && newSessionCount >= completion_criteria.number_of_sessions && assignedModule.is_completed == false) {
+      assignedModule.is_completed = true;
+      assignedModule.completed_date = new Date();
+    } else if (completion_criteria.cumulative_score && total_score >= completion_criteria.cumulative_score && assignedModule.is_completed == false) {
+      assignedModule.is_completed = true;
+      assignedModule.completed_date = new Date();
+    }
+
+    await user.save();
+
+    res.status(201).json({ message: "Session report successfully added!" });
   } catch (err) {
     res.status(400).json({ error: `Failed to add session report: ${err.message}` });
   }

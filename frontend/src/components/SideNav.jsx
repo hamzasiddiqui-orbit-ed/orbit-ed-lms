@@ -22,6 +22,7 @@ function SideNav() {
     setBaseParameter,
     setSelectedModule,
     setSelectedSessionCount,
+    setShowQuiz,
   } = useContext(SessionReportContext);
 
   const { logoutMutation } = useAuth();
@@ -43,6 +44,7 @@ function SideNav() {
     setBaseParameter(null);
     setSelectedModule(null);
     setSelectedSessionCount(null);
+    setShowQuiz(null);
   };
 
   return (
