@@ -52,33 +52,46 @@ const DropdownUserReport = ({
         {title}
         <MdOutlineKeyboardArrowDown />
       </summary>
-      <ul className="menu dropdown-content rounded-box z-[1] p-2 shadow bg-core">
-        {dropDownData?.length ? (
-          dropDownData.map((item, index) => (
-            <li key={index}>
-              {sessions ? (
-                <button
-                  className="text-textLight btn bg-core shadow-core border-0 hover:bg-sideNavBG"
-                  onClick={() => handleSelectAndClose(item)}
-                >
-                  Session {item}
-                </button>
-              ) : (
-                <button
-                  className="text-textLight btn bg-core shadow-core border-0 hover:bg-sideNavBG"
-                  onClick={() => handleSelectAndClose(item)}
-                >
-                  {item}
-                </button>
-              )}
-            </li>
-          ))
-        ) : (
-          <li>
-            <span className="text-textLight">No data available</span>
-          </li>
+
+      <div
+        className={classNames(
+          "dropdown-content rounded-box z-[1] p-2 shadow bg-core max-h-64 overflow-y-auto",
+          {
+            "w-40": sessions,
+            "w-60": !sessions,
+          }
         )}
-      </ul>
+      >
+        <ul className="menu p-0">
+          {dropDownData?.length ? (
+            dropDownData.map((item, index) => (
+              <li key={index} className="text-start items-start">
+                {sessions ? (
+                  <button
+                    className="text-textLight btn bg-core shadow-core border-0 hover:bg-sideNavBG w-full text-start"
+                    onClick={() => handleSelectAndClose(item)}
+                  >
+                    <p className="text-start w-full text-base">
+                      Session {item}
+                    </p>
+                  </button>
+                ) : (
+                  <button
+                    className="text-textLight btn bg-core shadow-core border-0 hover:bg-sideNavBG w-full text-start"
+                    onClick={() => handleSelectAndClose(item)}
+                  >
+                    <p className="text-start w-full text-base">{item}</p>
+                  </button>
+                )}
+              </li>
+            ))
+          ) : (
+            <li>
+              <span className="text-textLight">No data available</span>
+            </li>
+          )}
+        </ul>
+      </div>
     </details>
   );
 };
