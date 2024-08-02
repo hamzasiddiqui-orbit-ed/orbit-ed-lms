@@ -53,7 +53,7 @@ const SessionReportRightCol = () => {
             <p className="text-textLight text-sm">
               You scored {reportMisc.data.quiz.score}% on the quiz.
             </p>
-            <button className="link link-hover text-xs text-utility flex items-center mt-1 hover:text-brand" onClick={handleQuizDetailsOpen}>
+            <button className="link link-hover text-xs flex items-center mt-1 text-brand hover:text-brand" onClick={handleQuizDetailsOpen}>
               View Details
               <IoIosArrowForward className="ml-1" />
             </button>

@@ -1,6 +1,6 @@
 import React from "react";
 
-const RadialProgressUserReport = ({ totalScore }) => {
+const RadialProgressUserReport = ({ totalScore, quiz = false }) => {
   return (
     <div className="relative w-48 h-48">
       {/* Outer background circle */}
@@ -24,10 +24,13 @@ const RadialProgressUserReport = ({ totalScore }) => {
         }}
       >
         <div className=" flex flex-col items-center justify-center">
-          <span className="text-3xl font-base text-core">
-            {totalScore}%
-          </span>
-          <span className="text-xs text-core">Session Score</span>
+          <span className="text-3xl font-base text-core">{totalScore}%</span>
+
+          {quiz ? (
+            <span className="text-xs text-core">Quiz Score</span>
+          ) : (
+            <span className="text-xs text-core">Session Score</span>
+          )}
         </div>
       </div>
     </div>

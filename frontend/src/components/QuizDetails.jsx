@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { SessionReportContext } from "../contexts/sessionReport.context";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import { useQuizDetails } from "../hooks/useReports";
-import { FaCheck, FaTimes } from "react-icons/fa";
 import RadialProgressUserReport from "./RadialProgressUserReport";
 import { FaCircleCheck, FaCircleXmark } from "react-icons/fa6";
 
@@ -84,7 +83,7 @@ const QuizDetails = () => {
   return (
     <div className="flex mb-6 text-start w-full justify-start">
       <div className="ms-10">
-        <RadialProgressUserReport totalScore={data.data.quiz_score} />
+        <RadialProgressUserReport totalScore={data.data.quiz_score} quiz={true} />
 
         <h2 className="text-headingDark font-semibold text-lg mb-2 mt-5">
           Score Breakdown

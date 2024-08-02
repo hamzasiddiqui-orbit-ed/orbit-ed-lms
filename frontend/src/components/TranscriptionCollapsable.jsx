@@ -11,7 +11,7 @@ const TranscriptionCollapsable = ({ transcription }) => {
   return (
     <div className="bg-core p-2 ps-0 rounded">
       <a
-        className="link link-hover text-xs font-normal cursor-pointer flex flex-row mb-2 text-textDark hover:text-brand"
+        className="link link-hover text-xs font-normal cursor-pointer flex flex-row mb-2 text-brand hover:text-brand"
         onClick={toggleCollapse}
       >
         Show Transcription{" "}
