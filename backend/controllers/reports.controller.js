@@ -557,6 +557,7 @@ const getBaseParameterDetails = async (req, res) => {
     "filler_sounds",
     "pitch",
     "clarity",
+    "context",
   ];
 
   if (!paras.includes(baseParameter)) {
@@ -848,7 +849,7 @@ const addSessionReport = async (req, res) => {
 
     await user.save();
 
-    res.status(201).json({ message: "Session report successfully added!" });
+    res.status(201).json({ message: "Session report successfully not added!" });
   } catch (err) {
     res.status(400).json({ error: `Failed to add session report: ${err.message}` });
   }

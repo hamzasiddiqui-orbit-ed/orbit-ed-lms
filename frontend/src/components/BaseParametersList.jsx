@@ -43,9 +43,9 @@ const BaseParametersList = ({ baseParameters }) => {
 
             <progress
               className={`progress ${getProgressColorClass(
-                value.toFixed(2)
+                value
               )} w-16 h-2`}
-              value={value.toFixed(2)}
+              value={value}
               max="100"
             ></progress>
           </div>

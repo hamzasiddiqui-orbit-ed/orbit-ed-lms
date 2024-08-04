@@ -29,6 +29,10 @@ const SessionReportLeftCol = () => {
     return <div>Error loading base parameters</div>;
   }
 
+  if (baseParameters.data) {
+    console.log(`Base Parameters Data: ${JSON.stringify(baseParameters.data)}`)
+  }
+
   return (
     <div className="flex flex-col items-center ms-10">
       <RadialProgressUserReport totalScore={totalScore} />
