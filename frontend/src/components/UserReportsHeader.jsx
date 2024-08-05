@@ -101,12 +101,16 @@ const UserReportsHeader = ({ sendModuleNameToParent }) => {
               </div>
 
               <div className="text-textLight text-base font-normal ps-3 pe-8 flex">
-                {moduleGeneralDetails.data.averageScore && (
+                {moduleGeneralDetails.data.averageScore ? (
                   <>
-                    <p>Module Average Score:</p>
+                    <p>Average Module Score:</p>
                     <p className={getScoreColorClass()}>
                       {moduleGeneralDetails.data.averageScore.toFixed(2)}%
                     </p>
+                  </>
+                ) : (
+                  <>
+                    <p>Average Module Score: --</p>
                   </>
                 )}
               </div>

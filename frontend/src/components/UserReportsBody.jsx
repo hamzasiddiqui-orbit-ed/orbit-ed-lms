@@ -26,18 +26,11 @@ const UserReportsBody = ({ moduleName }) => {
 
   if (isError) {
     return (
-      <table className="w-full text-sm text-left text-textDark table-fixed">
-        <tbody className="rounded-b-lg">
-          <tr>
-            <td
-              colSpan={!moduleName ? "7" : "6"}
-              className="px-6 py-4 text-center"
-            >
-              No reports found
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="w-full bg-core flex justify-center">
+        <div className="w-90 justify-center text-center text-textDark bg-sideNavBG rounded-2xl text-xl font-semibold mt-5 p-5">
+          You haven't taken any sessions for this module.
+        </div>
+      </div>
     );
   }
 
