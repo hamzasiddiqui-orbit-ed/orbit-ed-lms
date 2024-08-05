@@ -14,9 +14,15 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<ProtectedRoutes />}>
-          <Route path="/admin-dashboard" element={<DashboardAdmin />} />
-          <Route path="/manager-dashboard" element={<DashboardManager />} />
-          <Route path="/learner-dashboard/*" element={<DashboardLearner />} >
+          <Route path="/admin-dashboard" element={<DashboardAdmin />}>
+            <Route path="my-dashboard" element={<SessionReport />} />
+            <Route path="user-report" element={<UserReports />} />
+          </Route>
+          <Route path="/manager-dashboard" element={<DashboardManager />}>
+            <Route path="my-dashboard" element={<SessionReport />} />
+            <Route path="user-report" element={<UserReports />} />
+          </Route>
+          <Route path="/learner-dashboard/*" element={<DashboardLearner />}>
             <Route path="my-dashboard" element={<SessionReport />} />
             <Route path="user-report" element={<UserReports />} />
           </Route>
