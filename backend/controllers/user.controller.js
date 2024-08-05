@@ -35,6 +35,12 @@ const authUser = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000,
     });
 
+    var total_sessions_taken = 0;
+
+    user.assigned_modules.map((m) => {
+      total_sessions_taken = total_sessions_taken + m.sessions_completed;
+    })
+
     res.json({
       _id: user._id,
       username: user.username,
@@ -46,6 +52,7 @@ const authUser = async (req, res) => {
       organization_id: user.organization_id,
       assigned_manager: user.assigned_manager,
       assigned_modules: user.assigned_modules,
+      total_sessions_taken: total_sessions_taken,
     });
   } else {
     return res.status(401).json({ message: "Password is incorrect" });

@@ -8,8 +8,19 @@ import SessionReportLeftCol from "./SessionReportLeftCol";
 import UserAvatar from "./UserAvatar";
 import QuizDetails from "./QuizDetails";
 
+import NoSessionReport from "./NoSessionReport";
+
+import { UserContext } from "../contexts/user.context";
+
 function SessionReport() {
   const { showQuiz } = useContext(SessionReportContext);
+
+  const { state: userState } = useContext(UserContext);
+
+  if (!userState.user.total_sessions_taken) {
+    console.log("session report is greater than 1");
+    return <NoSessionReport />
+  }
 
   return (
     <div className="w-100 h-full pe-5 relative pt-10">

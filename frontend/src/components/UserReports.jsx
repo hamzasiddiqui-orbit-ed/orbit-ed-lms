@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import UserAvatar from "./UserAvatar";
 import UserReportsHeader from "./UserReportsHeader";
 import UserReportsBody from "./UserReportsBody";
+import { UserContext } from "../contexts/user.context";
+import NoSessionReport from "./NoSessionReport";
 
 const ReportList = () => {
   const [moduleName, setModuleName] = useState("");
+
+  const { state: userState } = useContext(UserContext);
 
   function handleModuleNameFromBody(name) {
     if (name == "All Modules") {
@@ -12,6 +16,11 @@ const ReportList = () => {
     } else {
       setModuleName(name);
     }
+  }
+
+  if (!userState.user.total_sessions_taken) {
+    console.log("session report is greater than 1");
+    return <NoSessionReport />
   }
 
   return (
