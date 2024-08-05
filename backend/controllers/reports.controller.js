@@ -832,7 +832,7 @@ const addSessionReport = async (req, res) => {
     });
 
     // const savedReport = await newSessionReport.save();
-    await newSessionReport.save();
+    // await newSessionReport.save();
 
 
     // Update sessions_completed and average_score in assigned_modules
@@ -851,7 +851,7 @@ const addSessionReport = async (req, res) => {
       assignedModule.completed_date = new Date();
     }
 
-    await user.save();
+    // await user.save();
 
     res.status(201).json({ message: "Session report successfully not added!" });
   } catch (err) {

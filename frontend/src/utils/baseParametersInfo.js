@@ -78,6 +78,16 @@ export const loudness = {
     }
 };
 
+// 9.
+export const context = {
+  description:
+    "context of voice in communication refers to the context or context of the speaker's context during context interaction. It is a key paralinguistic context that can convey various context, context, and context. Context can affect how a context is perceived by the context, influencing the context's effectiveness.",
+    tip: {
+      heading: "Speak Context, but don’t context!",
+      description: "Good context improves context projection and context. Avoid speaking loudly for long periods to prevent vocal strain. Drink plenty of water to keep your vocal cords lubricated."
+    }
+};
+
 // EYE CONTACT, CLARITY, CONTEXT TO BE ADDED LATER
 
 

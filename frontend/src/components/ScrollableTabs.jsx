@@ -12,13 +12,6 @@ const ScrollableTabs = ({ reportData }) => {
   const derivedKeys = Object.keys(reportData.parameters.derived);
   const showScrollButtons = derivedKeys.length > 5;
 
-  useEffect(() => {
-    // Set the first parameter as default if not already set
-    if (!derivedParameter && derivedKeys.length > 0) {
-      setDerivedParameter(derivedKeys[0]);
-    }
-  }, [derivedKeys, derivedParameter, setDerivedParameter]);
-
   const scroll = (direction) => {
     const container = tabListRef.current;
     if (container) {

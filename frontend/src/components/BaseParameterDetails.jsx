@@ -8,6 +8,7 @@ import ClarityDetails from "./ClarityDetails";
 import EyeContactDetails from "./EyeContactDetails";
 import FillerSoundsDetails from "./FillerSoundsDetails";
 import RepetitiveWordsDetails from "./RepetitiveWordsDetails";
+import ContextDetails from "./ContextDetails";
 
 const BaseParameterDetails = () => {
   const { baseParameter } = useContext(SessionReportContext);
@@ -28,7 +29,8 @@ const BaseParameterDetails = () => {
     return <FillerSoundsDetails />;
   } else if (baseParameter == "repetitive_words") {
     return <RepetitiveWordsDetails />;
-    // return;
+  } else if (baseParameter == "context") {
+    return <ContextDetails />;
   } else {
     return (
       <div className="text-center py-24">

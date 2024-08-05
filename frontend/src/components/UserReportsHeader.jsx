@@ -38,8 +38,8 @@ const UserReportsHeader = ({ sendModuleNameToParent }) => {
     return (
       <div className="flex flex-col gap-4 ps-5 mb-12">
         <div className="skeleton bg-slate-200 h-10 w-44"></div>
-        <div className="skeleton bg-slate-200 h-8"></div>
-        <div className="skeleton bg-slate-200 h-8"></div>
+        <div className="skeleton bg-slate-200 h-8 w-9/12"></div>
+        <div className="skeleton bg-slate-200 h-8 w-9/12"></div>
       </div>
     );
   }

@@ -31,14 +31,34 @@ const SpeechRateDetails = () => {
     return <div>Error loading Parameter Details.</div>;
   }
 
-  const maxWpm = 250;
-  const minWpm = 50;
+  const maxWpm = 245;
+  const minWpm = 55;
 
   const getCursorPosition = (mean) => {
     if (mean > maxWpm) return "100%";
     if (mean < minWpm) return "0%";
     const position = ((mean - minWpm) / (maxWpm - minWpm)) * 100;
     return `${position}%`;
+  };
+
+  const getStatsBarClass = (wpm) => {
+    // Excellent
+    if (wpm <= 190 && wpm >= 110) {
+      return "h-3 rounded-full bg-[#8BCB7B]"
+    }
+    // Good
+    else if ((wpm < 110 && wpm >= 100) || (wpm > 190 && wpm <= 200)) {
+      return "h-3 rounded-full bg-[#93A4E0]"
+    }
+    // Average
+    else if ((wpm < 100 && wpm >= 85) || (wpm > 200 && wpm <= 215)) {
+      return "h-3 rounded-full bg-[#F6B757]"
+    }
+    // Poor
+    else {
+      return "h-3 rounded-full bg-[#F4470E]"
+    }
+    
   };
 
   return (
@@ -66,27 +86,28 @@ const SpeechRateDetails = () => {
             className="relative h-3 rounded-full"
             style={{
               background:
-                "linear-gradient(90deg, #F4470E 25%, #8BCB7B 37.5%, #8BCB7B 52%, #F4470E 65%)",
+              // 90deg, #8BCB7B 32%, #93A4E0 56%, #F6B757 80%, #F4470E 100%
+                "linear-gradient(90deg, #F4470E 6%, #F6B757 20%, #93A4E0 29%, #8BCB7B 32%, #8BCB7B 73%, #93A4E0 76%, #F6B757 83%, #F4470E 94%)",
             }}
           >
             <div
               className="absolute h-full w-[0.5px] bg-textDark"
-              style={{ left: "35%" }}
+              style={{ left: "32%" }}
             ></div>
             <div
               className="absolute h-full w-[0.5px] bg-textDark"
-              style={{ left: "55%" }}
+              style={{ left: "73%" }}
             ></div>
-            <div className="absolute -top-6" style={{ left: "30%" }}>
-              <span className="text-xs">120 speechRate</span>
+            <div className="absolute -top-6 text-textDark" style={{ left: "27%" }}>
+              <span className="text-xs">110 WPM</span>
             </div>
-            <div className="absolute -top-6" style={{ left: "50%" }}>
-              <span className="text-xs">160 speechRate</span>
+            <div className="absolute -top-6 text-textDark" style={{ left: "68%" }}>
+              <span className="text-xs">190 WPM</span>
             </div>
           </div>
           <div className="flex justify-between mt-1 text-sm text-textLight">
             <span>Poor</span>
-            <span className="mr-[10%]">Good</span>
+            <span className="ms-[5%]">Excellent</span>
             <span>Poor</span>
           </div>
         </div>
@@ -100,23 +121,19 @@ const SpeechRateDetails = () => {
       <div className="flex justify-center w-full mt-4">
         <div className="w-7/12 relative">
           <div
-            className="h-3 rounded-full"
-            style={{
-              background:
-                "linear-gradient(90deg, #0B2176 25%, #93A4E0 37.5%, #93A4E0 52%, #0B2176 65%)",
-            }}
+            className={getStatsBarClass(baseParameterDetails.mean)}
           ></div>
           <div
             className="absolute top-[-20px] transform -translate-x-1/2"
             style={{ left: getCursorPosition(baseParameterDetails.mean) }}
           >
             <RiMapPin2Fill className="text-[#F4470E] text-xl" />
-            <div className="absolute top-5 left-1/2 transform -translate-x-1/2 text-xs whitespace-nowrap mt-3">
+            <div className="absolute top-5 left-1/2 transform -translate-x-1/2 text-xs whitespace-nowrap mt-3 text-textDark">
               {baseParameterDetails.mean > maxWpm
-                ? ">250 speechRate"
+                ? "245 WPM"
                 : baseParameterDetails.mean < minWpm
-                ? "<50 speechRate"
-                : `${baseParameterDetails.mean} speechRate`}
+                ? "<55 WPM"
+                : `${baseParameterDetails.mean} WPM`}
             </div>
           </div>
         </div>

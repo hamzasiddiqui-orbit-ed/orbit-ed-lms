@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { UserContext } from "../contexts/user.context";
 import { SessionReportContext } from "../contexts/sessionReport.context";
 import { useFormatReportGeneral } from "../hooks/useFormatReportGeneral";
@@ -14,6 +14,8 @@ const SessionReportHeader = () => {
 
   // const [selectedModule, setSelectedModule] = useState(null);
   // const [selectedSessionCount, setSelectedSessionCount] = useState(null);
+  const { setDerivedParameter, setBaseParameter } = useContext(SessionReportContext);
+
 
   const {
     setReportId,
@@ -78,12 +80,18 @@ const SessionReportHeader = () => {
     // setSelectedModule(moduleName);
     // setSelectedSessionCount(null); // Reset session count when module changes
 
+    setDerivedParameter(null);
+    setBaseParameter(null);
+
     setSelectedModule(moduleName);
     setSelectedSessionCount(null);
   };
 
   const handleSessionSelect = (sessionCount) => {
     // setSelectedSessionCount(sessionCount);
+
+    setDerivedParameter(null);
+    setBaseParameter(null);
 
     setSelectedSessionCount(sessionCount);
   };
@@ -92,8 +100,8 @@ const SessionReportHeader = () => {
     return (
       <div className="flex flex-col gap-4 ps-5 mb-12">
         <div className="skeleton bg-slate-200 h-10 w-44"></div>
-        <div className="skeleton bg-slate-200 h-8"></div>
-        <div className="skeleton bg-slate-200 h-8"></div>
+        <div className="skeleton bg-slate-200 h-8 w-9/12"></div>
+        <div className="skeleton bg-slate-200 h-8 w-9/12"></div>
       </div>
     );
   }

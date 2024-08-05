@@ -31,14 +31,34 @@ const LoudnessDetails = () => {
     return <div>Error loading Parameter Details.</div>;
   }
 
-  const maxLoudness = 80;
-  const minLoudness = 20;
+  const maxLoudness = 75;
+  const minLoudness = 45;
 
   const getCursorPosition = (mean) => {
     if (mean > maxLoudness) return "100%";
     if (mean < minLoudness) return "0%";
     const position = ((mean - minLoudness) / (maxLoudness - minLoudness)) * 100;
     return `${position}%`;
+  };
+
+  const getStatsBarClass = (db) => {
+    // Excellent
+    if (db <= 66 && db >= 53) {
+      return "h-3 rounded-full bg-[#8BCB7B]"
+    }
+    // Good
+    else if ((db < 53 && db >= 51.5) || (db > 66 && db <= 68.2)) {
+      return "h-3 rounded-full bg-[#93A4E0]"
+    }
+    // Average
+    else if ((db < 51.5 && db >= 51) || (db > 68.2 && db <= 68.7)) {
+      return "h-3 rounded-full bg-[#F6B757]"
+    }
+    // Poor
+    else {
+      return "h-3 rounded-full bg-[#F4470E]"
+    }
+    
   };
 
   return (
@@ -64,28 +84,28 @@ const LoudnessDetails = () => {
             className="relative h-3 rounded-full"
             style={{
               background:
-                "linear-gradient(90deg, #F4470E 45%, #8BCB7B 55%, #8BCB7B 73%, #F4470E 83%)",
+                "linear-gradient(90deg, #F4470E 13%, #F6B757 21%, #93A4E0 24%, #8BCB7B 27%, #8BCB7B 71%, #93A4E0 74%, #F6B757 78%, #F4470E 90%)",
             }}
           >
             <div
               className="absolute h-full w-[0.5px] bg-textDark"
-              style={{ left: "50%" }}
+              style={{ left: "27%" }}
             ></div>
             <div
               className="absolute h-full w-[0.5px] bg-textDark"
-              style={{ left: "78%" }}
+              style={{ left: "71%" }}
             ></div>
-            <div className="absolute -top-6" style={{ left: "45%" }}>
-              <span className="text-xs">50 dB</span>
+            <div className="absolute -top-6" style={{ left: "22%" }}>
+              <span className="text-xs">53 dB</span>
             </div>
-            <div className="absolute -top-6" style={{ left: "73%" }}>
-              <span className="text-xs">67 dB</span>
+            <div className="absolute -top-6" style={{ left: "66%" }}>
+              <span className="text-xs">66 dB</span>
             </div>
           </div>
           <div className="flex justify-between mt-1 text-sm text-textLight">
-            <span className="ms-[15%]">Poor</span>
-            <span className="me-[-5%]">Good</span>
-            <span className="me-[8%]">Poor</span>
+            <span className="ms-[0%]">Poor</span>
+            <span className="me-[0%]">Excellent</span>
+            <span className="me-[0%]">Poor</span>
           </div>
         </div>
       </div>
@@ -98,11 +118,7 @@ const LoudnessDetails = () => {
       <div className="flex justify-center w-full mt-4">
         <div className="w-7/12 relative">
           <div
-            className="h-3 rounded-full"
-            style={{
-              background:
-                "linear-gradient(90deg, #0B2176 45%, #93A4E0 55%, #93A4E0 73%, #0B2176 83%)",
-            }}
+            className={getStatsBarClass(baseParameterDetails.mean)}
           ></div>
           <div
             className="absolute top-[-20px] transform -translate-x-1/2"
@@ -111,9 +127,9 @@ const LoudnessDetails = () => {
             <RiMapPin2Fill className="text-[#F4470E] text-xl" />
             <div className="absolute top-5 left-1/2 transform -translate-x-1/2 text-xs whitespace-nowrap mt-3">
               {baseParameterDetails.mean > maxLoudness
-                ? ">80 dB"
+                ? ">75 dB"
                 : baseParameterDetails.mean < minLoudness
-                ? "<20 dB"
+                ? "<45 dB"
                 : `${baseParameterDetails.mean} dB`}
             </div>
           </div>

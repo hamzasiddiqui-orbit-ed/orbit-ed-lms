@@ -31,8 +31,8 @@ const RepetitiveWordsDetails = () => {
     return <div>Error loading Parameter Details.</div>;
   }
 
-  const maxRepetitiveWords = 5;
-  const minRepetitiveWords = 0;
+  const maxRepetitiveWords = 4.5;
+  const minRepetitiveWords = 2;
 
   const getCursorPosition = (mean) => {
     if (mean > maxRepetitiveWords) return "100%";
@@ -45,6 +45,19 @@ const RepetitiveWordsDetails = () => {
   const maxCount = Math.max(
     ...baseParameterDetails.list.map((item) => Object.values(item)[0])
   );
+
+  const getStatsBarClass = (countPercentage) => {
+    if (countPercentage <= 2.8) {
+      return "h-3 rounded-full bg-[#8BCB7B]"
+    } else if (countPercentage > 2.8 && countPercentage <= 3.4) {
+      return "h-3 rounded-full bg-[#93A4E0]"
+    } else if (countPercentage > 3.4 && countPercentage <= 4.0) {
+      return "h-3 rounded-full bg-[#F6B757]"
+    } else {
+      return "h-3 rounded-full bg-[#F4470E]"
+    }
+    
+  };
 
   return (
     <div className="flex flex-col">
@@ -71,20 +84,20 @@ const RepetitiveWordsDetails = () => {
             className="relative h-3 rounded-full"
             style={{
               background:
-                "linear-gradient(90deg, #8BCB7B 0%, #8BCB7B 60%, #F4470E 70%)",
+                "linear-gradient(90deg, #8BCB7B 32%, #93A4E0 56%, #F6B757 80%, #F4470E 100%)",
             }}
           >
             <div
               className="absolute h-full w-[0.5px] bg-textDark"
-              style={{ left: "60%" }}
+              style={{ left: "32%" }}
             ></div>
-            <div className="absolute -top-6" style={{ left: "53%" }}>
+            <div className="absolute -top-6" style={{ left: "27%" }}>
               <span className="text-xs">3 Words</span>
             </div>
           </div>
           <div className="flex justify-between mt-1 text-sm text-textLight">
-            <span className="ms-[25%]">Good</span>
-            <span className="me-[10%]">Poor</span>
+            <span className="ms-[0%]">Excellent</span>
+            <span className="me-[0%]">Poor</span>
           </div>
         </div>
       </div>
@@ -97,23 +110,19 @@ const RepetitiveWordsDetails = () => {
       <div className="flex justify-center w-full mt-4">
         <div className="w-7/12 relative">
           <div
-            className="h-3 rounded-full"
-            style={{
-              background:
-                "linear-gradient(90deg, #93A4E0 0%, #93A4E0 60%, #0B2176 70%)",
-            }}
+            className={getStatsBarClass(baseParameterDetails.count_percentage)}
           ></div>
           <div
             className="absolute top-[-20px] transform -translate-x-1/2"
-            style={{ left: getCursorPosition(baseParameterDetails.count) }}
+            style={{ left: getCursorPosition(baseParameterDetails.count_percentage) }}
           >
             <RiMapPin2Fill className="text-[#F4470E] text-xl" />
             <div className="absolute top-5 left-1/2 transform -translate-x-1/2 text-xs whitespace-nowrap mt-3">
-              {baseParameterDetails.count > maxRepetitiveWords
-                ? ">5 Words"
-                : baseParameterDetails.count < minRepetitiveWords
-                ? "undefined"
-                : `${baseParameterDetails.count} Words`}
+              {baseParameterDetails.count_percentage > maxRepetitiveWords
+                ? ">4.5 %"
+                : baseParameterDetails.count_percentage < minRepetitiveWords
+                ? "<2 %"
+                : `${baseParameterDetails.count_percentage} %`}
             </div>
           </div>
         </div>

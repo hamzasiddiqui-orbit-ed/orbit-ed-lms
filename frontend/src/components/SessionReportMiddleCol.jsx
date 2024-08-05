@@ -1,17 +1,26 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { SessionReportContext } from "../contexts/sessionReport.context";
 import { useSessionReportDerivedParameters } from "../hooks/useReports";
 import ScrollableTabs from "./ScrollableTabs";
 import ParameterSelect from "./ParameterSelect";
 
 const SessionReportMiddleCol = () => {
-  const { reportId } = useContext(SessionReportContext);
+  const { reportId, setDerivedParameter } = useContext(SessionReportContext);
 
   const {
-    data: derivedParmaters,
+    data: derivedParameters,
     isPending,
     isError,
   } = useSessionReportDerivedParameters(reportId);
+
+  useEffect(() => {
+    if (derivedParameters && derivedParameters.data.parameters.derived) {
+      const derivedKeys = Object.keys(derivedParameters.data.parameters.derived);
+      if (derivedKeys.length > 0) {
+        setDerivedParameter(derivedKeys[0]);
+      }
+    }
+  }, [derivedParameters, setDerivedParameter]);
 
   if (isPending ) {
     return (
@@ -26,15 +35,15 @@ const SessionReportMiddleCol = () => {
     return <div>Error loading report data</div>;
   }
 
-  if (!derivedParmaters) {
+  if (!derivedParameters) {
     return <div>No report data available</div>;
   }
 
   return (
     <div className="w-6/12">
-      {derivedParmaters && (
+      {derivedParameters && (
         <>
-          <ScrollableTabs reportData={derivedParmaters.data} />
+          <ScrollableTabs reportData={derivedParameters.data} />
 
           {/* Add your graph or chart component here */}
           <div className="bg-core h-64 mb-8">

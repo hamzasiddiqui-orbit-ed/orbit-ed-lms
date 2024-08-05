@@ -31,14 +31,27 @@ const EyeContactDetails = () => {
     return <div>Error loading Parameter Details.</div>;
   }
 
-  const maxClarity = 100;
-  const minClarity = 0;
+  const maxEyeContact = 100;
+  const minEyeContact = 0;
 
   const getCursorPosition = (mean) => {
-    if (mean > maxClarity) return "100%";
-    if (mean < minClarity) return "0%";
-    const position = ((mean - minClarity) / (maxClarity - minClarity)) * 100;
+    if (mean > maxEyeContact) return "100%";
+    if (mean < minEyeContact) return "0%";
+    const position = ((mean - minEyeContact) / (maxEyeContact - minEyeContact)) * 100;
     return `${position}%`;
+  };
+
+  const getStatsBarClass = (percent) => {
+    if (percent >= 75) {
+      return "h-3 rounded-full bg-[#8BCB7B]"
+    } else if (percent >= 50 && percent < 75) {
+      return "h-3 rounded-full bg-[#93A4E0]"
+    } else if (percent >= 25 && percent < 50) {
+      return "h-3 rounded-full bg-[#F6B757]"
+    } else {
+      return "h-3 rounded-full bg-[#F4470E]"
+    }
+    
   };
 
   return (
@@ -63,7 +76,7 @@ const EyeContactDetails = () => {
           <div
             className="relative h-3 rounded-full"
             style={{
-              background: "linear-gradient(90deg, #F4470E 0%, #8BCB7B 100%)",
+              background: "linear-gradient(90deg, #F4470E 12%, #F6B757 37%, #93A4E0 62%, #8BCB7B 87%)",
             }}
           >
             <div
@@ -77,7 +90,7 @@ const EyeContactDetails = () => {
           </div>
           <div className="flex justify-between mt-1 text-sm text-textLight">
             <span>Poor</span>
-            <span>Good</span>
+            <span>Excellent</span>
           </div>
         </div>
       </div>
@@ -91,10 +104,7 @@ const EyeContactDetails = () => {
       <div className="flex justify-center w-full mt-4">
         <div className="w-7/12 relative">
           <div
-            className="h-3 rounded-full"
-            style={{
-              background: "linear-gradient(90deg, #0B2176 0%, #93A4E0 100%)",
-            }}
+            className={getStatsBarClass(baseParameterDetails.score)}
           ></div>
           <div
             className="absolute top-[-20px] transform -translate-x-1/2"
@@ -102,9 +112,9 @@ const EyeContactDetails = () => {
           >
             <RiMapPin2Fill className="text-[#F4470E] text-xl" />
             <div className="absolute top-5 left-1/2 transform -translate-x-1/2 text-xs whitespace-nowrap mt-3">
-              {baseParameterDetails.score > maxClarity
+              {baseParameterDetails.score > maxEyeContact
                 ? "undefined"
-                : baseParameterDetails.score < minClarity
+                : baseParameterDetails.score < minEyeContact
                 ? "undefined"
                 : `${baseParameterDetails.score} %`}
             </div>
