@@ -594,6 +594,10 @@ const getBaseParameterDetails = async (req, res) => {
 // -----------------------------
 // Utility function to format dates (move to middleware)
 const formatDate = (date) => {
+  if (!date) {
+    return null
+  }
+  
   const options = { day: "numeric", month: "short", year: "numeric" };
   return new Date(date).toLocaleDateString("en-GB", options);
 };

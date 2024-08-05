@@ -170,46 +170,48 @@ const UserReportsTable = ({
                               Show more
                             </a>
                             {selectedReport && (
-                              <div
-                                className="modal hover:cursor-default"
-                                role="dialog"
-                                id="transcript_modal"
-                              >
+                              <>
                                 <div
-                                  className="modal-box max-w-5xl hover:cursor-default m-0 p-0"
-                                  ref={modalRef}
-                                  // Prevents closing the modal from triggering row click
-                                  onClick={(event) => event.stopPropagation()}
+                                  className="fixed inset-0 bg-utility opacity-10 z-40 hover:cursor-default"
+                                  onClick={() => setSelectedReport(null)}
+                                ></div>
+                                <div
+                                  className="fixed inset-0 flex items-center justify-center z-50 hover:cursor-default"
+                                  onClick={() => setSelectedReport(null)}
                                 >
-                                  <div className="flex flex-col sticky top-0 bg-core m-0 p-5">
-                                    <h1 className="text-lg font-bold flex justify-between">
-                                      <p>
-                                        {selectedReport.moduleName} - Session{" "}
-                                        {selectedReport.sessionCount}
-                                      </p>
-                                      <div className="modal-action m-0 p-0">
-                                        <a
-                                          href="#"
-                                          className="btn btn-sm bg-sideNavBG border-0 hover:bg-sideNavHighlight hover:text-textDark"
-                                          onClick={(event) => {
-                                            // Prevents closing the modal from triggering row click
-                                            event.stopPropagation();
-                                            setSelectedReport(null);
-                                          }}
-                                        >
-                                          Close
-                                        </a>
-                                      </div>
-                                    </h1>
-                                    <h4 className="text-base font-bold pt-2">
-                                      Transcription
-                                    </h4>
+                                  <div
+                                    className="modal-box max-w-5xl hover:cursor-default m-0 p-0 relative shadow-sm"
+                                    ref={modalRef}
+                                    onClick={(event) => event.stopPropagation()}
+                                  >
+                                    <div className="flex flex-col sticky top-0 bg-core m-0 p-5">
+                                      <h1 className="text-lg font-bold flex justify-between">
+                                        <p>
+                                          {selectedReport.moduleName} - Session{" "}
+                                          {selectedReport.sessionCount}
+                                        </p>
+                                        <div className="modal-action m-0 p-0">
+                                          <button
+                                            className="btn btn-sm bg-sideNavBG border-0 hover:bg-sideNavHighlight hover:text-textDark"
+                                            onClick={(event) => {
+                                              event.stopPropagation();
+                                              setSelectedReport(null);
+                                            }}
+                                          >
+                                            Close
+                                          </button>
+                                        </div>
+                                      </h1>
+                                      <h4 className="text-base font-bold pt-2">
+                                        Transcription
+                                      </h4>
+                                    </div>
+                                    <p className="text-base bg-sideNavBG p-4 mx-5 mb-5 rounded-2xl hover:cursor-text">
+                                      {selectedReport.transcript}
+                                    </p>
                                   </div>
-                                  <p className="text-base bg-sideNavBG p-4 mx-5 mb-5 rounded-2xl">
-                                    {selectedReport.transcript}
-                                  </p>
                                 </div>
-                              </div>
+                              </>
                             )}
                           </>
                         ) : (

@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React, { useRef, useEffect, useState } from "react";
-import { IoSearch } from "react-icons/io5";
+import { IoSearch, IoClose } from "react-icons/io5";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
 const DropdownUserReport = ({
@@ -35,10 +35,15 @@ const DropdownUserReport = ({
 
   const handleSummaryClick = (e) => {
     e.preventDefault();
+    setSearchTerm("");
     handleDropDownExpand();
     if (detailsRef.current) {
       detailsRef.current.setAttribute("open", "");
     }
+  };
+
+  const resetSearchTerm = () => {
+    setSearchTerm("");
   };
 
   const filteredData = dropDownData.filter((item) =>
@@ -67,6 +72,15 @@ const DropdownUserReport = ({
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+
+          {searchTerm.length ? (
+            <button className="hover:cursor-pointer" onClick={resetSearchTerm}>
+              <IoClose className="text-textLight" />
+            </button>
+          ) : (
+            <></>
+          )}
+
           <IoSearch className="text-textLight" />
         </label>
 

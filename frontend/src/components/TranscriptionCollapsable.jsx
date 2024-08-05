@@ -14,11 +14,16 @@ const TranscriptionCollapsable = ({ transcription }) => {
         className="link link-hover text-xs font-normal cursor-pointer flex flex-row mb-2 text-brand hover:text-brand"
         onClick={toggleCollapse}
       >
-        Show Transcription{" "}
         {isCollapsed ? (
-          <IoIosArrowDown className="mt-[2px] ms-1" />
+          <>
+            <p>Show Transcription </p>
+            <IoIosArrowDown className="mt-[2px] ms-1" />
+          </>
         ) : (
-          <IoIosArrowUp className="mt-[2px] ms-1" />
+          <>
+            <p>Hide Transcription </p>
+            <IoIosArrowUp className="mt-[2px] ms-1" />
+          </>
         )}
       </a>
       <div
@@ -30,7 +35,9 @@ const TranscriptionCollapsable = ({ transcription }) => {
           transition: "max-height 0.3s ease-in-out",
         }}
       >
-        <p className="text-textLight text-sm font-normal px-2">{transcription}</p>
+        <p className="text-textLight text-sm font-normal px-2">
+          {transcription}
+        </p>
       </div>
     </div>
   );

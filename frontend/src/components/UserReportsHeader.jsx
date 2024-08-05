@@ -50,13 +50,13 @@ const UserReportsHeader = ({ sendModuleNameToParent }) => {
 
   const getScoreColorClass = () => {
     if (moduleGeneralDetails.data.averageScore < 40) {
-      return  "text-progressBad ms-1";
+      return "text-progressBad ms-1";
     } else if (moduleGeneralDetails.data.averageScore < 70) {
       return "text-progressAverage ms-1";
     } else {
-      return "text-progressGood ms-1"
+      return "text-progressGood ms-1";
     }
-  }
+  };
 
   return (
     <div className="flex items-start ps-5">
@@ -64,6 +64,7 @@ const UserReportsHeader = ({ sendModuleNameToParent }) => {
         <h1 className="text-3xl font-medium text-headingDark mb-4 ps-2 text-start">
           Module Overview
         </h1>
+        
         <div className="mb-4 text-start">
           <DropdownUserReport
             title={selectedModule || "All Modules"}
@@ -79,20 +80,35 @@ const UserReportsHeader = ({ sendModuleNameToParent }) => {
               <div className="text-textLight text-base font-normal ps-3">
                 Assigned Date: {moduleGeneralDetails.data.assignedDate}
               </div>
+
               <div className="text-textLight text-base font-normal ps-16">
                 Due Date: {moduleGeneralDetails.data.dueDate}
               </div>
-              <div className="text-textLight text-base font-normal ps-16">
-                Completed Date: {moduleGeneralDetails.data.completedDate}
-              </div>
+
+              {moduleGeneralDetails.data.completedDate ? (
+                <div className="text-textLight text-base font-normal ps-16">
+                  Completed Date: {moduleGeneralDetails.data.completedDate}
+                </div>
+              ) : (
+                <div className="text-textLight text-base font-normal ps-16">
+                  Completed Date: --
+                </div>
+              )}
             </div>
             <div className="flex items-center justify-between mt-3">
               <div className="text-textLight text-base font-normal ps-3">
                 Assigned By: {moduleGeneralDetails.data.assignedBy}
               </div>
+
               <div className="text-textLight text-base font-normal ps-3 pe-8 flex">
-                <p>Module Average Score:</p>
-                <p className={getScoreColorClass()}>{moduleGeneralDetails.data.averageScore}%</p>
+                {moduleGeneralDetails.data.averageScore && (
+                  <>
+                    <p>Module Average Score:</p>
+                    <p className={getScoreColorClass()}>
+                      {moduleGeneralDetails.data.averageScore.toFixed(2)}%
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           </>

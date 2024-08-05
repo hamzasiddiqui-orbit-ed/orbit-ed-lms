@@ -25,13 +25,26 @@ const UserReportsBody = ({ moduleName }) => {
   }
 
   if (isError) {
-    return <div>Error loading reports</div>;
+    return (
+      <table className="w-full text-sm text-left text-textDark table-fixed">
+        <tbody className="rounded-b-lg">
+          <tr>
+            <td
+              colSpan={!moduleName ? "7" : "6"}
+              className="px-6 py-4 text-center"
+            >
+              No reports found
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    );
   }
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
   };
-  
+
   const handleSort = (sortBy) => {
     setPage(1);
     setSort((prevSort) => {

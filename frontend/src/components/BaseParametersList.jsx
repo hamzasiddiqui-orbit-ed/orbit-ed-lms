@@ -14,11 +14,11 @@ const BaseParametersList = ({ baseParameters }) => {
 
   const getProgressColorClass = (value) => {
     if (value < 40) {
-      return "progress-bad";
+      return "progress-bad bg-[#D9D9D9]";
     } else if (value < 70) {
-      return "progress-average";
+      return "progress-average bg-[#D9D9D9]";
     } else {
-      return "progress-good";
+      return "progress-good bg-[#D9D9D9]";
     }
   };
 
