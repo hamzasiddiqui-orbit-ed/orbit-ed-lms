@@ -16,7 +16,7 @@ const {
   getQuizDetails,
   addSessionReport,
 } = require("../controllers/reports.controller");
-const { protect } = require("../middlewares/auth");
+const { protect, protectUnreal } = require("../middlewares/auth");
 
 const router = express.Router();
 
@@ -90,7 +90,7 @@ router.post("/quiz-details", protect, (req, res, next) => {
   next();
 }, getQuizDetails)
 
-router.post("/save-session-report", protect, (req, res, next) => {
+router.post("/save-session-report", protectUnreal, (req, res, next) => {
   console.log("\nROUTE HIT (reports.route): save-session-report\n");
   next();
 }, addSessionReport)

@@ -5,6 +5,7 @@ const {
   logoutUser,
   updateUserProfile,
   changePassword,
+  changePin,
 } = require("../controllers/user.controller");
 const { protect } = require("../middlewares/auth");
 
@@ -42,6 +43,16 @@ router.post(
     next();
   },
   changePassword
+);
+
+router.post(
+  "/change-pin",
+  protect,
+  (req, res, next) => {
+    console.log("\nROUTE HIT (user.route): change-pin\n");
+    next();
+  },
+  changePin
 );
 
 module.exports = router;

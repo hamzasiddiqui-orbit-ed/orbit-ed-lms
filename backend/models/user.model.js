@@ -12,6 +12,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    pin: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -68,17 +72,34 @@ const userSchema = new mongoose.Schema(
 
 // Password hashing
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    next();
+  // if (!this.isModified("password")) {
+  //   next();
+  // } else {
+  //   const salt = await bcrypt.genSalt(10);
+  //   this.password = await bcrypt.hash(this.password, salt);
+  // }
+  
+  if (this.isModified("password")) {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
   }
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+
+  if (this.isModified("pin")) {
+    const salt = await bcrypt.genSalt(10);
+    this.pin = await bcrypt.hash(this.pin, salt);
+  }
+
   next();
 });
 
 // Password matching
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
+};
+
+// pin matching
+userSchema.methods.matchPin = async function (enteredPin) {
+  return await bcrypt.compare(enteredPin, this.pin);
 };
 
 module.exports = mongoose.model("User", userSchema);

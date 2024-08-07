@@ -11,6 +11,12 @@ const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET_KEY, { expiresIn: "24h" });
 };
 
+const generateTokenForUnreal = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET_KEY_UNREAL, {
+    expiresIn: "24h",
+  });
+};
+
 const formatDate = (date) => {
   if (!date) {
     return null;
@@ -102,11 +108,17 @@ const authUser = async (req, res) => {
 // Login function for Unreal app
 // -----------------------------
 const unrealAuthUser = async (req, res) => {
-  const { username, password } = req.body;
-  console.log(`\nunrealAuthUser called: ${(username, password)}\n`);
+  const { username, pin } = req.body;
+  console.log(`\nunrealAuthUser called: ${(username, pin)}\n`);
 
-  if (!username || !password) {
+  const isNumeric = (string) => /^[+-]?\d+(\.\d+)?$/.test(string);
+
+  if (!username || !pin) {
     return res.status(400).json({ message: "Required data missing!" });
+  } else if (pin.length != 4) {
+    return res.status(400).json({ message: "Length of pin should be 4." });
+  } else if (!isNumeric(pin)) {
+    return res.status(400).json({ message: "Pin should be numeric." });
   }
 
   const user = await User.findOne({ username });
@@ -114,8 +126,8 @@ const unrealAuthUser = async (req, res) => {
     return res.status(404).json({ message: "Please enter a valid username" });
   }
 
-  if (user && (await user.matchPassword(password))) {
-    res.cookie("jwt", generateToken(user._id), {
+  if (user && (await user.matchPin(pin))) {
+    res.cookie("jwt", generateTokenForUnreal(user._id), {
       httpOnly: true,
       secure: process.env.NODE_ENV !== "development",
       maxAge: 3 * 60 * 60 * 1000,
@@ -267,9 +279,13 @@ const changePassword = async (req, res) => {
     const { currentPassword, newPassword } = req.body;
 
     if (!currentPassword || !newPassword) {
-      return res.status(400).json({ message: "Current password and new password are required." });
+      return res
+        .status(400)
+        .json({ message: "Current password and new password are required." });
     } else if (currentPassword == newPassword) {
-      return res.status(400).json({ message: "New password should be different from the current password." });
+      return res.status(400).json({
+        message: "New password should be different from the current password.",
+      });
     }
 
     const user = await User.findById(userId);
@@ -281,12 +297,16 @@ const changePassword = async (req, res) => {
     // Check if the current password is correct using the matchPassword method
     const isMatch = await user.matchPassword(currentPassword);
     if (!isMatch) {
-      return res.status(400).json({ message: "Current password is incorrect." });
+      return res
+        .status(400)
+        .json({ message: "Current password is incorrect." });
     }
 
     // Check if the new password meets the required criteria
     if (newPassword.length < 4) {
-      return res.status(400).json({ message: "New password must be at least 4 characters long." });
+      return res
+        .status(400)
+        .json({ message: "New password must be at least 4 characters long." });
     }
 
     // Set the new password
@@ -301,10 +321,67 @@ const changePassword = async (req, res) => {
   }
 };
 
+// ------------------------
+// Update user's unreal pin
+// ------------------------
+const changePin = async (req, res) => {
+  try {
+    const token = req.cookies.jwt;
+    const userId = jwt.verify(token, process.env.JWT_SECRET_KEY).id;
+
+    const { currentPin, newPin } = req.body;
+
+    console.log(currentPin, typeof currentPin);
+    console.log(newPin, typeof newPin);
+
+    if (!currentPin || !newPin) {
+      return res
+        .status(400)
+        .json({ message: "Current pin and new pin are required." });
+    } else if (currentPin == newPin) {
+      return res.status(400).json({
+        message: "New pin should be different from the current password.",
+      });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Check if the current password is correct using the matchPassword method
+    const isMatch = await user.matchPin(currentPin);
+    if (!isMatch) {
+      return res
+        .status(400)
+        .json({ message: "Current pin is incorrect." });
+    }
+
+    // Check if the new password meets the required criteria
+    if (newPin.length != 4) {
+      return res
+        .status(400)
+        .json({ message: "New pin must be of 4 digits." });
+    }
+
+    // Set the new password
+    user.pin = newPin;
+
+    // Save the user (this will trigger the pre-save hook to hash the password)
+    await user.save();
+
+    res.status(200).json({ message: "Pin changed successfully." });
+  } catch (err) {
+    res.status(400).json({ message: `Query response: ${err.message}` });
+  }
+};
+
 module.exports = {
   authUser,
   unrealAuthUser,
   logoutUser,
   updateUserProfile,
   changePassword,
+  changePin,
 };

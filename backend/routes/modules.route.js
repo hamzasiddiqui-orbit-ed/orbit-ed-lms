@@ -4,13 +4,13 @@ const {
   getUniqueAssignedModules,
   getAssignedModuleDetails,
 } = require("../controllers/modules.controller");
-const { protect } = require("../middlewares/auth");
+const { protect, protectUnreal } = require("../middlewares/auth");
 
 const router = express.Router();
 
 router.post(
   "/session-module",
-  protect,
+  protectUnreal,
   (req, res, next) => {
     console.log("\nROUTE HIT (modules.route): session-module\n");
     next();

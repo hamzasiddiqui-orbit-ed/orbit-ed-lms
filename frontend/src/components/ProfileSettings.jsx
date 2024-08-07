@@ -3,7 +3,8 @@ import { UserContext } from "../contexts/user.context";
 import defaultProfilePic from "../assets/defaultProfilePic.jpg";
 import { MdEdit } from "react-icons/md";
 import { useUsers } from "../hooks/useUsers";
-import ChangePasswordModal from "./changePasswordModal";
+import ChangePasswordModal from "./ChangePasswordModal";
+import ChangePinModal from "./ChangePinModal";
 
 const ProfileSettings = () => {
   const { state: userState } = useContext(UserContext);
@@ -41,22 +42,22 @@ const ProfileSettings = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateProfileMutation.mutateAsync(formData);
+      const response = await updateProfileMutation.mutateAsync(formData);
       setIsEditing(false);
-      showToast("success");
+      showToast("success", response.data.message);
     } catch (error) {
-      showToast("error");
+      showToast("error", error);
     }
   };
 
-  const showToast = (type) => {
+  const showToast = (type, message) => {
     if (type == "success") {
       const toast = document.getElementById("toast-one");
       const toastType = document.getElementById("toast-success");
 
       if (toast) {
         toastType.innerHTML = `
-          <span>Profile updated successfully</span>
+          <span>${message}</span>
         `;
         toast.classList.remove("hidden");
         toastType.classList.remove("hidden");
@@ -71,7 +72,7 @@ const ProfileSettings = () => {
 
       if (toast) {
         toastType.innerHTML = `
-          <span>Failed to update profile</span>
+          <span>${message}</span>
         `;
         toast.classList.remove("hidden");
         toastType.classList.remove("hidden");
@@ -109,11 +110,10 @@ const ProfileSettings = () => {
                 </span>
               </div>
 
-              {/* <button className="btn rounded-xl bg-red-600 border-0 text-core px-5 hover:bg-progressBasic">
-                Change Password
-              </button> */}
-
-              <ChangePasswordModal />
+              <div className="flex flex-col gap-2">
+                <ChangePasswordModal />
+                <ChangePinModal />
+              </div>
             </div>
 
             <div className="stats stats-vertical lg:stats-horizontal shadow mt-5 text-textDark">
@@ -292,7 +292,7 @@ const ProfileSettings = () => {
       </div>
 
       <div id="toast-two" className="toast toast-end hidden">
-        <div id="toast-error" className="alert alert-success hidden"></div>
+        <div id="toast-error" className="alert alert-error hidden"></div>
       </div>
     </div>
   );

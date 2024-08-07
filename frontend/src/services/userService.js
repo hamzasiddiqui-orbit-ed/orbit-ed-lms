@@ -5,3 +5,6 @@ export const updateUserProfile = async (userData) =>
 
 export const changePassword = async (passwordData) =>
   api.post("users/change-password", passwordData);
+
+export const changePin = async (pinData) =>
+  api.post("users/change-pin", pinData);
