@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "react-phone-input-2": "^2.15.1",
+    "react-select": "^5.8.0",
+    "react-select-country-list": "^2.2.3"
+  }
+}

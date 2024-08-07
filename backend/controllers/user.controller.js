@@ -73,6 +73,8 @@ const authUser = async (req, res) => {
         username: user.username,
         email: user.email,
         name: user.name,
+        gender: user.gender,
+        country: user.country,
         phone: user.phone,
         job_title: user.job_title,
         description: user.description,
@@ -89,6 +91,8 @@ const authUser = async (req, res) => {
         username: user.username,
         email: user.email,
         name: user.name,
+        gender: user.gender,
+        country: user.country,
         phone: user.phone,
         job_title: user.job_title,
         description: user.description,
@@ -228,11 +232,11 @@ const updateUserProfile = async (req, res) => {
   const token = req.cookies.jwt;
   const userId = jwt.verify(token, process.env.JWT_SECRET_KEY).id;
 
-  const { name, phone, jobTitle, description } = req.body;
+  const { name, gender, country, jobTitle, phone, description } = req.body;
 
   if (!userId) {
     return res.status(400).json({ message: "No user ID found." });
-  } else if (!name || !phone || !jobTitle || !description) {
+  } else if (!name || !gender || !country || !jobTitle || !phone || !description) {
     return res.status(400).json({ message: "Missing required data." });
   }
 
@@ -242,8 +246,10 @@ const updateUserProfile = async (req, res) => {
       userId,
       {
         name,
-        phone,
+        gender,
+        country,
         job_title: jobTitle,
+        phone,
         description,
       },
       { new: true, runValidators: true } // Return the updated document and run validators
@@ -258,6 +264,8 @@ const updateUserProfile = async (req, res) => {
       message: "Profile updated successfully",
       user: {
         name: updatedUser.name,
+        gender: updatedUser.gender,
+        country: updatedUser.country,
         phone: updatedUser.phone,
         job_title: updatedUser.job_title,
         description: updatedUser.description,

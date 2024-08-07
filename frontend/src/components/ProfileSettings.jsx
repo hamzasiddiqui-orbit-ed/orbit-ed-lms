@@ -5,6 +5,10 @@ import { MdEdit } from "react-icons/md";
 import { useUsers } from "../hooks/useUsers";
 import ChangePasswordModal from "./ChangePasswordModal";
 import ChangePinModal from "./ChangePinModal";
+import Select from "react-select";
+import countryList from "react-select-country-list";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const ProfileSettings = () => {
   const { state: userState } = useContext(UserContext);
@@ -14,6 +18,8 @@ const ProfileSettings = () => {
 
   const [formData, setFormData] = useState({
     name: user.name || "",
+    gender: user.gender || "",
+    country: user.country || "",
     phone: user.phone || "",
     jobTitle: user.job_title || "",
     description: user.description || "",
@@ -25,6 +31,14 @@ const ProfileSettings = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleCountryChange = (selectedOption) => {
+    setFormData({ ...formData, country: selectedOption.value });
+  };
+
+  const handlePhoneChange = (value) => {
+    setFormData({ ...formData, phone: value });
+  };
+
   const handleEdit = () => {
     setIsEditing(true);
   };
@@ -34,6 +48,8 @@ const ProfileSettings = () => {
     setFormData({
       name: user.name || "",
       phone: user.phone || "",
+      gender: user.gender || "",
+      country: user.country || "",
       jobTitle: user.job_title || "",
       description: user.description || "",
     });
@@ -82,6 +98,42 @@ const ProfileSettings = () => {
         }, 5000);
       }
     }
+  };
+
+  const countryOptions = countryList().getData();
+
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      height: "40px",
+      minHeight: "40px",
+      borderRadius: "0.75rem",
+      borderColor: "#929292",
+      textAlign: "left",
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      height: "40px",
+      padding: "0 6px",
+      textAlign: "left",
+    }),
+    input: (provided) => ({
+      ...provided,
+      margin: "0px",
+      textAlign: "left",
+    }),
+    indicatorsContainer: (provided) => ({
+      ...provided,
+      height: "40px",
+    }),
+    option: (provided) => ({
+      ...provided,
+      textAlign: "left",
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      textAlign: "left",
+    }),
   };
 
   return (
@@ -175,23 +227,60 @@ const ProfileSettings = () => {
 
               <label className="label flex flex-col p-0 items-start justify-start">
                 <span className="w-full h-1 bg-sideNavBG rounded-3xl m-0 p-0" />
-                <span className="label-text pt-2 ps-4 text-base">Phone No</span>
+                <span className="label-text pt-2 ps-4 text-base">Gender</span>
               </label>
               <div className="form-control col-span-2">
                 {isEditing ? (
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
+                  <select
+                    name="gender"
+                    value={formData.gender}
                     onChange={handleChange}
-                    className="input input-bordered size-10 border-utility w-full rounded-xl"
+                    className="select select-bordered w-full rounded-xl border-utility text-base"
+                    style={{
+                      height: "40px",
+                      minHeight: "40px",
+                      paddingTop: "0",
+                      paddingBottom: "0",
+                    }}
                     disabled={!isEditing}
+                  >
+                    <option disabled value="">
+                      Select your gender
+                    </option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                  </select>
+                ) : (
+                  <label className="label flex flex-col p-0 items-start justify-start">
+                    <span className="w-full h-1 bg-sideNavBG rounded-3xl m-0 p-0" />
+                    <span className="label-text pt-2 text-base ps-4">
+                      {user.gender}
+                    </span>
+                  </label>
+                )}
+              </div>
+
+              <label className="label flex flex-col p-0 items-start justify-start">
+                <span className="w-full h-1 bg-sideNavBG rounded-3xl m-0 p-0" />
+                <span className="label-text pt-2 ps-4 text-base">Country</span>
+              </label>
+              <div className="form-control col-span-2">
+                {isEditing ? (
+                  <Select
+                    options={countryOptions}
+                    value={countryOptions.find(
+                      (option) => option.value === formData.country
+                    )}
+                    onChange={handleCountryChange}
+                    styles={customStyles}
+                    isDisabled={!isEditing}
                   />
                 ) : (
                   <label className="label flex flex-col p-0 items-start justify-start">
                     <span className="w-full h-1 bg-sideNavBG rounded-3xl m-0 p-0" />
                     <span className="label-text pt-2 text-base ps-4">
-                      {user.phone}
+                      {user.country}
                     </span>
                   </label>
                 )}
@@ -218,6 +307,43 @@ const ProfileSettings = () => {
                     <span className="w-full h-1 bg-sideNavBG rounded-3xl m-0 p-0" />
                     <span className="label-text pt-2 text-base ps-4">
                       {user.job_title}
+                    </span>
+                  </label>
+                )}
+              </div>
+
+              <label className="label flex flex-col p-0 items-start justify-start">
+                <span className="w-full h-1 bg-sideNavBG rounded-3xl m-0 p-0" />
+                <span className="label-text pt-2 ps-4 text-base">Phone No</span>
+              </label>
+              <div className="form-control col-span-2">
+                {isEditing ? (
+                  <PhoneInput
+                    country={"us"}
+                    value={formData.phone}
+                    onChange={handlePhoneChange}
+                    inputStyle={{
+                      width: "100%",
+                      height: "40px",
+                      borderRadius: "0.75rem",
+                      borderColor: "#929292",
+                      textAlign: "left",
+                    }}
+                    buttonStyle={{
+                      borderTopLeftRadius: "0.75rem",
+                      borderBottomLeftRadius: "0.75rem",
+                      borderColor: "#929292",
+                    }}
+                    dropdownStyle={{
+                      textAlign: "left",
+                    }}
+                    disabled={!isEditing}
+                  />
+                ) : (
+                  <label className="label flex flex-col p-0 items-start justify-start">
+                    <span className="w-full h-1 bg-sideNavBG rounded-3xl m-0 p-0" />
+                    <span className="label-text pt-2 text-base ps-4">
+                      {user.phone}
                     </span>
                   </label>
                 )}
