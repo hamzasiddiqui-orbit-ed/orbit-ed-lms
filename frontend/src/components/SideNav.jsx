@@ -98,7 +98,19 @@ function SideNav() {
         </div>
 
         <div className="mb-5 ms-2 sm:ms-0 w-full">
-          <SideNavButton icon={HiOutlineUserCircle} text="My Profile" />
+          <NavLink
+            to="profile-settings"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            {({ isActive }) => (
+              <SideNavButton
+                icon={HiOutlineUserCircle}
+                text="My Profile"
+                className={isActive ? "active" : ""}
+                onClick={handleButtonClick}
+              />
+            )}
+          </NavLink>
           {!logoutMutation.isPending ? (
             <SideNavButton
               icon={IoLogOutOutline}

@@ -373,7 +373,7 @@ const getDerivedParameterDetails = async (req, res) => {
       });
     }
 
-    const score = derivedParameters[derivedParameter];
+    const score = parseFloat(derivedParameters[derivedParameter]).toFixed(1);
     const description = parameter.description;
 
     return res.status(200).json({
@@ -427,7 +427,7 @@ const getDerivedParameterBaseScores = async (req, res) => {
 
       baseParameters.forEach((baseParam) => {
         baseScores[baseParam] =
-          report.parameters.base[baseParam]?.score || null;
+          parseFloat(report.parameters.base[baseParam]?.score).toFixed() || null;
       });
 
       result.push({
@@ -482,7 +482,7 @@ const getDerivedParameterScores = async (req, res) => {
 
     const data = sessionReports.map((report) => ({
       sessionCount: report.session_count,
-      score: report.parameters.derived[derivedParameter],
+      score: parseFloat(report.parameters.derived[derivedParameter]).toFixed(),
     }));
 
     return res.json(data);
@@ -529,7 +529,7 @@ const getBaseParameterScores = async (req, res) => {
 
     const data = sessionReports.map((report) => ({
       sessionCount: report.session_count,
-      score: report.parameters.base[baseParameter].score,
+      score: parseFloat(report.parameters.base[baseParameter].score).toFixed(),
     }));
 
     return res.json(data);
@@ -578,6 +578,8 @@ const getBaseParameterDetails = async (req, res) => {
     const data = {
       [baseParameter]: response.parameters.base[baseParameter],
     };
+
+    data[baseParameter].score = parseFloat(data[baseParameter].score).toFixed(1);
 
     if (!response || !data) {
       return res.status(404).json({ message: "No report found." });
@@ -747,7 +749,7 @@ const getQuizDetails = async (req, res) => {
     });
 
     const response = {
-      quiz_score: sessionReport.quiz.score,
+      quiz_score: sessionReport.quiz.score.toFixed(1),
       quiz_details: {
         MCQ: mcqDetails,
         TF: tfDetails,
@@ -760,6 +762,9 @@ const getQuizDetails = async (req, res) => {
   }
 };
 
+// ---------------------------------
+// Add new session report to databse
+// ---------------------------------
 const addSessionReport = async (req, res) => {
   const {
     user_id,

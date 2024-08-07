@@ -13,6 +13,8 @@ const protect = async (req, res, next) => {
 
       req.user = await User.findById(decoded.userId).select("-password");
 
+      console.log('token found');
+
       next();
     } catch (error) {
       console.error(error);

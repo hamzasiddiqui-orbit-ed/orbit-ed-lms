@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const User = require("../models/user.model");
 const Module = require("../models/module.model");
 const CourseCategory = require("../models/courseCategory.model");
+const Organization = require("../models/organization.model");
 
 dotenv.config();
 
@@ -10,13 +11,24 @@ const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET_KEY, { expiresIn: "24h" });
 };
 
+const formatDate = (date) => {
+  if (!date) {
+    return null;
+  }
+
+  const options = { day: "numeric", month: "short", year: "numeric" };
+  return new Date(date).toLocaleDateString("en-GB", options);
+};
+
+// -----------------------------------
 // Login function for LMS frontend app
+// -----------------------------------
 const authUser = async (req, res) => {
   const { username, password } = req.body;
   console.log("authUser called: ", username, password);
 
   if (!username || !password) {
-    return res.status(400).json({ message: "Required data missing!"});
+    return res.status(400).json({ message: "Required data missing!" });
   }
 
   const user = await User.findOne({ username });
@@ -39,33 +51,62 @@ const authUser = async (req, res) => {
 
     user.assigned_modules.map((m) => {
       total_sessions_taken = total_sessions_taken + m.sessions_completed;
-    })
-
-    res.json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      name: user.name,
-      job_title: user.job_title,
-      description: user.description,
-      user_type: user.user_type,
-      organization_id: user.organization_id,
-      assigned_manager: user.assigned_manager,
-      assigned_modules: user.assigned_modules,
-      total_sessions_taken: total_sessions_taken,
     });
+
+    const userOrganization = await Organization.findById(user.organization_id, {
+      name: 1,
+    });
+
+    if (user.user_type != "Admin") {
+      const userManager = await User.findById(user.assigned_manager, {
+        name: 1,
+      });
+
+      res.json({
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        name: user.name,
+        phone: user.phone,
+        job_title: user.job_title,
+        description: user.description,
+        user_type: user.user_type,
+        organization: userOrganization.name,
+        assigned_manager: userManager.name,
+        assigned_modules: user.assigned_modules,
+        total_sessions_taken: total_sessions_taken,
+        createdAt: formatDate(user.createdAt),
+      });
+    } else {
+      res.json({
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        name: user.name,
+        phone: user.phone,
+        job_title: user.job_title,
+        description: user.description,
+        user_type: user.user_type,
+        organization: userOrganization.name,
+        assigned_modules: user.assigned_modules,
+        total_sessions_taken: total_sessions_taken,
+        createdAt: formatDate(user.createdAt),
+      });
+    }
   } else {
     return res.status(401).json({ message: "Password is incorrect" });
   }
 };
 
+// -----------------------------
 // Login function for Unreal app
+// -----------------------------
 const unrealAuthUser = async (req, res) => {
   const { username, password } = req.body;
   console.log(`\nunrealAuthUser called: ${(username, password)}\n`);
 
   if (!username || !password) {
-    return res.status(400).json({ message: "Required data missing!"});
+    return res.status(400).json({ message: "Required data missing!" });
   }
 
   const user = await User.findOne({ username });
@@ -134,13 +175,15 @@ const unrealAuthUser = async (req, res) => {
       return acc;
     }, {});
 
-    const categorizedModulesArray = Object.keys(categorizedModules).map(key => ({
-      category_id: categorizedModules[key].category_id,
-      category_name: categorizedModules[key].category_name,
-      category_description: categorizedModules[key].category_description,
-      category_tags: categorizedModules[key].category_tags,
-      modules: categorizedModules[key].modules,
-    }));
+    const categorizedModulesArray = Object.keys(categorizedModules).map(
+      (key) => ({
+        category_id: categorizedModules[key].category_id,
+        category_name: categorizedModules[key].category_name,
+        category_description: categorizedModules[key].category_description,
+        category_tags: categorizedModules[key].category_tags,
+        modules: categorizedModules[key].modules,
+      })
+    );
 
     res.json({
       user_id: user._id,
@@ -154,7 +197,9 @@ const unrealAuthUser = async (req, res) => {
   }
 };
 
-
+// --------------------------
+// Logout user and expire JWT
+// --------------------------
 const logoutUser = (req, res) => {
   res.cookie("jwt", "", {
     httpOnly: true,
@@ -164,4 +209,102 @@ const logoutUser = (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
 };
 
-module.exports = { authUser, unrealAuthUser, logoutUser };
+// ---------------------------
+// Update user profile details
+// ---------------------------
+const updateUserProfile = async (req, res) => {
+  const token = req.cookies.jwt;
+  const userId = jwt.verify(token, process.env.JWT_SECRET_KEY).id;
+
+  const { name, phone, jobTitle, description } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ message: "No user ID found." });
+  } else if (!name || !phone || !jobTitle || !description) {
+    return res.status(400).json({ message: "Missing required data." });
+  }
+
+  try {
+    // Find the user and update the fields
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        name,
+        phone,
+        job_title: jobTitle,
+        description,
+      },
+      { new: true, runValidators: true } // Return the updated document and run validators
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Return the updated user info (excluding sensitive data)
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: {
+        name: updatedUser.name,
+        phone: updatedUser.phone,
+        job_title: updatedUser.job_title,
+        description: updatedUser.description,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({ message: `Query response: ${err.message}` });
+  }
+};
+
+// ----------------------
+// Update user's password
+// ----------------------
+const changePassword = async (req, res) => {
+  try {
+    const token = req.cookies.jwt;
+    const userId = jwt.verify(token, process.env.JWT_SECRET_KEY).id;
+
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: "Current password and new password are required." });
+    } else if (currentPassword == newPassword) {
+      return res.status(400).json({ message: "New password should be different from the current password." });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Check if the current password is correct using the matchPassword method
+    const isMatch = await user.matchPassword(currentPassword);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Current password is incorrect." });
+    }
+
+    // Check if the new password meets the required criteria
+    if (newPassword.length < 4) {
+      return res.status(400).json({ message: "New password must be at least 4 characters long." });
+    }
+
+    // Set the new password
+    user.password = newPassword;
+
+    // Save the user (this will trigger the pre-save hook to hash the password)
+    await user.save();
+
+    res.status(200).json({ message: "Password changed successfully." });
+  } catch (err) {
+    res.status(400).json({ message: `Query response: ${err.message}` });
+  }
+};
+
+module.exports = {
+  authUser,
+  unrealAuthUser,
+  logoutUser,
+  updateUserProfile,
+  changePassword,
+};

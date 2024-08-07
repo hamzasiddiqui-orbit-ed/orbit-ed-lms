@@ -16,6 +16,14 @@ const reducer = (state, action) => {
         ...state,
         user: null,
       };
+    case "UPDATE_USER":
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          ...action.payload,
+        },
+      };
     default:
       return state;
   }
