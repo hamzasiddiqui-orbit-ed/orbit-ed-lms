@@ -18,7 +18,7 @@ var app = express();
 // };
 
 const corsOptions = {
-  origin: 'http://192.168.18.47:3000',
+  origin: 'http://192.168.18.44:3000',
   credentials: true,
 };
 
