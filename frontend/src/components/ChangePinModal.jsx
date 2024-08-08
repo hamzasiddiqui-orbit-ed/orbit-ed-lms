@@ -3,6 +3,7 @@ import { useUsers } from "../hooks/useUsers";
 import { Formik, Form, useField } from "formik";
 import * as Yup from "yup";
 import PinInput from "react-pin-input";
+import classNames from "classnames";
 
 const ChangePinModal = () => {
   const { changePinMutation } = useUsers();
@@ -166,8 +167,11 @@ const ChangePinModal = () => {
                   <div className="w-full flex justify-between">
                     <button
                       type="button"
-                      className="btn rounded-xl bg-sideNavBG border-0 text-textDark hover:bg-progressBasic"
+                      className={classNames("btn rounded-xl bg-sideNavBG border-0 text-textDark hover:bg-progressBasic",
+                        {"hidden": isSubmitting}
+                      )}
                       onClick={() => setIsModalOpen(false)}
+                      disabled={isSubmitting}
                     >
                       Cancel
                     </button>

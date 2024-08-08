@@ -9,6 +9,7 @@ import Select from "react-select";
 import countryList from "react-select-country-list";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import classNames from "classnames";
 
 const ProfileSettings = () => {
   const { state: userState } = useContext(UserContext);
@@ -334,6 +335,7 @@ const ProfileSettings = () => {
                       borderBottomLeftRadius: "0.75rem",
                       borderColor: "#929292",
                     }}
+                    containerClass="phone-input-container"
                     dropdownStyle={{
                       textAlign: "left",
                     }}
@@ -367,7 +369,7 @@ const ProfileSettings = () => {
                 ) : (
                   <label className="label flex flex-col p-0 items-start justify-start">
                     <span className="w-full h-1 bg-sideNavBG rounded-3xl m-0 p-0" />
-                    <span className="label-text pt-2 text-base ps-4">
+                    <span className="label-text pt-2 text-base ps-4 text-start">
                       {user.description}
                     </span>
                   </label>
@@ -393,10 +395,12 @@ const ProfileSettings = () => {
                   </button>
                   <button
                     type="submit"
-                    className="btn rounded-xl bg-sideNavBG border-0 text-textDark hover:bg-progressBasic"
-                    disabled={updateProfileMutation.isLoading}
+                    className={classNames("btn rounded-xl bg-sideNavBG border-0 text-textDark hover:bg-progressBasic",
+                      {"btn rounded-xl bg-sideNavBG border-0 text-textDark hover:cursor-not-allowed" : updateProfileMutation.isPending}
+                    )}
+                    disabled={updateProfileMutation.isPending}
                   >
-                    {updateProfileMutation.isLoading ? (
+                    {updateProfileMutation.isPending ? (
                       <>
                         <div className="flex justify-evenly">
                           <span className="loading loading-dots loading-md"></span>
